@@ -2,9 +2,9 @@ package de.skymatic.model;
 
 import java.time.Month;
 import java.util.List;
+import java.util.Map;
 
-public class ReverseCharge {
+public class MonthlyInvoices {
     private Month month;
-    private List<Billing> billingList;
-
+    private Map<Subsidiary,Invoice> invoices;
 }
