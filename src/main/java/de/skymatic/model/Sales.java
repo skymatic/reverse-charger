@@ -11,4 +11,8 @@ public class Sales {
 	private double totalOwned;
 	private double exchangeRate;
 	private double proceeds;
+
+	public double getProceeds(){
+		return proceeds;
+	}
 }

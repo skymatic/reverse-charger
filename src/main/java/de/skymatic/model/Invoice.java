@@ -4,9 +4,9 @@ import java.util.Map;
 
 public class Invoice {
 
-	private Map<RegionPlusCurrency,Sales> salesPerCountry;
+	private Map<RegionPlusCurrency,Sales> salesPerCountryPlusCurrency;
 
 	public double sum() {
-		return salesPerCountry.values().stream().mapToDouble(s -> s.getTotalAmount()).sum();
+		return salesPerCountryPlusCurrency.values().stream().mapToDouble(Sales::getProceeds).sum();
 	}
 }
