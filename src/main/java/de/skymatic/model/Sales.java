@@ -4,18 +4,18 @@ import java.util.List;
 
 public class Sales {
 
-    private List<Item> sales;
+	private List<Item> sales;
 
+	public double getTotalAmount() {
+		//TODO
+		return 0.0;
+	}
 
-    public double getTotalAmount() {
-        //TODO
-        return 0.0;
-    }
+	private class Item {
 
-    private class Item {
-        private Product p;
-        private int quatity;
-        //private double discount;
-        private double amount;
-    }
+		private Product p;
+		private int quantity;
+		//private double discount;
+		private double amount;
+	}
 }
