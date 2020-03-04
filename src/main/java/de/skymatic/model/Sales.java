@@ -13,7 +13,7 @@ public class Sales {
 
 	private class Item {
 
-		private Product p;
+		private String p;
 		private int quantity;
 		//private double discount;
 		private double amount;
