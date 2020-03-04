@@ -1,11 +1,10 @@
 package de.skymatic.model;
 
-import java.util.Locale;
 import java.util.Map;
 
 public class Invoice {
 
-	private Map<Locale.IsoCountryCode, Sales> salesPerCountry;
+	private Map<RegionPlusCurrency,Sales> salesPerCountry;
 
 	public double sum() {
 		return salesPerCountry.values().stream().mapToDouble(s -> s.getTotalAmount()).sum();

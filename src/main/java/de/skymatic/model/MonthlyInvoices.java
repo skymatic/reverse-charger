@@ -1,7 +1,6 @@
 package de.skymatic.model;
 
 import java.time.Month;
-import java.util.List;
 import java.util.Map;
 
 public class MonthlyInvoices {

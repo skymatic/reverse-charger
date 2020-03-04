@@ -1,21 +1,14 @@
 package de.skymatic.model;
 
-import java.util.List;
-
 public class Sales {
 
-	private List<Item> sales;
-
-	public double getTotalAmount() {
-		//TODO
-		return 0.0;
-	}
-
-	private class Item {
-
-		private String p;
-		private int quantity;
-		//private double discount;
-		private double amount;
-	}
+	private int unitsSold;
+	private double earned;
+	private double pretaxSubtotal;
+	private double inputTax;
+	private double adjustments;
+	private double withholdingTax;
+	private double totalOwned;
+	private double exchangeRate;
+	private double proceeds;
 }
