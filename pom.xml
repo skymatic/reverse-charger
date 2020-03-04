@@ -4,6 +4,35 @@
     <groupId>de.skymatic.app</groupId>
     <artifactId>appstore-reverse-charger</artifactId>
     <version>0.1-SNAPSHOT</version>
+
+    <organization>
+        <name>Skymatic</name>
+        <url>https://skymatic.de</url>
+    </organization>
+
+    <name>Appstore Reverse Charger</name>
+    <description>TODO</description>
+    <url>https://github.com/skymatic/appstore-reverse-charger</url>
+
+    <scm>
+        <connection>scm:git:git@github.com:skymatic/appstore-reverse-charger.git</connection>
+        <developerConnection>scm:git:git@github.com:skymatic/appstore-reverse-charger.git</developerConnection>
+        <url>git@github.com:skymatic/appstore-reverse-charger.git</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>Martin Beyer</name>
+            <email>martin.beyer@skymatic.de</email>
+            <timezone>+1</timezone>
+        </developer>
+        <developer>
+            <name>Armin Schrenk</name>
+            <email>Armin.Schrenk@skymatic.de</email>
+            <timezone>+1</timezone>
+        </developer>
+    </developers>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
