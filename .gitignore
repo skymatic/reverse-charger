@@ -8,6 +8,9 @@
 .idea/**
 *.iml
 
+#Maven files
+target/**
+
 # BlueJ files
 *.ctxt
 
