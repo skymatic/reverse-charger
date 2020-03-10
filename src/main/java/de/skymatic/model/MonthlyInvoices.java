@@ -1,16 +1,16 @@
 package de.skymatic.model;
 
-import java.time.Month;
+import java.time.YearMonth;
 import java.util.Hashtable;
 import java.util.Map;
 
 public class MonthlyInvoices {
 
-	private Month month;
+	private YearMonth yearMonth;
 	private Map<Subsidiary, Invoice> invoices;
 
-	public MonthlyInvoices(Month month, Invoice... invoices) {
-		this.month = month;
+	public MonthlyInvoices(YearMonth yearMonth, Invoice... invoices) {
+		this.yearMonth = yearMonth;
 		this.invoices = new Hashtable<>();
 		for (var i : invoices) {
 			this.invoices.put(i.getSubsidiary(), i);

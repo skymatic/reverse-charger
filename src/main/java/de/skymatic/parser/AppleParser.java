@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Month;
+import java.time.YearMonth;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
@@ -18,12 +19,13 @@ public class AppleParser implements CSVParser {
 
 	private static final int MIN_COLUMN_COUNT = 10;
 
-	private Month month;
+	private YearMonth yearMonth;
 
 	public MonthlyInvoices parseCSV(Path p) throws IOException {
 		try (BufferedReader br = Files.newBufferedReader(p)) {
 			String header = br.readLine();
-			this.month = Month.valueOf(header.substring(header.indexOf('(') + 1, header.indexOf(',')).toUpperCase());
+			String[] monthYear = header.substring(header.indexOf('(') + 1, header.indexOf(')')).split(",");
+			this.yearMonth = YearMonth.of(Integer.valueOf(monthYear[1].trim()), Month.valueOf(monthYear[0].trim().toUpperCase()));
 
 			Set<SalesEntry> sales = br.lines().filter(line -> line.startsWith("\""))
 					.map(line -> line.replaceAll("[\"]", "").split(","))
@@ -52,7 +54,7 @@ public class AppleParser implements CSVParser {
 					invoices.put(subsidiary, new Invoice(rpc, salesEntry));
 				}
 			});
-			MonthlyInvoices monthlyInvoices = new MonthlyInvoices(month);
+			MonthlyInvoices monthlyInvoices = new MonthlyInvoices(yearMonth);
 			invoices.forEach((x, i) -> monthlyInvoices.addEntry(i));
 			return monthlyInvoices;
 		} catch (IOException e) {
