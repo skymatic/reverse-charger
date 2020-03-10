@@ -36,5 +36,4 @@ public enum RegionPlusCurrency {
 	AMERICAS_USD,
 	VIETNAM_VND,
 	SOUTH_AFRICA_ZAR;
-
 }
