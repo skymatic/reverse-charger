@@ -12,7 +12,19 @@ public class Sales {
 	private double exchangeRate;
 	private double proceeds;
 
-	public double getProceeds(){
+	public Sales(int unitsSold, double earned, double pretaxSubtotal, double inputTax, double adjustments, double withholdingTax, double totalOwned, double exchangeRate, double proceeds) {
+		this.unitsSold = unitsSold;
+		this.earned = earned;
+		this.pretaxSubtotal = pretaxSubtotal;
+		this.inputTax = inputTax;
+		this.adjustments = adjustments;
+		this.withholdingTax = withholdingTax;
+		this.totalOwned = totalOwned;
+		this.exchangeRate = exchangeRate;
+		this.proceeds = proceeds;
+	}
+
+	public double getProceeds() {
 		return proceeds;
 	}
 }
