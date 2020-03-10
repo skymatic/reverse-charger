@@ -12,7 +12,7 @@ import java.util.Map;
 
 import static de.skymatic.model.AppleUtility.mapRegionPlusCurrencyToSubsidiary;
 
-public class InvoiceParser implements CSVParser {
+public class AppleParser implements CSVParser {
 
 	private final static int MAX_MONTH_CHAR_LENGTH = 9;
 
