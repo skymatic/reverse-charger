@@ -8,7 +8,7 @@ public class InvoiceTest {
 
 	@Test
 	public void testEmptyInvoiceReturnsZero() {
-		Sales s = Mockito.mock(Sales.class);
+		SalesEntry s = Mockito.mock(SalesEntry.class);
 		Invoice i = new Invoice(RegionPlusCurrency.AMERICAS_USD, s);
 		Assertions.assertEquals(0, i.sum());
 	}

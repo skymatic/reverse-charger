@@ -55,7 +55,7 @@ public class AppleParser implements CSVParser {
 				double totalOwned = Double.parseDouble(invoice[7]);
 				double exchangeRate = Double.parseDouble(invoice[8]);
 				double proceeds = Double.parseDouble(invoice[9]);
-				Sales sales = new Sales(units, earned, pretaxSubtotal, inputTax, adjustments, withholdingTax, totalOwned, exchangeRate, proceeds);
+					SalesEntry salesEntry = new SalesEntry(rpc, units, earned, pretaxSubtotal, inputTax, adjustments, withholdingTax, totalOwned, exchangeRate, proceeds);
 
 				Subsidiary subsidiary = mapRegionPlusCurrencyToSubsidiary(rpc);
 				if (invoices.containsKey(subsidiary)) {

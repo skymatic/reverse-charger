@@ -1,6 +1,6 @@
 package de.skymatic.model;
 
-public class Sales {
+public class SalesEntry {
 
 	private final RegionPlusCurrency rpc;
 	private final int unitsSold;
@@ -13,7 +13,7 @@ public class Sales {
 	private final double exchangeRate;
 	private final double proceeds;
 
-	public Sales(RegionPlusCurrency rpc, int unitsSold, double earned, double pretaxSubtotal, double inputTax, double adjustments, double withholdingTax, double totalOwned, double exchangeRate, double proceeds) {
+	public SalesEntry(RegionPlusCurrency rpc, int unitsSold, double earned, double pretaxSubtotal, double inputTax, double adjustments, double withholdingTax, double totalOwned, double exchangeRate, double proceeds) {
 		this.rpc = rpc;
 		this.unitsSold = unitsSold;
 		this.earned = earned;
