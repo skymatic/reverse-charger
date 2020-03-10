@@ -27,4 +27,7 @@ public class MonthlyInvoices {
 		}
 	}
 
+	public boolean existsSubsidiary(Subsidiary subsidiary) {
+		return invoices.containsKey(subsidiary);
+	}
 }
