@@ -2,15 +2,15 @@ package de.skymatic.model;
 
 public class Sales {
 
-	private int unitsSold;
-	private double earned;
-	private double pretaxSubtotal;
-	private double inputTax;
-	private double adjustments;
-	private double withholdingTax;
-	private double totalOwned;
-	private double exchangeRate;
-	private double proceeds;
+	private final int unitsSold;
+	private final double earned;
+	private final double pretaxSubtotal;
+	private final double inputTax;
+	private final double adjustments;
+	private final double withholdingTax;
+	private final double totalOwned;
+	private final double exchangeRate;
+	private final double proceeds;
 
 	public Sales(int unitsSold, double earned, double pretaxSubtotal, double inputTax, double adjustments, double withholdingTax, double totalOwned, double exchangeRate, double proceeds) {
 		this.unitsSold = unitsSold;
