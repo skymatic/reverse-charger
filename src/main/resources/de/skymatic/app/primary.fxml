@@ -9,6 +9,7 @@
    <children>
       <Label text="Primary View" />
       <Button fx:id="primaryButton" text="Switch to Secondary View" onAction="#switchToSecondary"/>
+      <Button fx:id="startParser" text="Start parsing" onAction="#startParsing"/>
    </children>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
