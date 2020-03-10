@@ -26,7 +26,12 @@ public class SalesEntry {
 		this.proceeds = proceeds;
 	}
 
+	public RegionPlusCurrency getRpc(){
+		return rpc;
+	}
+
 	public double getProceeds() {
 		return proceeds;
 	}
+
 }

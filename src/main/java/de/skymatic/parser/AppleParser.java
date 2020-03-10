@@ -3,72 +3,61 @@ package de.skymatic.parser;
 import de.skymatic.model.*;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Month;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static de.skymatic.model.AppleUtility.mapRegionPlusCurrencyToSubsidiary;
 
 public class AppleParser implements CSVParser {
 
-	private final static int MAX_MONTH_CHAR_LENGTH = 9;
+	private static final int MIN_COLUMN_COUNT = 10;
+
+	private Month month;
 
 	public MonthlyInvoices parseCSV(Path p) throws IOException {
-		String csvFile = p.toString();
-		BufferedReader br;
-		String line;
-		String csvSplitBy = ",";
-		Month currentMonth = null;
-		Map<Subsidiary, Invoice> invoices = new Hashtable<>();
+		try (BufferedReader br = Files.newBufferedReader(p)) {
+			String header = br.readLine();
+			this.month = Month.valueOf(header.substring(header.indexOf('(') + 1, header.indexOf(',')).toUpperCase());
 
-		//MonthlyInvoices monthlyInvoices = null; //brought into scope for Exception Handling
-		br = new BufferedReader(new FileReader(csvFile));
-		//get the month
-		if ((line = br.readLine()) != null) {
-			String[] headline = line.split(csvSplitBy);
-			String monthString = headline[0].substring(headline[0].length() - MAX_MONTH_CHAR_LENGTH); //"September" is the longest Month with 9 chars
-			currentMonth = getMonth(monthString);
-		}
+			Set<SalesEntry> sales = br.lines().filter(line -> line.startsWith("\""))
+					.map(line -> line.replaceAll("[\"]", "").split(","))
+					.filter(splittedLine -> splittedLine.length >= MIN_COLUMN_COUNT)
+					.map(splittedLine -> {
+						RegionPlusCurrency rpc = getRegionPlusCurrency(splittedLine[0]);
+						int units = Integer.parseInt(splittedLine[1]);
+						double earned = Double.parseDouble(splittedLine[2]);
+						double pretaxSubtotal = Double.parseDouble(splittedLine[3]);
+						double inputTax = Double.parseDouble(splittedLine[4]);
+						double adjustments = Double.parseDouble(splittedLine[5]);
+						double withholdingTax = Double.parseDouble(splittedLine[6]);
+						double totalOwned = Double.parseDouble(splittedLine[7]);
+						double exchangeRate = Double.parseDouble(splittedLine[8]);
+						double proceeds = Double.parseDouble(splittedLine[9]);
+						return new SalesEntry(rpc, units, earned, pretaxSubtotal, inputTax, adjustments, withholdingTax, totalOwned, exchangeRate, proceeds);
+					}).collect(Collectors.toSet());
 
-		MonthlyInvoices monthlyInvoices = new MonthlyInvoices(currentMonth);
-		//Skipping empty line and column descriptions
-		br.readLine();
-		br.readLine();
-
-		while ((line = br.readLine()) != null) {
-			String[] invoice = line.replaceAll("[\"]", "").split(csvSplitBy);
-			//Not ideal
-
-			if (invoice.length >= 1) { // skip over lines without any invoices
-
-				RegionPlusCurrency rpc = getRegionPlusCurrency(invoice[0]);
-
-				int units = Integer.parseInt(invoice[1]);
-				double earned = Double.parseDouble(invoice[2]);
-				double pretaxSubtotal = Double.parseDouble(invoice[3]);
-				double inputTax = Double.parseDouble(invoice[4]);
-				double adjustments = Double.parseDouble(invoice[5]);
-				double withholdingTax = Double.parseDouble(invoice[6]);
-				double totalOwned = Double.parseDouble(invoice[7]);
-				double exchangeRate = Double.parseDouble(invoice[8]);
-				double proceeds = Double.parseDouble(invoice[9]);
-					SalesEntry salesEntry = new SalesEntry(rpc, units, earned, pretaxSubtotal, inputTax, adjustments, withholdingTax, totalOwned, exchangeRate, proceeds);
-
+			Map<Subsidiary, Invoice> invoices = new Hashtable<>();
+			sales.forEach(salesEntry -> {
+				final var rpc = salesEntry.getRpc();
 				Subsidiary subsidiary = mapRegionPlusCurrencyToSubsidiary(rpc);
 				if (invoices.containsKey(subsidiary)) {
-					invoices.get(subsidiary).addSales(rpc, sales);
-				} else invoices.put(subsidiary, new Invoice(rpc, sales));
-			} else break;
+					invoices.get(subsidiary).addSales(rpc, salesEntry);
+				} else {
+					invoices.put(subsidiary, new Invoice(rpc, salesEntry));
+				}
+			});
+			MonthlyInvoices monthlyInvoices = new MonthlyInvoices(month);
+			invoices.forEach((x, i) -> monthlyInvoices.addEntry(i));
+			return monthlyInvoices;
+		} catch (IOException e) {
+			throw e;
 		}
-		invoices.forEach((s, i) -> monthlyInvoices.addEntry(i));
-		return monthlyInvoices;
-	}
-
-	public Month getMonth(String monthString) {
-		return Month.valueOf(monthString.substring(monthString.indexOf('(') + 1).toUpperCase());
 	}
 
 	public RegionPlusCurrency getRegionPlusCurrency(String rpcString) {
@@ -77,4 +66,5 @@ public class AppleParser implements CSVParser {
 				.replaceAll("[\\(\\)]", "")
 				.toUpperCase());
 	}
+
 }
