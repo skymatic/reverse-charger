@@ -9,7 +9,8 @@ public class InvoiceTest {
 	@Test
 	public void testEmptyInvoiceReturnsZero() {
 		SalesEntry s = Mockito.mock(SalesEntry.class);
-		Invoice i = new Invoice(RegionPlusCurrency.AMERICAS_USD, s);
+		Mockito.when(s.getRpc()).thenReturn(RegionPlusCurrency.AMERICAS_USD);
+		Invoice i = new Invoice(s);
 		Assertions.assertEquals(0, i.sum());
 	}
 }

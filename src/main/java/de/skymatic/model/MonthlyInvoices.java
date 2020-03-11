@@ -9,19 +9,20 @@ public class MonthlyInvoices {
 	private YearMonth yearMonth;
 	private Map<Subsidiary, Invoice> invoices;
 
-	public MonthlyInvoices(YearMonth yearMonth, Invoice... invoices) {
+	public MonthlyInvoices(YearMonth yearMonth, SalesEntry... sales) {
 		this.yearMonth = yearMonth;
 		this.invoices = new Hashtable<>();
-		for (var i : invoices) {
-			this.invoices.put(i.getSubsidiary(), i);
+		for (var sale : sales) {
+			addSalesEntry(sale);
 		}
 	}
 
-	public void addEntry(Invoice i) {
-		if (invoices.containsKey(i.getSubsidiary())) {
-			throw new IllegalArgumentException("Subsidiary already exists!");
+	public void addSalesEntry(SalesEntry salesEntry) {
+		Subsidiary subsidiary = AppleUtility.mapRegionPlusCurrencyToSubsidiary(salesEntry.getRpc());
+		if (invoices.containsKey(subsidiary)) {
+			invoices.get(subsidiary).addSales(salesEntry);
 		} else {
-			invoices.put(i.getSubsidiary(), i);
+			invoices.put(subsidiary, new Invoice(salesEntry));
 		}
 	}
 

@@ -8,10 +8,10 @@ public class Invoice {
 	private Subsidiary subsidiary;
 	private Map<RegionPlusCurrency, SalesEntry> salesPerCountryPlusCurrency;
 
-	public Invoice(RegionPlusCurrency rpc, SalesEntry s) {
-		this.subsidiary = AppleUtility.mapRegionPlusCurrencyToSubsidiary(rpc);
+	public Invoice(SalesEntry s) {
+		this.subsidiary = AppleUtility.mapRegionPlusCurrencyToSubsidiary(s.getRpc());
 		this.salesPerCountryPlusCurrency = new Hashtable<>();
-		salesPerCountryPlusCurrency.put(rpc, s);
+		salesPerCountryPlusCurrency.put(s.getRpc(), s);
 	}
 
 	public Subsidiary getSubsidiary() {
@@ -22,7 +22,8 @@ public class Invoice {
 		return salesPerCountryPlusCurrency.values().stream().mapToDouble(SalesEntry::getProceeds).sum();
 	}
 
-	public void addSales(RegionPlusCurrency rpc, SalesEntry s) {
+	public void addSales(SalesEntry s) {
+		final var rpc = s.getRpc();
 		if (salesPerCountryPlusCurrency.containsKey(rpc)) {
 			throw new IllegalArgumentException("RegionPlusCurrency already exists!");
 		} else if (subsidiary != AppleUtility.mapRegionPlusCurrencyToSubsidiary(rpc)) {

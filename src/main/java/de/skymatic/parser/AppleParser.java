@@ -1,6 +1,8 @@
 package de.skymatic.parser;
 
-import de.skymatic.model.*;
+import de.skymatic.model.MonthlyInvoices;
+import de.skymatic.model.RegionPlusCurrency;
+import de.skymatic.model.SalesEntry;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,12 +10,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Month;
 import java.time.YearMonth;
-import java.util.Hashtable;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static de.skymatic.model.AppleUtility.mapRegionPlusCurrencyToSubsidiary;
 
 public class AppleParser implements CSVParser {
 
@@ -29,7 +27,7 @@ public class AppleParser implements CSVParser {
 
 			Set<SalesEntry> sales = br.lines().filter(line -> line.startsWith("\""))
 					.map(line -> line.replaceAll("[\"]", "").split(","))
-					.filter(splittedLine -> splittedLine.length >= MIN_COLUMN_COUNT)
+					.filter(splittedLine -> splittedLine.length >= MIN_COLUMN_COUNT) //TODO really necesssary? bufferedReader should have read firstline lines()
 					.map(splittedLine -> {
 						RegionPlusCurrency rpc = getRegionPlusCurrency(splittedLine[0]);
 						int units = Integer.parseInt(splittedLine[1]);
@@ -44,18 +42,8 @@ public class AppleParser implements CSVParser {
 						return new SalesEntry(rpc, units, earned, pretaxSubtotal, inputTax, adjustments, withholdingTax, totalOwned, exchangeRate, proceeds);
 					}).collect(Collectors.toSet());
 
-			Map<Subsidiary, Invoice> invoices = new Hashtable<>();
-			sales.forEach(salesEntry -> {
-				final var rpc = salesEntry.getRpc();
-				Subsidiary subsidiary = mapRegionPlusCurrencyToSubsidiary(rpc);
-				if (invoices.containsKey(subsidiary)) {
-					invoices.get(subsidiary).addSales(rpc, salesEntry);
-				} else {
-					invoices.put(subsidiary, new Invoice(rpc, salesEntry));
-				}
-			});
 			MonthlyInvoices monthlyInvoices = new MonthlyInvoices(yearMonth);
-			invoices.forEach((x, i) -> monthlyInvoices.addEntry(i));
+			sales.forEach(salesEntry -> monthlyInvoices.addSalesEntry(salesEntry));
 			return monthlyInvoices;
 		} catch (IOException e) {
 			throw e;
