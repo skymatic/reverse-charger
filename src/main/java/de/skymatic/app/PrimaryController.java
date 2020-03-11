@@ -1,7 +1,7 @@
 package de.skymatic.app;
 
-import de.skymatic.parser.CSVParser;
 import de.skymatic.parser.AppleParser;
+import de.skymatic.parser.CSVParser;
 import javafx.fxml.FXML;
 
 import java.io.IOException;
@@ -21,7 +21,7 @@ public class PrimaryController {
 		Path path = Path.of("D:\\skymatic\\appstore-reverse-parser\\financial_report.csv");
 		CSVParser csvParser = new AppleParser();
 		try {
-			csvParser.parseCSV(path);
+			System.out.println(csvParser.parseCSV(path).toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -32,4 +32,9 @@ public class Invoice {
 			salesPerCountryPlusCurrency.put(rpc, s);
 		}
 	}
+
+	public String toString(){
+		StringBuilder sb = new StringBuilder();
+		return sb.append(salesPerCountryPlusCurrency).append("\n").toString();
+	}
 }

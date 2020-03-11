@@ -30,4 +30,13 @@ public class MonthlyInvoices {
 		return invoices.containsKey(subsidiary);
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(yearMonth)
+				.append("\n")
+				.append(invoices);
+		return sb.toString();
+	}
+
 }

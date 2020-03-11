@@ -26,12 +26,27 @@ public class SalesEntry {
 		this.proceeds = proceeds;
 	}
 
-	public RegionPlusCurrency getRpc(){
+	public RegionPlusCurrency getRpc() {
 		return rpc;
 	}
 
 	public double getProceeds() {
 		return proceeds;
+	}
+
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		return sb.append(unitsSold).append(" ")
+				.append(earned).append(" ")
+				.append(pretaxSubtotal).append(" ")
+				.append(inputTax).append(" ")
+				.append(adjustments).append(" ")
+				.append(withholdingTax).append(" ")
+				.append(totalOwned).append(" ")
+				.append(exchangeRate).append(" ")
+				.append(proceeds).append(" ")
+				.toString();
+
 	}
 
 }
