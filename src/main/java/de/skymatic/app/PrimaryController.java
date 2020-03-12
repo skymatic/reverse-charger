@@ -15,8 +15,8 @@ import java.nio.file.Path;
 
 public class PrimaryController {
 
-	@FXML
-	private TableColumn<Invoice,String> columnSubsidiary;
+	@FXML private TableColumn<Invoice,String> columnSubsidiary;
+	@FXML private TableColumn<Invoice,String> columnAmount;
 	private ObservableList<Invoice> invoices;
 
 	public PrimaryController(){

@@ -16,10 +16,8 @@
 		<TableView fx:id="tableView" items="${controller.invoices}">
 			<columns>
 				<TableColumn fx:id="columnSubsidiary" text="Subsidiary"/>
-				<TableColumn text="Amount">
-				</TableColumn>
-				<TableColumn text="Proceeds">
-				</TableColumn>
+				<TableColumn fx:id="columnAmount" text="Amount"/>
+				<TableColumn fx:id="columnProceeds" text="Proceeds"/>
 			</columns>
 		</TableView>
 	</children>
