@@ -1,6 +1,8 @@
 package de.skymatic.model;
 
 import java.time.YearMonth;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -28,6 +30,10 @@ public class MonthlyInvoices {
 
 	public boolean existsSubsidiary(Subsidiary subsidiary) {
 		return invoices.containsKey(subsidiary);
+	}
+
+	public Collection<Invoice> getInvoices(){
+		return Collections.unmodifiableCollection(invoices.values());
 	}
 
 	@Override
