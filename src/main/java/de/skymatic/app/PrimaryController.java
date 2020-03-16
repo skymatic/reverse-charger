@@ -17,6 +17,7 @@ public class PrimaryController {
 
 	@FXML private TableColumn<Invoice,String> columnSubsidiary;
 	@FXML private TableColumn<Invoice,String> columnAmount;
+	@FXML private  TableColumn<Invoice, String> columnProceeds;
 	private ObservableList<Invoice> invoices;
 
 	public PrimaryController(){
@@ -26,6 +27,8 @@ public class PrimaryController {
 	@FXML
 	public void initialize(){
 		columnSubsidiary.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<String>(invoice.getValue().getSubsidiary().toString()));
+		columnAmount.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(String.valueOf(invoice.getValue().getAmount())));
+		columnProceeds.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>((String.format("%.2f", invoice.getValue().sum()))));
 	}
 
 	@FXML

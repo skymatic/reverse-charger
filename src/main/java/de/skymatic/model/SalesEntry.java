@@ -34,6 +34,10 @@ public class SalesEntry {
 		return proceeds;
 	}
 
+	public int getUnitsSold() {
+		return unitsSold;
+	}
+
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		return sb.append(unitsSold).append(" ")
