@@ -35,9 +35,7 @@ public class PrimaryController {
 
 	@FXML
 	private void startParsing() {
-		System.out.println("Working Directory = " +
-				System.getProperty("user.dir"));
-		Path path = Path.of("C:\\Users\\Armin Schrenk\\repos\\appstore-reverse-charger\\financial_report.csv");
+		Path path = Path.of(System.getProperty("user.dir")+ "\\financial_report.csv");
 		CSVParser csvParser = new AppleParser();
 		try {
 			MonthlyInvoices monthlyInvoices = csvParser.parseCSV(path);
