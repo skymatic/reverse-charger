@@ -32,7 +32,7 @@ public class MonthlyInvoices {
 		return invoices.containsKey(subsidiary);
 	}
 
-	public Collection<Invoice> getInvoices(){
+	public Collection<Invoice> getInvoices() {
 		return Collections.unmodifiableCollection(invoices.values());
 	}
 

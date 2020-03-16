@@ -2,8 +2,8 @@ package de.skymatic.model;
 
 public class AppleUtility {
 
-	public static Subsidiary mapRegionPlusCurrencyToSubsidiary(RegionPlusCurrency rpc){
-		switch (rpc){
+	public static Subsidiary mapRegionPlusCurrencyToSubsidiary(RegionPlusCurrency rpc) {
+		switch (rpc) {
 			//TODO:
 			case CANADA_CAD:
 				return Subsidiary.CANADA;
