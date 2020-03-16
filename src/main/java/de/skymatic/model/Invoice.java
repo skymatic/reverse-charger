@@ -22,6 +22,10 @@ public class Invoice {
 		return salesPerCountryPlusCurrency.values().stream().mapToDouble(SalesEntry::getProceeds).sum();
 	}
 
+	public int getAmount() {
+		return salesPerCountryPlusCurrency.values().stream().mapToInt(SalesEntry::getUnitsSold).sum();
+	}
+
 	public void addSales(SalesEntry s) {
 		final var rpc = s.getRpc();
 		if (salesPerCountryPlusCurrency.containsKey(rpc)) {
