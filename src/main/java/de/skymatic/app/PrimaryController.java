@@ -29,10 +29,10 @@ public class PrimaryController {
 	@FXML
 	private TableColumn<Invoice, String> columnProceeds;
 
-	private ObservableList<Invoice> invoices;
-	private StringProperty pathString;
-	private BooleanProperty isFileSelected;
 	private final Stage owner;
+	private final ObservableList<Invoice> invoices;
+	private final StringProperty pathString;
+	private final BooleanProperty isFileSelected;
 
 	public PrimaryController(Stage owner) {
 		this.owner = owner;
@@ -44,7 +44,7 @@ public class PrimaryController {
 
 	@FXML
 	public void initialize() {
-		columnSubsidiary.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<String>(invoice.getValue().getSubsidiary().toString()));
+		columnSubsidiary.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(invoice.getValue().getSubsidiary().toString()));
 		columnAmount.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(String.valueOf(invoice.getValue().getAmount())));
 		columnProceeds.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>((String.format("%.2f", invoice.getValue().sum()))));
 	}
