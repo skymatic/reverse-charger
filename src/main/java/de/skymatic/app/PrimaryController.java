@@ -12,7 +12,9 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -45,7 +47,17 @@ public class PrimaryController {
 	@FXML
 	public void initialize() {
 		columnSubsidiary.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(invoice.getValue().getSubsidiary().toString()));
+		columnAmount.setCellFactory(column -> {
+			var cell = new TextFieldTableCell<Invoice,String>();
+			cell.setAlignment(Pos.BASELINE_RIGHT);
+			return cell;
+		});
 		columnAmount.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(String.valueOf(invoice.getValue().getAmount())));
+		columnProceeds.setCellFactory(column -> {
+			var cell = new TextFieldTableCell<Invoice,String>();
+			cell.setAlignment(Pos.BASELINE_RIGHT);
+			return cell;
+		});
 		columnProceeds.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>((String.format("%.2f", invoice.getValue().sum()))));
 	}
 
