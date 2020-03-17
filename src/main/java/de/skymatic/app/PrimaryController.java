@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,8 +32,10 @@ public class PrimaryController {
 	private ObservableList<Invoice> invoices;
 	private StringProperty pathString;
 	private BooleanProperty isFileSelected;
+	private final Stage owner;
 
-	public PrimaryController() {
+	public PrimaryController(Stage owner) {
+		this.owner = owner;
 		this.invoices = FXCollections.observableArrayList();
 		pathString = new SimpleStringProperty();
 		isFileSelected = new SimpleBooleanProperty();
@@ -49,11 +52,9 @@ public class PrimaryController {
 	@FXML
 	private void chooseFile() throws IOException {
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Open Resource File");
-		fileChooser.getExtensionFilters().addAll(
-				new FileChooser.ExtensionFilter("Comma separated values file", "*.csv"));
-
-		File selectedFile = fileChooser.showOpenDialog(App.getStage());
+		fileChooser.setTitle("Open Financial Report");
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Comma separated values file", "*.csv"));
+		File selectedFile = fileChooser.showOpenDialog(owner);
 		if (selectedFile != null) {
 			pathString.setValue(selectedFile.toPath().toString());
 		}
