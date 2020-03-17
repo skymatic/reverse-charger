@@ -19,9 +19,10 @@ import java.nio.file.Path;
 
 public class PrimaryController {
 
-	@FXML private TableColumn<Invoice,String> columnSubsidiary;
-	@FXML private TableColumn<Invoice,String> columnAmount;
-	@FXML private  TableColumn<Invoice, String> columnProceeds;
+	@FXML private TableColumn<Invoice, String> columnSubsidiary;
+	@FXML private TableColumn<Invoice, String> columnAmount;
+	@FXML private TableColumn<Invoice, String> columnProceeds;
+
 	private ObservableList<Invoice> invoices;
 	private StringProperty pathString;
 
@@ -52,7 +53,7 @@ public class PrimaryController {
 
 	@FXML
 	private void startParsing() {
-		Path path = Path.of(System.getProperty("user.dir")+ "\\financial_report.csv");
+		Path path = Path.of(System.getProperty("user.dir") + "\\financial_report.csv");
 		CSVParser csvParser = new AppleParser();
 		try {
 			MonthlyInvoices monthlyInvoices = csvParser.parseCSV(path);
@@ -65,7 +66,7 @@ public class PrimaryController {
 
 	// Getter & Setter
 
-	public ObservableList<Invoice> getInvoices(){
+	public ObservableList<Invoice> getInvoices() {
 		return invoices;
 	}
 
