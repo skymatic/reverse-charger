@@ -16,7 +16,7 @@
 			<Button fx:id="fileChooserButton" text="Choose..." onAction="#chooseFile"/>
 		</HBox>
 		<Button fx:id="startParser" text="Start parsing" onAction="#startParsing" disable="${controller.isFileSelected}"/>
-		<TableView fx:id="tableView" items="${controller.invoices}">
+		<TableView fx:id="tableView" items="${controller.invoices}" maxHeight="200" maxWidth="400" >
 			<columns>
 				<TableColumn fx:id="columnSubsidiary" text="Subsidiary"/>
 				<TableColumn fx:id="columnAmount" text="Amount"/>
