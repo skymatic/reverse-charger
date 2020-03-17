@@ -4,7 +4,6 @@ public class AppleUtility {
 
 	public static Subsidiary mapRegionPlusCurrencyToSubsidiary(RegionPlusCurrency rpc) {
 		switch (rpc) {
-			//TODO:
 			case CANADA_CAD:
 				return Subsidiary.CANADA;
 			case AUSTRALIA_AUD:
@@ -15,8 +14,14 @@ public class AppleUtility {
 			case MEXICO_MXN:
 			case AMERICAS_USD:
 				return Subsidiary.AMERICA;
-			default:
+			case JAPAN_JPY:
+				return Subsidiary.JAPAN;
+			case SWITZERLAND_CHF:
+			case EURO_ZONE_EUR:
+			//TODO: add rest of RPCs
 				return Subsidiary.ROW;
+			default:
+				throw new IllegalArgumentException("No existing mapping for RegionPlusCurrency: " + rpc.toString());
 		}
 	}
 }
