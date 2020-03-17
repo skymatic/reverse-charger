@@ -4,7 +4,9 @@ import de.skymatic.model.Invoice;
 import de.skymatic.model.MonthlyInvoices;
 import de.skymatic.parser.AppleParser;
 import de.skymatic.parser.CSVParser;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -19,16 +21,22 @@ import java.nio.file.Path;
 
 public class PrimaryController {
 
-	@FXML private TableColumn<Invoice, String> columnSubsidiary;
-	@FXML private TableColumn<Invoice, String> columnAmount;
-	@FXML private TableColumn<Invoice, String> columnProceeds;
+	@FXML
+	private TableColumn<Invoice, String> columnSubsidiary;
+	@FXML
+	private TableColumn<Invoice, String> columnAmount;
+	@FXML
+	private TableColumn<Invoice, String> columnProceeds;
 
 	private ObservableList<Invoice> invoices;
 	private StringProperty pathString;
+	private BooleanProperty isFileSelected;
 
 	public PrimaryController() {
 		this.invoices = FXCollections.observableArrayList();
 		pathString = new SimpleStringProperty();
+		isFileSelected = new SimpleBooleanProperty();
+		isFileSelected.bind(pathString.isEmpty());
 	}
 
 	@FXML
@@ -53,7 +61,10 @@ public class PrimaryController {
 
 	@FXML
 	private void startParsing() {
-		Path path = Path.of(System.getProperty("user.dir") + "\\financial_report.csv");
+		Path path = Path.of(pathString.get());
+		//Path path = Path.of(System.getProperty("user.dir") + "\\financial_report.csv");
+		System.out.println(path);
+
 		CSVParser csvParser = new AppleParser();
 		try {
 			MonthlyInvoices monthlyInvoices = csvParser.parseCSV(path);
@@ -76,5 +87,13 @@ public class PrimaryController {
 
 	public String getPathString() {
 		return pathString.get();
+	}
+
+	public BooleanProperty isFileSelectedProperty() {
+		return isFileSelected;
+	}
+
+	public Boolean getIsFileSelected() {
+		return isFileSelected.get();
 	}
 }
