@@ -50,7 +50,7 @@ public class AppleParser implements CSVParser {
 		}
 	}
 
-	public RegionPlusCurrency getRegionPlusCurrency(String rpcString) {
+	private RegionPlusCurrency getRegionPlusCurrency(String rpcString) {
 		return RegionPlusCurrency.valueOf(rpcString.replace(' ', '_')
 				.replace('-', '_')
 				.replaceAll("[\\(\\)]", "")
