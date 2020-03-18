@@ -51,13 +51,13 @@ public class PrimaryController {
 	public void initialize() {
 		columnSubsidiary.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(invoice.getValue().getSubsidiary().toString()));
 		columnAmount.setCellFactory(column -> {
-			var cell = new TextFieldTableCell<Invoice,String>();
+			var cell = new TextFieldTableCell<Invoice, String>();
 			cell.setAlignment(Pos.BASELINE_RIGHT);
 			return cell;
 		});
 		columnAmount.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(String.valueOf(invoice.getValue().getAmount())));
 		columnProceeds.setCellFactory(column -> {
-			var cell = new TextFieldTableCell<Invoice,String>();
+			var cell = new TextFieldTableCell<Invoice, String>();
 			cell.setAlignment(Pos.BASELINE_RIGHT);
 			return cell;
 		});
@@ -84,7 +84,7 @@ public class PrimaryController {
 		CSVParser csvParser = new AppleParser();
 		try {
 			ParseResult result = csvParser.parseCSV(path);
-			MonthlyInvoices monthlyInvoices = new MonthlyInvoices(result.getYearMonth(), result.getSales().toArray(new SalesEntry[] {}));
+			MonthlyInvoices monthlyInvoices = new MonthlyInvoices(result.getYearMonth(), result.getSales().toArray(new SalesEntry[]{}));
 			//System.out.println(monthlyInvoices.toString());
 			invoices.addAll(monthlyInvoices.getInvoices());
 		} catch (IOException e) {
@@ -93,7 +93,7 @@ public class PrimaryController {
 		} catch (ParseException e) {
 			//TODO: error handling
 			e.printStackTrace();
-		} catch (IllegalArgumentException e){
+		} catch (IllegalArgumentException e) {
 			//TODO: error handling
 			e.printStackTrace();
 		}
