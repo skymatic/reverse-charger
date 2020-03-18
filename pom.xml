@@ -127,7 +127,19 @@
                 <version>1.6.0</version>
                 <executions>
                     <execution>
-                        <id>package-jar</id>
+                        <id>jlink</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>${env.JAVA_HOME}/bin/jlink</executable>
+                            <workingDirectory>${project.build.directory}</workingDirectory>
+                            <commandlineArgs>--output runtimeImage --module-path libs/ --add-modules de.skymatic.app --no-header-files --no-man-pages --strip-debug --compress=1</commandlineArgs>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>jpackage</id>
                         <phase>package</phase>
                         <goals>
                             <goal>exec</goal>
@@ -135,8 +147,29 @@
                         <configuration>
                             <executable>${env.JAVA_HOME}/bin/jpackage</executable>
                             <workingDirectory>${project.build.directory}</workingDirectory>
-                            <commandlineArgs>--name charger --module-path libs/ -m de.skymatic.app/de.skymatic.app.App --type app-image --app-version ${project.version} --vendor "Skymatic GmbH"</commandlineArgs>
+                            <commandlineArgs>--name charger --type app-image -m de.skymatic.app/de.skymatic.app.App --runtime-image runtimeImage --app-version ${project.version} --vendor "Skymatic GmbH"</commandlineArgs>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>${project.basedir}/src/main/resources/assembly.xml</descriptor>
+                    </descriptors>
+                    <appendAssemblyId>false</appendAssemblyId>
+					<finalName>charger</finalName>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

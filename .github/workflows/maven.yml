@@ -23,10 +23,6 @@ jobs:
         java-version: 14-ea
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-    - name: Zipping build artifacts
-      uses: montudor/action-zip@v0.1.0
-      with:
-        args: zip -qq -r ./target/charger.zip ./target/charger*
     - name: Uploads the build artifacts
       uses: actions/upload-artifact@v1
       with:
