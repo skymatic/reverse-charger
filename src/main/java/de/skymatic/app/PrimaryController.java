@@ -2,8 +2,10 @@ package de.skymatic.app;
 
 import de.skymatic.model.Invoice;
 import de.skymatic.model.MonthlyInvoices;
+import de.skymatic.model.SalesEntry;
 import de.skymatic.parser.AppleParser;
 import de.skymatic.parser.CSVParser;
+import de.skymatic.parser.ParseResult;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -80,7 +82,8 @@ public class PrimaryController {
 
 		CSVParser csvParser = new AppleParser();
 		try {
-			MonthlyInvoices monthlyInvoices = csvParser.parseCSV(path);
+			ParseResult result = csvParser.parseCSV(path);
+			MonthlyInvoices monthlyInvoices = new MonthlyInvoices(result.getYearMonth(), result.getSales().toArray(new SalesEntry[]{}));
 			//System.out.println(monthlyInvoices.toString());
 			invoices.addAll(monthlyInvoices.getInvoices());
 		} catch (IOException e) {
