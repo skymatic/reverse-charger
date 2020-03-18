@@ -17,7 +17,7 @@ public class AppleParser implements CSVParser {
 
 	private static final int MIN_COLUMN_COUNT = 10;
 
-	public ParseResult parseCSV(Path p) throws IOException {
+	public ParseResult parseCSV(Path p) throws IOException, ParseException {
 		try (BufferedReader br = Files.newBufferedReader(p)) {
 			String header = br.readLine();
 			String[] monthYear = header.substring(header.indexOf('(') + 1, header.indexOf(')')).split(",");
@@ -41,8 +41,8 @@ public class AppleParser implements CSVParser {
 					}).collect(Collectors.toList());
 
 			return new ParseResult(yearMonth, sales);
-		} catch (IOException e) {
-			throw e;
+		} catch (IllegalArgumentException e) {
+			throw new ParseException(e);
 		}
 	}
 
