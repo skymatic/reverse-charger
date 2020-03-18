@@ -17,13 +17,11 @@ public class AppleParser implements CSVParser {
 
 	private static final int MIN_COLUMN_COUNT = 10;
 
-	private YearMonth yearMonth;
-
 	public ParseResult parseCSV(Path p) throws IOException {
 		try (BufferedReader br = Files.newBufferedReader(p)) {
 			String header = br.readLine();
 			String[] monthYear = header.substring(header.indexOf('(') + 1, header.indexOf(')')).split(",");
-			this.yearMonth = YearMonth.of(Integer.valueOf(monthYear[1].trim()), Month.valueOf(monthYear[0].trim().toUpperCase()));
+			YearMonth yearMonth = YearMonth.of(Integer.valueOf(monthYear[1].trim()), Month.valueOf(monthYear[0].trim().toUpperCase()));
 
 			Collection<SalesEntry> sales = br.lines().filter(line -> line.startsWith("\""))
 					.map(line -> line.replaceAll("[\"]", "").split(","))
