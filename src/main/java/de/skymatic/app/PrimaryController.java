@@ -13,6 +13,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -40,6 +41,7 @@ public class PrimaryController {
 	private final StringProperty templatePathString;
 	private final StringProperty csvPathString;
 	private final BooleanProperty isFileSelected;
+	private final BooleanProperty isInvoicesEmpty;
 
 	public PrimaryController(Stage owner) {
 		this.owner = owner;
@@ -48,6 +50,8 @@ public class PrimaryController {
 		csvPathString = new SimpleStringProperty();
 		isFileSelected = new SimpleBooleanProperty();
 		isFileSelected.bind(csvPathString.isEmpty());
+		isInvoicesEmpty = new SimpleBooleanProperty(true);
+		invoices.addListener((ListChangeListener) (e -> isInvoicesEmpty.setValue(invoices.isEmpty())));
 	}
 
 	@FXML
@@ -112,6 +116,10 @@ public class PrimaryController {
 		//TODO
 	}
 
+	public Boolean isInvoiceEmpty() {
+		return invoices.isEmpty();
+	}
+
 	// Getter & Setter
 
 	public ObservableList<Invoice> getInvoices() {
@@ -140,6 +148,14 @@ public class PrimaryController {
 
 	public Boolean getIsFileSelected() {
 		return isFileSelected.get();
+	}
+
+	public BooleanProperty isInvoicesEmptyProperty() {
+		return isInvoicesEmpty;
+	}
+
+	public Boolean getIsInvoicesEmpty() {
+		return isInvoicesEmpty.get();
 	}
 
 
