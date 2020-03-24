@@ -13,6 +13,8 @@ import java.io.IOException;
  */
 public class App extends Application {
 
+	private static final String WINDOW_TITLE = "Appstore reverse charger";
+	
 	private static Scene scene;
 	private static Stage stage;
 
@@ -21,6 +23,7 @@ public class App extends Application {
 		this.stage = stage;
 		scene = new Scene(loadFXML("primary", stage), 640, 480);
 		stage.setScene(scene);
+		stage.setTitle(WINDOW_TITLE);
 		stage.show();
 	}
 
