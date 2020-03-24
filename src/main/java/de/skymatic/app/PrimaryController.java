@@ -95,7 +95,7 @@ public class PrimaryController {
 	}
 
 	@FXML
-	private void parseCSVFile() {
+	private void parseFinancialReport() {
 		Path path = Path.of(csvPathString.get());
 		//Path path = Path.of(System.getProperty("user.dir") + "\\financial_report.csv");
 		System.out.println(path);
