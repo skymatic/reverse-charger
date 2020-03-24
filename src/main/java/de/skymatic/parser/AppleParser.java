@@ -25,7 +25,7 @@ public class AppleParser implements CSVParser {
 
 			Collection<SalesEntry> sales = br.lines().filter(line -> line.startsWith("\""))
 					.map(line -> line.replaceAll("[\"]", "").split(","))
-					.filter(splittedLine -> splittedLine.length >= MIN_COLUMN_COUNT) //TODO really necesssary? bufferedReader should have read firstline lines()
+					//.filter(splittedLine -> splittedLine.length >= MIN_COLUMN_COUNT) //TODO really necesssary? bufferedReader should have read firstline lines()
 					.map(splittedLine -> {
 						RegionPlusCurrency rpc = getRegionPlusCurrency(splittedLine[0]);
 						int units = Integer.parseInt(splittedLine[1]);
@@ -41,7 +41,7 @@ public class AppleParser implements CSVParser {
 					}).collect(Collectors.toList());
 
 			return new ParseResult(yearMonth, sales);
-		} catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
 			throw new ParseException(e);
 		}
 	}
