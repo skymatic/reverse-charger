@@ -16,6 +16,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
@@ -90,12 +91,18 @@ public class PrimaryController {
 		} catch (IOException e) {
 			e.printStackTrace();
 			//TODO: error handling
+			Alert a = new Alert(Alert.AlertType.ERROR, "IO Exception:\nThere was a problem with your selected file.\n" + e.getMessage() + "\nPlease make sure you are the only one accessing it right now.");
+			a.show();
 		} catch (ParseException e) {
 			//TODO: error handling
 			e.printStackTrace();
+			Alert a = new Alert(Alert.AlertType.ERROR, "ParseException:\n"+ e.getMessage() + "\nPlease check your (financial_report).csv for any errors.");
+			a.show();
 		} catch (IllegalArgumentException e) {
 			//TODO: error handling
 			e.printStackTrace();
+			Alert a = new Alert(Alert.AlertType.ERROR, "IllegalArgumentException:\nThere is a logical error in your (financial_report).csv.\n" + e.getMessage() + "\nCheck, that each Region / Country is only listed once.");
+			a.show();
 		}
 
 	}
