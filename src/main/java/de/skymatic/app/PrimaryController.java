@@ -37,15 +37,17 @@ public class PrimaryController {
 
 	private final Stage owner;
 	private final ObservableList<Invoice> invoices;
-	private final StringProperty pathString;
+	private final StringProperty templatePathString;
+	private final StringProperty csvPathString;
 	private final BooleanProperty isFileSelected;
 
 	public PrimaryController(Stage owner) {
 		this.owner = owner;
 		this.invoices = FXCollections.observableArrayList();
-		pathString = new SimpleStringProperty();
+		templatePathString = new SimpleStringProperty();
+		csvPathString = new SimpleStringProperty();
 		isFileSelected = new SimpleBooleanProperty();
-		isFileSelected.bind(pathString.isEmpty());
+		isFileSelected.bind(csvPathString.isEmpty());
 	}
 
 	@FXML
@@ -66,19 +68,31 @@ public class PrimaryController {
 	}
 
 	@FXML
-	private void chooseFile() throws IOException {
+	private void chooseCSVFile() {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Financial Report");
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Comma separated values file", "*.csv"));
 		File selectedFile = fileChooser.showOpenDialog(owner);
 		if (selectedFile != null) {
-			pathString.setValue(selectedFile.toPath().toString());
+			csvPathString.setValue(selectedFile.toPath().toString());
+		}
+	}
+
+	@FXML
+	private void chooseTemplateFile() {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Open Template file");
+		//TODO add extensionFilter
+		// fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Comma separated values file", "*.csv"));
+		File selectedFile = fileChooser.showOpenDialog(owner);
+		if (selectedFile != null) {
+			templatePathString.setValue(selectedFile.toPath().toString());
 		}
 	}
 
 	@FXML
 	private void startParsing() {
-		Path path = Path.of(pathString.get());
+		Path path = Path.of(csvPathString.get());
 		//Path path = Path.of(System.getProperty("user.dir") + "\\financial_report.csv");
 		System.out.println(path);
 
@@ -110,12 +124,20 @@ public class PrimaryController {
 		return invoices;
 	}
 
-	public StringProperty pathStringProperty() {
-		return pathString;
+	public StringProperty csvPathStringProperty() {
+		return csvPathString;
 	}
 
-	public String getPathString() {
-		return pathString.get();
+	public String getCsvPathString() {
+		return csvPathString.get();
+	}
+
+	public StringProperty templatePathStringProperty() {
+		return templatePathString;
+	}
+
+	public String getTemplatePathString() {
+		return templatePathString.get();
 	}
 
 	public BooleanProperty isFileSelectedProperty() {
