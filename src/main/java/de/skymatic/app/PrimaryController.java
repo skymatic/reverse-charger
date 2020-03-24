@@ -14,6 +14,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -115,7 +116,11 @@ public class PrimaryController {
 					"IllegalArgumentException:\nThere is a logical error in your (financial_report).csv.\n" + e.getMessage() + "\nCheck, that each Region / Country is only listed once.");
 			a.show();
 		}
+	}
 
+	@FXML
+	public void generateInvoices(ActionEvent actionEvent) {
+		//TODO
 	}
 
 	// Getter & Setter
@@ -147,4 +152,6 @@ public class PrimaryController {
 	public Boolean getIsFileSelected() {
 		return isFileSelected.get();
 	}
+
+
 }
