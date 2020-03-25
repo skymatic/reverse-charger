@@ -12,6 +12,7 @@ public class SettingsJsonAdapter extends TypeAdapter<Settings> {
 	public void write(JsonWriter out, Settings settings) throws IOException {
 		out.beginObject();
 		out.name("templatePath").value(settings.getTemplatePath());
+		out.name("invoiceNumberPrefix").value(settings.getInvoiceNumberPrefix());
 		out.name("lastUsedInvoiceNumber").value(settings.getLastUsedInvoiceNumber());
 		out.name("outputPath").value(settings.getOutputPath());
 		out.endObject();
@@ -27,8 +28,11 @@ public class SettingsJsonAdapter extends TypeAdapter<Settings> {
 				case "templatePath":
 					settings.setTemplatePath(in.nextString());
 					break;
+				case "invoiceNumberPrefix":
+					settings.setInvoiceNumberPrefix(in.nextString());
+					break;
 				case "lastUsedInvoiceNumber":
-					settings.setLastUsedInvoiceNumber(in.nextString());
+					settings.setLastUsedInvoiceNumber(in.nextInt());
 					break;
 				case "outputPath":
 					settings.setOutputPath(in.nextString());

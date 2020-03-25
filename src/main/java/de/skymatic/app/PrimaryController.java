@@ -119,7 +119,7 @@ public class PrimaryController {
 		try {
 			ParseResult result = csvParser.parseCSV(path);
 			//TODO: year and month get lost
-			MonthlyInvoices monthlyInvoices = new MonthlyInvoices(result.getYearMonth(), 0, result.getSales().toArray(new SalesEntry[]{}));
+			MonthlyInvoices monthlyInvoices = new MonthlyInvoices(result.getYearMonth(), settings.getLastUsedInvoiceNumber(), result.getSales().toArray(new SalesEntry[]{}));
 			invoices.addAll(monthlyInvoices.getInvoices());
 		} catch (IOException | ParseException | IllegalArgumentException e) {
 			Alerts.parseCSVFileError(e).show();
