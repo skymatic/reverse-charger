@@ -38,20 +38,23 @@ public class PrimaryController {
 
 	private final Stage owner;
 	private final ObservableList<Invoice> invoices;
-	private final StringProperty templatePathString;
+
 	private final StringProperty csvPathString;
 	private final BooleanProperty isFileSelected;
 	private final BooleanProperty isInvoicesEmpty;
+	private Settings settings;
+	private final SettingsProvider settingsProvider;
 
 	public PrimaryController(Stage owner) {
 		this.owner = owner;
 		this.invoices = FXCollections.observableArrayList();
-		templatePathString = new SimpleStringProperty();
 		csvPathString = new SimpleStringProperty();
 		isFileSelected = new SimpleBooleanProperty();
 		isFileSelected.bind(csvPathString.isEmpty());
 		isInvoicesEmpty = new SimpleBooleanProperty(true);
 		invoices.addListener((ListChangeListener) (e -> isInvoicesEmpty.setValue(invoices.isEmpty())));
+		settingsProvider = new SettingsProvider();
+		settings = settingsProvider.loadSettings();
 	}
 
 	@FXML
@@ -90,7 +93,7 @@ public class PrimaryController {
 		// fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Comma separated values file", "*.csv"));
 		File selectedFile = fileChooser.showOpenDialog(owner);
 		if (selectedFile != null) {
-			templatePathString.setValue(selectedFile.toPath().toString());
+			settings.setTemplatePath(selectedFile.toPath().toString());
 		}
 	}
 
@@ -122,6 +125,10 @@ public class PrimaryController {
 
 	// Getter & Setter
 
+	public Settings getSettings(){
+		return settings;
+	}
+
 	public ObservableList<Invoice> getInvoices() {
 		return invoices;
 	}
@@ -132,14 +139,6 @@ public class PrimaryController {
 
 	public String getCsvPathString() {
 		return csvPathString.get();
-	}
-
-	public StringProperty templatePathStringProperty() {
-		return templatePathString;
-	}
-
-	public String getTemplatePathString() {
-		return templatePathString.get();
 	}
 
 	public BooleanProperty isFileSelectedProperty() {
