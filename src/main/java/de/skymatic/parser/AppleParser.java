@@ -1,6 +1,5 @@
 package de.skymatic.parser;
 
-import de.skymatic.model.MonthlyInvoices;
 import de.skymatic.model.RegionPlusCurrency;
 import de.skymatic.model.SalesEntry;
 
@@ -18,12 +17,14 @@ public class AppleParser implements CSVParser {
 	private static final int MIN_COLUMN_COUNT = 10;
 
 	public ParseResult parseCSV(Path p) throws IOException, ParseException {
+		StringReference lastReadLine = new StringReference();
 		try (BufferedReader br = Files.newBufferedReader(p)) {
 			String header = br.readLine();
 			String[] monthYear = header.substring(header.indexOf('(') + 1, header.indexOf(')')).split(",");
 			YearMonth yearMonth = YearMonth.of(Integer.valueOf(monthYear[1].trim()), Month.valueOf(monthYear[0].trim().toUpperCase()));
 
 			Collection<SalesEntry> sales = br.lines().filter(line -> line.startsWith("\""))
+					.map(line -> lastReadLine.copyAndReturn(line))
 					.map(line -> line.replaceAll("[\"]", "").split(","))
 					//.filter(splittedLine -> splittedLine.length >= MIN_COLUMN_COUNT) //TODO really necesssary? bufferedReader should have read firstline lines()
 					.map(splittedLine -> {
@@ -42,7 +43,7 @@ public class AppleParser implements CSVParser {
 
 			return new ParseResult(yearMonth, sales);
 		} catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
-			throw new ParseException(e);
+			throw new ParseException("Error parsing line:  " + lastReadLine.get(), e);
 		}
 	}
 
@@ -51,6 +52,20 @@ public class AppleParser implements CSVParser {
 				.replace('-', '_')
 				.replaceAll("[\\(\\)]", "")
 				.toUpperCase());
+	}
+
+	private class StringReference {
+
+		private String s = "";
+
+		public String copyAndReturn(String s) {
+			this.s = s;
+			return s;
+		}
+
+		public String get() {
+			return s;
+		}
 	}
 
 }

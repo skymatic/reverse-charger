@@ -18,7 +18,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
@@ -96,7 +95,7 @@ public class PrimaryController {
 	}
 
 	@FXML
-	private void startParsing() {
+	private void parseFinancialReport() {
 		Path path = Path.of(csvPathString.get());
 		//Path path = Path.of(System.getProperty("user.dir") + "\\financial_report.csv");
 		System.out.println(path);
@@ -107,18 +106,8 @@ public class PrimaryController {
 			MonthlyInvoices monthlyInvoices = new MonthlyInvoices(result.getYearMonth(), result.getSales().toArray(new SalesEntry[]{}));
 			//System.out.println(monthlyInvoices.toString());
 			invoices.addAll(monthlyInvoices.getInvoices());
-		} catch (IOException e) {
-			Alert a = new Alert(Alert.AlertType.ERROR,
-					"IO Exception:\nThere was a problem with your selected file.\n" + e.getMessage() + "\nPlease make sure you are the only one accessing it right now.");
-			a.show();
-		} catch (ParseException e) {
-			Alert a = new Alert(Alert.AlertType.ERROR,
-					"ParseException:\n" + e.getMessage() + "\nPlease check your (financial_report).csv for any errors.");
-			a.show();
-		} catch (IllegalArgumentException e) {
-			Alert a = new Alert(Alert.AlertType.ERROR,
-					"IllegalArgumentException:\nThere is a logical error in your (financial_report).csv.\n" + e.getMessage() + "\nCheck, that each Region / Country is only listed once.");
-			a.show();
+		} catch (IOException | ParseException | IllegalArgumentException e) {
+			Alerts.parseCSVFileError(e).show();
 		}
 	}
 
