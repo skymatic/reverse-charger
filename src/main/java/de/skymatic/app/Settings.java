@@ -1,11 +1,7 @@
 package de.skymatic.app;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-
-import java.nio.file.Path;
 
 public class Settings {
 
@@ -13,35 +9,34 @@ public class Settings {
 	private static final String DEFAULT_OUTPUT_PATH = ""; //TODO
 	private static final String DEFAULT_LAST_USED_INVOICE_NUMBER = ""; //TODO
 
-	private final ObjectProperty<Path> templatePath = new SimpleObjectProperty<>(Path.of(DEFAULT_TEMPLATE_PATH));
-	private final ObjectProperty<Path> outputPath = new SimpleObjectProperty<>(Path.of(DEFAULT_OUTPUT_PATH));
+	private final StringProperty templatePath = new SimpleStringProperty(DEFAULT_TEMPLATE_PATH);
+	private final StringProperty outputPath = new SimpleStringProperty(DEFAULT_OUTPUT_PATH);
 	private final StringProperty lastUsedInvoiceNumber = new SimpleStringProperty(DEFAULT_LAST_USED_INVOICE_NUMBER);
 
 	/*
 	Getter and Setter
 	 */
-
-	public Path getTemplatePath() {
+	public String getTemplatePath() {
 		return templatePath.get();
 	}
 
-	public ObjectProperty<Path> templatePathProperty() {
+	public StringProperty templatePathProperty() {
 		return templatePath;
 	}
 
-	public void setTemplatePath(Path templatePath) {
+	public void setTemplatePath(String templatePath) {
 		this.templatePath.set(templatePath);
 	}
 
-	public Path getOutputPath() {
+	public String getOutputPath() {
 		return outputPath.get();
 	}
 
-	public ObjectProperty<Path> outputPathProperty() {
+	public StringProperty outputPathProperty() {
 		return outputPath;
 	}
 
-	public void setOutputPath(Path outputPath) {
+	public void setOutputPath(String outputPath) {
 		this.outputPath.set(outputPath);
 	}
 

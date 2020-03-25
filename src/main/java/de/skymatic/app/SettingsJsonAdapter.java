@@ -5,16 +5,15 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
-import java.nio.file.Path;
 
 public class SettingsJsonAdapter extends TypeAdapter<Settings> {
 
 	@Override
 	public void write(JsonWriter out, Settings settings) throws IOException {
 		out.beginObject();
-		out.name("templatePath").value(settings.getTemplatePath().toString());
+		out.name("templatePath").value(settings.getTemplatePath());
 		out.name("lastUsedInvoiceNumber").value(settings.getLastUsedInvoiceNumber());
-		out.name("outputPath").value(settings.getOutputPath().toString());
+		out.name("outputPath").value(settings.getOutputPath());
 		out.endObject();
 	}
 
@@ -26,13 +25,13 @@ public class SettingsJsonAdapter extends TypeAdapter<Settings> {
 			String name = in.nextName();
 			switch (name) {
 				case "templatePath":
-					settings.setTemplatePath(Path.of(in.nextString()));
+					settings.setTemplatePath(in.nextString());
 					break;
 				case "lastUsedInvoiceNumber":
 					settings.setLastUsedInvoiceNumber(in.nextString());
 					break;
 				case "outputPath":
-					settings.setOutputPath(Path.of(in.nextString()));
+					settings.setOutputPath(in.nextString());
 				default:
 					in.skipValue();
 					break;

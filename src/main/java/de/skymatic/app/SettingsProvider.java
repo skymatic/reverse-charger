@@ -30,7 +30,7 @@ public class SettingsProvider {
 		gson = new GsonBuilder().setPrettyPrinting().setLenient().registerTypeAdapter(Settings.class, new SettingsJsonAdapter()).create();
 	}
 
-	private Settings loadSettings() throws IOException {
+	public Settings loadSettings() {
 		try (InputStream in = Files.newInputStream(path, StandardOpenOption.READ); //
 			 Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
 			Settings settings = gson.fromJson(reader, Settings.class);
@@ -38,12 +38,12 @@ public class SettingsProvider {
 				throw new IOException("Unexpected EOF");
 			}
 			return settings;
-		} catch (NoSuchFileException e) {
+		} catch (IOException e) {
 			return new Settings();
 		}
 	}
 
-	private void save(Settings settings) throws IOException {
+	public void save(Settings settings) throws IOException {
 		Files.createDirectories(path.getParent());
 		Path tmpPath = path.resolveSibling(path.getFileName().toString() + ".tmp");
 		try (OutputStream out = Files.newOutputStream(tmpPath, StandardOpenOption.CREATE_NEW); //
