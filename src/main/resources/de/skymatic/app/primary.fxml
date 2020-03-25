@@ -36,7 +36,7 @@
 		<ButtonBar buttonMinWidth="120" buttonOrder="X_I">
 			<buttons>
 				<Button text="Start parsing" ButtonBar.buttonData="NEXT_FORWARD" onAction="#parseFinancialReport" disable="${controller.isFileSelected}"/>
-				<Button text="Generate invoices" ButtonBar.buttonData="FINISH" onAction="#generateInvoices" disable="${controller.isInvoicesEmpty}"/>
+				<Button text="Generate invoices" ButtonBar.buttonData="FINISH" onAction="#generateInvoices" disable="${!controller.isReadyToGenerate}"/>
 			</buttons>
 		</ButtonBar>
 	</children>

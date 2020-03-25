@@ -7,6 +7,7 @@ import de.skymatic.parser.AppleParser;
 import de.skymatic.parser.CSVParser;
 import de.skymatic.parser.ParseException;
 import de.skymatic.parser.ParseResult;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -42,7 +43,7 @@ public class PrimaryController {
 
 	private final StringProperty csvPathString;
 	private final BooleanProperty isFileSelected;
-	private final BooleanProperty isInvoicesEmpty;
+	private final BooleanProperty isReadyToGenerate;
 	private Settings settings;
 	private final SettingsProvider settingsProvider;
 
@@ -52,8 +53,8 @@ public class PrimaryController {
 		csvPathString = new SimpleStringProperty();
 		isFileSelected = new SimpleBooleanProperty();
 		isFileSelected.bind(csvPathString.isEmpty());
-		isInvoicesEmpty = new SimpleBooleanProperty(true);
-		invoices.addListener((ListChangeListener) (e -> isInvoicesEmpty.setValue(invoices.isEmpty())));
+		isReadyToGenerate = new SimpleBooleanProperty(false);
+		invoices.addListener((ListChangeListener) (e -> isReadyToGenerate.setValue(!invoices.isEmpty())));
 		settingsProvider = new SettingsProvider();
 		settings = settingsProvider.loadSettings();
 	}
@@ -160,12 +161,12 @@ public class PrimaryController {
 		return isFileSelected.get();
 	}
 
-	public BooleanProperty isInvoicesEmptyProperty() {
-		return isInvoicesEmpty;
+	public BooleanProperty isReadyToGenerateProperty() {
+		return isReadyToGenerate;
 	}
 
-	public Boolean getIsInvoicesEmpty() {
-		return isInvoicesEmpty.get();
+	public Boolean getIsReadyToGenerate() {
+		return isReadyToGenerate.get();
 	}
 
 
