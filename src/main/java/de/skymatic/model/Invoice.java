@@ -5,8 +5,8 @@ import java.util.Map;
 
 public class Invoice {
 
-	private Subsidiary subsidiary;
-	private Map<RegionPlusCurrency, SalesEntry> salesPerCountryPlusCurrency;
+	private final Subsidiary subsidiary;
+	private final Map<RegionPlusCurrency, SalesEntry> salesPerCountryPlusCurrency;
 
 	private int number;
 

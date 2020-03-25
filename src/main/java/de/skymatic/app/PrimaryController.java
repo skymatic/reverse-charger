@@ -7,7 +7,6 @@ import de.skymatic.parser.AppleParser;
 import de.skymatic.parser.CSVParser;
 import de.skymatic.parser.ParseException;
 import de.skymatic.parser.ParseResult;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -112,9 +111,6 @@ public class PrimaryController {
 	@FXML
 	private void parseFinancialReport() {
 		Path path = Path.of(csvPathString.get());
-		//Path path = Path.of(System.getProperty("user.dir") + "\\financial_report.csv");
-		System.out.println(path);
-
 		CSVParser csvParser = new AppleParser();
 		try {
 			ParseResult result = csvParser.parseCSV(path);
@@ -129,10 +125,6 @@ public class PrimaryController {
 	@FXML
 	public void generateInvoices(ActionEvent actionEvent) {
 		//TODO
-	}
-
-	public Boolean isInvoiceEmpty() {
-		return invoices.isEmpty();
 	}
 
 	// Getter & Setter

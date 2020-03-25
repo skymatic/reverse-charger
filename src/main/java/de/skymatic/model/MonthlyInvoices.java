@@ -9,8 +9,8 @@ import java.util.function.IntSupplier;
 
 public class MonthlyInvoices {
 
-	private YearMonth yearMonth;
-	private Map<Subsidiary, Invoice> invoices;
+	private final YearMonth yearMonth;
+	private final Map<Subsidiary, Invoice> invoices;
 	private final IntSupplier invoiceNumberGenerator;
 
 	public MonthlyInvoices(YearMonth yearMonth, int numberingSeed, SalesEntry... sales) {
@@ -38,10 +38,6 @@ public class MonthlyInvoices {
 		} else {
 			invoices.put(subsidiary, new Invoice(invoiceNumberGenerator.getAsInt(), salesEntry));
 		}
-	}
-
-	public boolean existsSubsidiary(Subsidiary subsidiary) {
-		return invoices.containsKey(subsidiary);
 	}
 
 	public Collection<Invoice> getInvoices() {
