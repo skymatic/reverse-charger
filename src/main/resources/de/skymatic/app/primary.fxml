@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="de.skymatic.app.PrimaryController">
 	<children>
 		<VBox alignment="BASELINE_LEFT" spacing="20.0">
@@ -32,6 +26,13 @@
 				<TableColumn fx:id="columnProceeds" text="Proceeds"/>
 			</columns>
 		</TableView>
+		<VBox alignment="BASELINE_LEFT" spacing="20.0">
+			<Label alignment="BASELINE_LEFT" text="Choose output directory:"/>
+			<HBox alignment="CENTER" spacing="20.0">
+				<TextField fx:id="pathOfOutputDirectory" text="${controller.settings.outputPath}" HBox.hgrow="ALWAYS"/>
+				<Button fx:id="outputDirectoryChooserButton" text="Choose..." onAction="#chooseOutputDirectory"/>
+			</HBox>
+		</VBox>
 		<ButtonBar buttonMinWidth="120" buttonOrder="X_I">
 			<buttons>
 				<Button text="Start parsing" ButtonBar.buttonData="NEXT_FORWARD" onAction="#parseFinancialReport" disable="${controller.isFileSelected}"/>

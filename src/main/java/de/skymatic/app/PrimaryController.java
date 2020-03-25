@@ -20,6 +20,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -98,6 +99,16 @@ public class PrimaryController {
 	}
 
 	@FXML
+	private void chooseOutputDirectory() {
+		DirectoryChooser directoryChooser = new DirectoryChooser();
+		directoryChooser.setTitle(("Choose directory to save output to"));
+		File selectedDirectory = directoryChooser.showDialog(owner);
+		if (selectedDirectory != null) {
+			settings.setOutputPath(selectedDirectory.toPath().toString());
+		}
+	}
+
+	@FXML
 	private void parseFinancialReport() {
 		Path path = Path.of(csvPathString.get());
 		//Path path = Path.of(System.getProperty("user.dir") + "\\financial_report.csv");
@@ -125,7 +136,7 @@ public class PrimaryController {
 
 	// Getter & Setter
 
-	public Settings getSettings(){
+	public Settings getSettings() {
 		return settings;
 	}
 
