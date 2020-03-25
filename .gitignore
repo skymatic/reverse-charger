@@ -5,7 +5,11 @@
 *.log
 
 #IntelliJ files
-.idea/**
+!.idea/
+
+.idea/*
+!.idea/codeStyles
+!.idea/runConfigurations
 *.iml
 
 #Maven files
