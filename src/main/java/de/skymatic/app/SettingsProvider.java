@@ -12,7 +12,6 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
@@ -20,13 +19,14 @@ import java.util.Optional;
 
 public class SettingsProvider {
 
-	private static final String ENV_SETTINGS_PATH = "";//TODO
-	private static final String DEFAULT_SETTINGS_PATH = ""; //TODO
+	private static final String ENV_SETTINGS_PATH = "settingsPath";
+	private static final String DEFAULT_SETTINGS_PATH = System.getProperty("java.io.tmpdir");
+
 	private final Gson gson;
 	private final Path path;
 
 	public SettingsProvider() {
-		path = Path.of(Optional.ofNullable(System.getenv(ENV_SETTINGS_PATH)).orElse(DEFAULT_SETTINGS_PATH));
+		path = Path.of(Optional.ofNullable(System.getProperty(ENV_SETTINGS_PATH)).orElse(DEFAULT_SETTINGS_PATH));
 		gson = new GsonBuilder().setPrettyPrinting().setLenient().registerTypeAdapter(Settings.class, new SettingsJsonAdapter()).create();
 	}
 
