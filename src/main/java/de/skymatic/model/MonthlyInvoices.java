@@ -44,6 +44,15 @@ public class MonthlyInvoices {
 		return Collections.unmodifiableCollection(invoices.values());
 	}
 
+	public void setInvoiceNumber(Subsidiary subsidiary, int number) {
+		if (invoices.containsKey(subsidiary)) {
+			invoices.get(subsidiary).setNumber(number);
+		} else {
+			throw new IllegalArgumentException("Invoice for Subsidiary does not exists.");
+		}
+
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
