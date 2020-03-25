@@ -5,14 +5,26 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.function.IntSupplier;
 
 public class MonthlyInvoices {
 
 	private YearMonth yearMonth;
 	private Map<Subsidiary, Invoice> invoices;
+	private final IntSupplier invoiceNumberGenerator;
 
-	public MonthlyInvoices(YearMonth yearMonth, SalesEntry... sales) {
+	public MonthlyInvoices(YearMonth yearMonth, int numberingSeed, SalesEntry... sales) {
 		this.yearMonth = yearMonth;
+		this.invoiceNumberGenerator = new IntSupplier() {
+			private int current = numberingSeed;
+
+			@Override
+			public int getAsInt() {
+				var old = current;
+				current += 1;
+				return old;
+			}
+		};
 		this.invoices = new Hashtable<>();
 		for (var sale : sales) {
 			addSalesEntry(sale);
@@ -24,7 +36,7 @@ public class MonthlyInvoices {
 		if (invoices.containsKey(subsidiary)) {
 			invoices.get(subsidiary).addSales(salesEntry);
 		} else {
-			invoices.put(subsidiary, new Invoice(salesEntry));
+			invoices.put(subsidiary, new Invoice(invoiceNumberGenerator.getAsInt(), salesEntry));
 		}
 	}
 

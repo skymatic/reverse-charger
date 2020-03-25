@@ -118,8 +118,8 @@ public class PrimaryController {
 		CSVParser csvParser = new AppleParser();
 		try {
 			ParseResult result = csvParser.parseCSV(path);
-			MonthlyInvoices monthlyInvoices = new MonthlyInvoices(result.getYearMonth(), result.getSales().toArray(new SalesEntry[]{}));
-			//System.out.println(monthlyInvoices.toString());
+			//TODO: year and month get lost
+			MonthlyInvoices monthlyInvoices = new MonthlyInvoices(result.getYearMonth(), 0, result.getSales().toArray(new SalesEntry[]{}));
 			invoices.addAll(monthlyInvoices.getInvoices());
 		} catch (IOException | ParseException | IllegalArgumentException e) {
 			Alerts.parseCSVFileError(e).show();

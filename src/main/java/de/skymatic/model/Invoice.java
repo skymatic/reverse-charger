@@ -8,8 +8,11 @@ public class Invoice {
 	private Subsidiary subsidiary;
 	private Map<RegionPlusCurrency, SalesEntry> salesPerCountryPlusCurrency;
 
-	public Invoice(SalesEntry s) {
+	private int number;
+
+	public Invoice(int number, SalesEntry s) {
 		this.subsidiary = AppleUtility.mapRegionPlusCurrencyToSubsidiary(s.getRpc());
+		this.number = number;
 		this.salesPerCountryPlusCurrency = new Hashtable<>();
 		salesPerCountryPlusCurrency.put(s.getRpc(), s);
 	}
@@ -35,6 +38,14 @@ public class Invoice {
 		} else {
 			salesPerCountryPlusCurrency.put(rpc, s);
 		}
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
+	}
+
+	public int getNumber() {
+		return number;
 	}
 
 	public String toString() {
