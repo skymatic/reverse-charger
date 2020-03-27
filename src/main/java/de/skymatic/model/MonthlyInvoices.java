@@ -39,7 +39,7 @@ public class MonthlyInvoices {
 			invoices.get(subsidiary).addSales(salesEntry);
 		} else {
 			var numberString = numberPrefix + String.valueOf(invoiceNumberGenerator.getAsInt());
-			invoices.put(subsidiary, new Invoice(numberString, salesEntry));
+			invoices.put(subsidiary, new Invoice(numberString, yearMonth, salesEntry));
 		}
 	}
 

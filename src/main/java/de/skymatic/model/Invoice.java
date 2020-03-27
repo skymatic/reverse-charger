@@ -1,18 +1,30 @@
 package de.skymatic.model;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.ZoneId;
 import java.util.Hashtable;
 import java.util.Map;
 
 public class Invoice {
 
+	private static final LocalDate CURRENT_TIME = LocalDate.ofInstant(Instant.ofEpochMilli(System.currentTimeMillis()), ZoneId.systemDefault());
+
 	private final Subsidiary subsidiary;
+	private final LocalDate startOfPeriod;
+	private final LocalDate endOfPeriod;
 	private final Map<RegionPlusCurrency, SalesEntry> salesPerCountryPlusCurrency;
 
+	private LocalDate issueDate;
 	private String numberString;
 
-	public Invoice(String numberString, SalesEntry s) {
+	public Invoice(String numberString, YearMonth yearMonth, SalesEntry s) {
 		this.subsidiary = AppleUtility.mapRegionPlusCurrencyToSubsidiary(s.getRpc());
 		this.numberString = numberString;
+		this.issueDate = CURRENT_TIME;
+		this.startOfPeriod = yearMonth.atDay(1);
+		this.endOfPeriod = yearMonth.atEndOfMonth();
 		this.salesPerCountryPlusCurrency = new Hashtable<>();
 		salesPerCountryPlusCurrency.put(s.getRpc(), s);
 	}
@@ -46,6 +58,22 @@ public class Invoice {
 
 	public String getNumberString() {
 		return numberString;
+	}
+
+	public void setIssueDate(LocalDate issueDate) {
+		this.issueDate = issueDate;
+	}
+
+	public LocalDate getIssueDate() {
+		return issueDate;
+	}
+
+	public LocalDate getStartOfPeriod() {
+		return startOfPeriod;
+	}
+
+	public LocalDate getEndOfPeriod() {
+		return endOfPeriod;
 	}
 
 	public String toString() {
