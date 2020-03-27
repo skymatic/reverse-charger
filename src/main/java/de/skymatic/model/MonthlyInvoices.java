@@ -1,9 +1,7 @@
 package de.skymatic.model;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.time.ZoneId;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Hashtable;
@@ -12,7 +10,7 @@ import java.util.function.IntSupplier;
 
 public class MonthlyInvoices {
 
-	private static final LocalDate CURRENT_TIME = LocalDate.ofInstant(Instant.ofEpochMilli(System.currentTimeMillis()), ZoneId.systemDefault());
+	private static final LocalDate CURRENT_TIME = LocalDate.now();
 
 	private final YearMonth yearMonth;
 	private final String numberPrefix;
