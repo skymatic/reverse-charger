@@ -41,14 +41,14 @@ public class PrimaryController {
 
 	private final Stage owner;
 	private final ObservableList<Invoice> invoices;
-
 	private final StringProperty csvPathString;
 	private final BooleanProperty isFileSelected;
 	private final BooleanProperty isReadyToGenerate;
-	private Settings settings;
 	private final SettingsProvider settingsProvider;
 
 	private Optional<MonthlyInvoices> monthlyInvoices;
+	private Settings settings;
+
 	public PrimaryController(Stage owner) {
 		this.owner = owner;
 		this.invoices = FXCollections.observableArrayList();
