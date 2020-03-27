@@ -26,7 +26,6 @@ public class AppleParser implements CSVParser {
 			Collection<SalesEntry> sales = br.lines().filter(line -> line.startsWith("\""))
 					.map(line -> lastReadLine.copyAndReturn(line))
 					.map(line -> line.replaceAll("[\"]", "").split(","))
-					//.filter(splittedLine -> splittedLine.length >= MIN_COLUMN_COUNT) //TODO really necesssary? bufferedReader should have read firstline lines()
 					.map(splittedLine -> {
 						RegionPlusCurrency rpc = getRegionPlusCurrency(splittedLine[0]);
 						int units = Integer.parseInt(splittedLine[1]);

@@ -7,7 +7,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.YearMonth;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,13 +17,11 @@ public class PlaceholderReplacer {
 	private static final String PLACEHOLDER_END = "}}";
 
 	private final Path templatePath;
-	private final YearMonth yearMonth;
 	private final Collection<Invoice> invoices;
 
 
 	public PlaceholderReplacer(Path templatePath, MonthlyInvoices m) {
 		this.templatePath = templatePath;
-		this.yearMonth = m.getYearMonth(); //TODO
 		this.invoices = m.getInvoices();
 	}
 

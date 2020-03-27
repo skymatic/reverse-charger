@@ -8,7 +8,6 @@ import java.util.Map;
 public abstract class InvoiceGenerator {
 
 	public void generateAndWriteInvoices(MonthlyInvoices m, Path templatePath, Path out) {
-		//TODO: how to handle the invoice nomber prefix?
 		Map<String, StringBuilder> sbs = new PlaceholderReplacer(templatePath, m).createHTMLInvoices();
 		this.write(out, sbs);
 
