@@ -1,6 +1,9 @@
 package de.skymatic.model;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.ZoneId;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Hashtable;
@@ -8,6 +11,8 @@ import java.util.Map;
 import java.util.function.IntSupplier;
 
 public class MonthlyInvoices {
+
+	private static final LocalDate CURRENT_TIME = LocalDate.ofInstant(Instant.ofEpochMilli(System.currentTimeMillis()), ZoneId.systemDefault());
 
 	private final YearMonth yearMonth;
 	private final String numberPrefix;
@@ -39,7 +44,7 @@ public class MonthlyInvoices {
 			invoices.get(subsidiary).addSales(salesEntry);
 		} else {
 			var numberString = numberPrefix + String.valueOf(invoiceNumberGenerator.getAsInt());
-			invoices.put(subsidiary, new Invoice(numberString, yearMonth, salesEntry));
+			invoices.put(subsidiary, new Invoice(numberString, yearMonth, CURRENT_TIME, salesEntry));
 		}
 	}
 
@@ -57,7 +62,14 @@ public class MonthlyInvoices {
 		} else {
 			throw new IllegalArgumentException("Invoice for Subsidiary does not exists.");
 		}
+	}
 
+	public void changeIssueDate(Subsidiary subsidiary, LocalDate issueDate) {
+		if (invoices.containsKey(subsidiary)) {
+			invoices.get(subsidiary).setIssueDate(issueDate);
+		} else {
+			throw new IllegalArgumentException("Invoice for Subsidiary does not exists.");
+		}
 	}
 
 	@Override
