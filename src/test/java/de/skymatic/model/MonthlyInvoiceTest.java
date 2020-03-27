@@ -10,7 +10,7 @@ public class MonthlyInvoiceTest {
 
 	@Test
 	public void testAddingSalesEntryOfNoneExistingInvoiceCreatesIt() {
-		MonthlyInvoices monthlyInvoices = new MonthlyInvoices(YearMonth.of(2020, 3), 0);
+		MonthlyInvoices monthlyInvoices = new MonthlyInvoices(YearMonth.of(2020, 3), "CVS", 0);
 		SalesEntry salesEntry = Mockito.mock(SalesEntry.class);
 		Mockito.when(salesEntry.getRpc()).thenReturn(RegionPlusCurrency.AMERICAS_USD);
 		monthlyInvoices.addSalesEntry(salesEntry);

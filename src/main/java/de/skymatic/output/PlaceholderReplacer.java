@@ -28,9 +28,9 @@ public class PlaceholderReplacer {
 		this.invoices = m.getInvoices();
 	}
 
-	public Map<Integer, StringBuilder> createHTMLInvoices() {
-		Map<Integer,StringBuilder> sbs = new HashMap<>();
-		invoices.forEach(i -> sbs.put(i.getNumber(),new StringBuilder()));
+	public Map<String, StringBuilder> createHTMLInvoices() {
+		Map<String,StringBuilder> sbs = new HashMap<>();
+		invoices.forEach(i -> sbs.put(i.getNumberString(),new StringBuilder()));
 
 		try (BufferedReader br = Files.newBufferedReader(templatePath)) {
 			br.lines().forEach(line -> {
@@ -38,7 +38,7 @@ public class PlaceholderReplacer {
 				if (pos >= 0) {
 					int endPos = line.indexOf(PLACEHOLDER_END, pos);
 					invoices.forEach(invoice -> {
-						sbs.get(invoice.getNumber()).append(line, 0, pos)
+						sbs.get(invoice.getNumberString()).append(line, 0, pos)
 								.append(getReplacement(invoice, line.substring(pos + 2, endPos).trim()))
 								.append(line, endPos + 2, line.length());
 					});
@@ -59,7 +59,7 @@ public class PlaceholderReplacer {
 			case "item_amount":
 				return String.valueOf(invoice.getAmount());
 			case "invoice_number":
-				return String.valueOf(invoice.getNumber());
+				return String.valueOf(invoice.getNumberString());
 			case "item_proceeds":
 				return String.valueOf(invoice.sum());
 			case "issue_date":

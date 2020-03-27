@@ -10,11 +10,13 @@ import java.util.function.IntSupplier;
 public class MonthlyInvoices {
 
 	private final YearMonth yearMonth;
+	private final String numberPrefix;
 	private final Map<Subsidiary, Invoice> invoices;
 	private final IntSupplier invoiceNumberGenerator;
 
-	public MonthlyInvoices(YearMonth yearMonth, int numberingSeed, SalesEntry... sales) {
+	public MonthlyInvoices(YearMonth yearMonth, String numberPrefix, int numberingSeed, SalesEntry... sales) {
 		this.yearMonth = yearMonth;
+		this.numberPrefix = numberPrefix;
 		this.invoiceNumberGenerator = new IntSupplier() {
 			private int current = numberingSeed;
 
@@ -36,7 +38,8 @@ public class MonthlyInvoices {
 		if (invoices.containsKey(subsidiary)) {
 			invoices.get(subsidiary).addSales(salesEntry);
 		} else {
-			invoices.put(subsidiary, new Invoice(invoiceNumberGenerator.getAsInt(), salesEntry));
+			var numberString = numberPrefix + String.valueOf(invoiceNumberGenerator.getAsInt());
+			invoices.put(subsidiary, new Invoice(numberString, salesEntry));
 		}
 	}
 
@@ -44,13 +47,13 @@ public class MonthlyInvoices {
 		return Collections.unmodifiableCollection(invoices.values());
 	}
 
-	public YearMonth getYearMonth(){
+	public YearMonth getYearMonth() {
 		return yearMonth;
 	}
 
-	public void setInvoiceNumber(Subsidiary subsidiary, int number) {
+	public void changeInvoiceNumber(Subsidiary subsidiary, String invoiceNumber) {
 		if (invoices.containsKey(subsidiary)) {
-			invoices.get(subsidiary).setNumber(number);
+			invoices.get(subsidiary).setNumberString(invoiceNumber);
 		} else {
 			throw new IllegalArgumentException("Invoice for Subsidiary does not exists.");
 		}

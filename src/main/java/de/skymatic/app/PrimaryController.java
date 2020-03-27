@@ -119,6 +119,7 @@ public class PrimaryController {
 		try {
 			ParseResult result = csvParser.parseCSV(path);
 			monthlyInvoices = Optional.of(new MonthlyInvoices(result.getYearMonth(), //
+					settings.getInvoiceNumberPrefix(), //
 					settings.getLastUsedInvoiceNumber(), //
 					result.getSales().toArray(new SalesEntry[]{})));
 			invoices.addAll(monthlyInvoices.get().getInvoices());

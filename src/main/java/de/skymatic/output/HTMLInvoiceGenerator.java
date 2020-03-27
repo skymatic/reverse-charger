@@ -11,7 +11,7 @@ import java.util.Map;
 public class HTMLInvoiceGenerator extends InvoiceGenerator {
 
 	@Override
-	void write(Path outputDir, Map<Integer, StringBuilder> sbs) {
+	void write(Path outputDir, Map<String, StringBuilder> sbs) {
 		sbs.forEach((nomber, htmlInvoice) -> {
 			Path p = outputDir.resolve("invoice-" + nomber + ".html");
 			try (BufferedWriter bw = Files.newBufferedWriter(p, StandardCharsets.UTF_8, StandardOpenOption.CREATE)) {
