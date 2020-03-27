@@ -49,7 +49,7 @@ public class Invoice {
 		}
 	}
 
-	public void setNumberString(String numberString) {
+	void setNumberString(String numberString) {
 		this.numberString = numberString;
 	}
 
@@ -57,7 +57,7 @@ public class Invoice {
 		return numberString;
 	}
 
-	public void setIssueDate(LocalDate issueDate) {
+	void setIssueDate(LocalDate issueDate) {
 		this.issueDate = issueDate;
 	}
 
