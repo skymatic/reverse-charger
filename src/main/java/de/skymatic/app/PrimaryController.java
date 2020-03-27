@@ -3,6 +3,7 @@ package de.skymatic.app;
 import de.skymatic.model.Invoice;
 import de.skymatic.model.MonthlyInvoices;
 import de.skymatic.model.SalesEntry;
+import de.skymatic.output.InvoiceGenerator;
 import de.skymatic.parser.AppleParser;
 import de.skymatic.parser.CSVParser;
 import de.skymatic.parser.ParseException;
@@ -27,6 +28,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Optional;
 
 public class PrimaryController {
 
@@ -46,6 +48,7 @@ public class PrimaryController {
 	private Settings settings;
 	private final SettingsProvider settingsProvider;
 
+	private Optional<MonthlyInvoices> monthlyInvoices;
 	public PrimaryController(Stage owner) {
 		this.owner = owner;
 		this.invoices = FXCollections.observableArrayList();
@@ -56,6 +59,7 @@ public class PrimaryController {
 		invoices.addListener((ListChangeListener) (e -> isReadyToGenerate.setValue(!invoices.isEmpty())));
 		settingsProvider = new SettingsProvider();
 		settings = settingsProvider.loadSettings();
+		monthlyInvoices = Optional.empty();
 	}
 
 	@FXML
@@ -114,17 +118,19 @@ public class PrimaryController {
 		CSVParser csvParser = new AppleParser();
 		try {
 			ParseResult result = csvParser.parseCSV(path);
-			//TODO: year and month get lost
-			MonthlyInvoices monthlyInvoices = new MonthlyInvoices(result.getYearMonth(), settings.getLastUsedInvoiceNumber(), result.getSales().toArray(new SalesEntry[]{}));
-			invoices.addAll(monthlyInvoices.getInvoices());
+			monthlyInvoices = Optional.of(new MonthlyInvoices(result.getYearMonth(), //
+					settings.getLastUsedInvoiceNumber(), //
+					result.getSales().toArray(new SalesEntry[]{})));
+			invoices.addAll(monthlyInvoices.get().getInvoices());
 		} catch (IOException | ParseException | IllegalArgumentException e) {
 			Alerts.parseCSVFileError(e).show();
 		}
 	}
 
 	@FXML
-	public void generateInvoices(ActionEvent actionEvent) {
-		//TODO
+	public void generateInvoices() {
+		var generator = InvoiceGenerator.createInvoiceGenerator(InvoiceGenerator.OutputFormat.HTML);
+		generator.generateAndWriteInvoices(monthlyInvoices.get(), Path.of(settings.getTemplatePath()), Path.of(settings.getOutputPath()));
 	}
 
 	// Getter & Setter
