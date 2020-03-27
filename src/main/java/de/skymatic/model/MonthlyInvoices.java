@@ -44,6 +44,10 @@ public class MonthlyInvoices {
 		return Collections.unmodifiableCollection(invoices.values());
 	}
 
+	public YearMonth getYearMonth(){
+		return yearMonth;
+	}
+
 	public void setInvoiceNumber(Subsidiary subsidiary, int number) {
 		if (invoices.containsKey(subsidiary)) {
 			invoices.get(subsidiary).setNumber(number);
