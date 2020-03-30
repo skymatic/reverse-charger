@@ -13,9 +13,10 @@ public class MonthlyInvoices {
 	private static final LocalDate CURRENT_TIME = LocalDate.now();
 
 	private final YearMonth yearMonth;
-	private final String numberPrefix;
 	private final Map<Subsidiary, Invoice> invoices;
 	private final IntSupplier invoiceNumberGenerator;
+
+	private String numberPrefix;
 
 	public MonthlyInvoices(YearMonth yearMonth, String numberPrefix, int numberingSeed, SalesEntry... sales) {
 		this.yearMonth = yearMonth;
@@ -68,6 +69,15 @@ public class MonthlyInvoices {
 		} else {
 			throw new IllegalArgumentException("Invoice for Subsidiary does not exists.");
 		}
+	}
+
+	/**
+	 * TODO: method of replacing the old invoice number
+	 * @param newPrefix
+	 */
+	public void changeNumberPrefix(String newPrefix){
+		this.numberPrefix = newPrefix;
+		//invoices.forEach((s, invoice) -> invoice.setNumberString(""));
 	}
 
 	@Override

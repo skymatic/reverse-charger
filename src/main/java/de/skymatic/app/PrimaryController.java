@@ -16,6 +16,7 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -23,6 +24,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -44,6 +46,9 @@ public class PrimaryController {
 	private TableColumn<Invoice, String> columnAmount;
 	@FXML
 	private TableColumn<Invoice, String> columnProceeds;
+
+	@FXML
+	private TextField invoiceNomberField;
 
 	private final Stage owner;
 	private final ObservableList<Invoice> invoices;
@@ -99,6 +104,12 @@ public class PrimaryController {
 		});
 		columnProceeds.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>((String.format("%.2f", invoice.getValue().sum()))));
 
+		settings.invoiceNumberPrefixProperty().bind(invoiceNomberField.textProperty());
+		settings.invoiceNumberPrefixProperty().addListener(this::updateInvoiceNumberPrefix);
+	}
+
+	private void updateInvoiceNumberPrefix(ObservableValue<? extends String> invoiceNoProperty, String oldPrefix, String newPrefix){
+		monthlyInvoices.ifPresent(m -> m.changeNumberPrefix(newPrefix));
 	}
 
 	@FXML
