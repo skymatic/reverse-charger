@@ -156,7 +156,6 @@ public class PrimaryController {
 	public void generateInvoices() {
 		try {
 			Map<String, StringBuilder> htmlInvoices = htmlGenerator.createHTMLInvoices(templatePath.get(), monthlyInvoices.get().getInvoices());
-			System.out.println(htmlInvoices.get("0").toString());
 			new HTMLWriter().write(outputPath.get(), htmlInvoices);
 		} catch (IOException e) {
 			//TODO: error handling
