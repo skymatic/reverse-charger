@@ -15,13 +15,13 @@ public interface InvoiceWriter {
 		try {
 			sbs.forEach((nomber, htmlInvoice) -> {
 				Path p = outputDirectory.resolve("invoice-" + nomber + ".html");
-				try (BufferedWriter bw = Files.newBufferedWriter(p, StandardCharsets.UTF_8, StandardOpenOption.CREATE)) {
-					bw.append(htmlInvoice);
-				} catch (IOException e){
+				try {
+					Files.writeString(p, htmlInvoice, StandardOpenOption.CREATE);
+				} catch (IOException e) {
 					throw new UncheckedIOException(e);
 				}
 			});
-		} catch (UncheckedIOException e){
+		} catch (UncheckedIOException e) {
 			throw e.getCause();
 		}
 
