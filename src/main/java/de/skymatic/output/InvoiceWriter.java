@@ -1,12 +1,9 @@
 package de.skymatic.output;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.Map;
 
 public interface InvoiceWriter {
@@ -16,7 +13,7 @@ public interface InvoiceWriter {
 			sbs.forEach((nomber, htmlInvoice) -> {
 				Path p = outputDirectory.resolve("invoice-" + nomber + ".html");
 				try {
-					Files.writeString(p, htmlInvoice, StandardOpenOption.CREATE);
+					Files.writeString(p, htmlInvoice); //According to JDK: No open options translate to CREATE, TRUNCATE and WRITE
 				} catch (IOException e) {
 					throw new UncheckedIOException(e);
 				}
