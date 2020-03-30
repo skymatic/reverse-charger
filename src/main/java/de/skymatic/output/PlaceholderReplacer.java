@@ -29,7 +29,7 @@ public class PlaceholderReplacer {
 		this.invoices = m.getInvoices();
 	}
 
-	public Map<String, StringBuilder> createHTMLInvoices() {
+	public Map<String, StringBuilder> createHTMLInvoices() throws IOException {
 		Map<String, StringBuilder> sbs = new HashMap<>();
 		invoices.forEach(i -> sbs.put(i.getNumberString(), new StringBuilder()));
 
@@ -38,40 +38,45 @@ public class PlaceholderReplacer {
 				int pos = line.indexOf(PLACEHOLDER_START);
 				if (pos >= 0) {
 					int endPos = line.indexOf(PLACEHOLDER_END, pos);
-					invoices.forEach(invoice -> {
-						sbs.get(invoice.getNumberString()).append(line, 0, pos)
-								.append(getReplacement(invoice, line.substring(pos + 2, endPos)))
-								.append(line, endPos + 2, line.length());
-					});
+					String placeholderString = line.substring(pos + 2, endPos).trim().toUpperCase();
+					try {
+						Placeholder p = Placeholder.valueOf(placeholderString);
+						invoices.forEach(invoice -> {
+							sbs.get(invoice.getNumberString())
+									.append(line, 0, pos)
+									.append(getReplacement(invoice, p))
+									.append(line, endPos + 2, line.length());
+						});
+					} catch (IllegalArgumentException e) {
+						sbs.forEach((i, sb) -> sb.append(line));
+					}
 				} else {
 					sbs.forEach((i, sb) -> sb.append(line));
 				}
 			});
-		} catch (IOException e) {
-			//TODO: error handling
 		}
 		return sbs;
 	}
 
-	private String getReplacement(Invoice invoice, String placeholder) {
-		switch (placeholder.trim()) {
-			case "subsidiary_information":
+	private String getReplacement(Invoice invoice, Placeholder placeholder) {
+		switch (placeholder) {
+			case SUBSIDIARY_INFORMATION:
 				return Arrays.stream(invoice.getSubsidiary().getAddress()) //
 						.reduce("", (address, address_entry) -> address + "<br>" + address_entry);
-			case "item_amount":
+			case PRODUCT_AMOUNT:
 				return String.valueOf(invoice.getAmount());
-			case "invoice_number":
+			case NUMBER:
 				return String.valueOf(invoice.getNumberString());
-			case "item_proceeds":
+			case PRODUCT_PROCEEDS:
 				return String.valueOf(invoice.sum());
-			case "issue_date":
+			case ISSUE_DATE:
 				return invoice.getIssueDate().format(formatter);
-			case "sales_period_start":
+			case SALES_PERIOD_START:
 				return invoice.getStartOfPeriod().format(formatter);
-			case "sales_period_end":
+			case SALES_PERIOD_END:
 				return invoice.getEndOfPeriod().format(formatter);
 			default:
-				return PLACEHOLDER_START + placeholder + PLACEHOLDER_END; //We don't know it, so we do not touch it
+				throw new IllegalArgumentException(); //NO-OP
 		}
 
 	}

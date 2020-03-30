@@ -2,12 +2,13 @@ package de.skymatic.output;
 
 import de.skymatic.model.MonthlyInvoices;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Map;
 
 public abstract class InvoiceGenerator {
 
-	public void generateAndWriteInvoices(MonthlyInvoices m, Path templatePath, Path out) {
+	public void generateAndWriteInvoices(MonthlyInvoices m, Path templatePath, Path out) throws IOException {
 		Map<String, StringBuilder> sbs = new PlaceholderReplacer(templatePath, m).createHTMLInvoices();
 		this.write(out, sbs);
 

@@ -145,7 +145,12 @@ public class PrimaryController {
 	@FXML
 	public void generateInvoices() {
 		var generator = InvoiceGenerator.createInvoiceGenerator(InvoiceGenerator.OutputFormat.HTML);
-		generator.generateAndWriteInvoices(monthlyInvoices.get(), Path.of(settings.getTemplatePath()), Path.of(settings.getOutputPath()));
+		try {
+			generator.generateAndWriteInvoices(monthlyInvoices.get(), Path.of(settings.getTemplatePath()), Path.of(settings.getOutputPath()));
+		} catch (IOException e) {
+			//TODO: error handling
+			e.printStackTrace();
+		}
 	}
 
 	// Getter & Setter
