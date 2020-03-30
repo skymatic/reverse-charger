@@ -136,6 +136,7 @@ public class PrimaryController {
 
 	@FXML
 	private void parseFinancialReport() {
+		invoices.clear();
 		Path path = Path.of(csvPathString.get());
 		CSVParser csvParser = new AppleParser();
 		try {
