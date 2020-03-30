@@ -16,10 +16,10 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TablePosition;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -32,6 +32,8 @@ import java.util.Optional;
 
 public class PrimaryController {
 
+	@FXML
+	private TableColumn<Invoice, String> columnInvoiceNumber;
 	@FXML
 	private TableColumn<Invoice, String> columnSubsidiary;
 	@FXML
@@ -64,6 +66,15 @@ public class PrimaryController {
 
 	@FXML
 	public void initialize() {
+		columnInvoiceNumber.setCellFactory(TextFieldTableCell.<Invoice>forTableColumn());
+		columnInvoiceNumber.setCellValueFactory(invoice -> new SimpleStringProperty(invoice.getValue().getNumberString()));
+		columnInvoiceNumber.setOnEditCommit((TableColumn.CellEditEvent<Invoice, String> event) -> {
+			TablePosition<Invoice, String> pos = event.getTablePosition();
+			String newNumberString = event.getNewValue();
+			Invoice invoice = event.getTableView().getItems().get(pos.getRow());
+			monthlyInvoices.get().changeInvoiceNumber(invoice.getSubsidiary(), newNumberString);
+			//invoice.setNumberString(newNumberString);
+		});
 		columnSubsidiary.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(invoice.getValue().getSubsidiary().toString()));
 		columnAmount.setCellFactory(column -> {
 			var cell = new TextFieldTableCell<Invoice, String>();
@@ -77,6 +88,7 @@ public class PrimaryController {
 			return cell;
 		});
 		columnProceeds.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>((String.format("%.2f", invoice.getValue().sum()))));
+
 	}
 
 	@FXML
@@ -123,6 +135,8 @@ public class PrimaryController {
 					settings.getLastUsedInvoiceNumber(), //
 					result.getSales().toArray(new SalesEntry[]{})));
 			invoices.addAll(monthlyInvoices.get().getInvoices());
+			//TODO update Settings with new latestUsedInvoiceNumber
+			//settings.setLastUsedInvoiceNumber(monthlyInvoices.);
 		} catch (IOException | ParseException | IllegalArgumentException e) {
 			Alerts.parseCSVFileError(e).show();
 		}

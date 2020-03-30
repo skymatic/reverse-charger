@@ -19,8 +19,9 @@
 				<Button fx:id="csvFileChooserButton" text="Choose..." onAction="#chooseCSVFile"/>
 			</HBox>
 		</VBox>
-		<TableView fx:id="tableView" items="${controller.invoices}" maxHeight="200" maxWidth="400">
+		<TableView fx:id="tableView" items="${controller.invoices}" maxHeight="200" maxWidth="400" editable="true">
 			<columns>
+				<TableColumn fx:id="columnInvoiceNumber" text="Invoice Number"/>
 				<TableColumn fx:id="columnSubsidiary" text="Subsidiary"/>
 				<TableColumn fx:id="columnAmount" text="Amount"/>
 				<TableColumn fx:id="columnProceeds" text="Proceeds"/>
