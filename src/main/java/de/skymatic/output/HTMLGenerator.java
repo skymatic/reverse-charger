@@ -14,22 +14,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PlaceholderReplacer {
+public class HTMLGenerator {
 
 	private static final String PLACEHOLDER_START = "{{";
 	private static final String PLACEHOLDER_END = "}}";
 	private static final DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT);
 
-	private final Path templatePath;
-	private final Collection<Invoice> invoices;
-
-
-	public PlaceholderReplacer(Path templatePath, MonthlyInvoices m) {
-		this.templatePath = templatePath;
-		this.invoices = m.getInvoices();
-	}
-
-	public Map<String, StringBuilder> createHTMLInvoices() throws IOException {
+	public Map<String, StringBuilder> createHTMLInvoices(Path templatePath, Collection<Invoice> invoices) throws IOException {
 		Map<String, StringBuilder> sbs = new HashMap<>();
 		invoices.forEach(i -> sbs.put(i.getNumberString(), new StringBuilder()));
 
@@ -65,7 +56,7 @@ public class PlaceholderReplacer {
 						.reduce("", (address, address_entry) -> address + "<br>" + address_entry);
 			case PRODUCT_AMOUNT:
 				return String.valueOf(invoice.getAmount());
-			case NUMBER:
+			case INVOICE_NUMBER:
 				return String.valueOf(invoice.getNumberString());
 			case PRODUCT_PROCEEDS:
 				return String.valueOf(invoice.sum());

@@ -3,11 +3,14 @@ package de.skymatic.app;
 import de.skymatic.model.Invoice;
 import de.skymatic.model.MonthlyInvoices;
 import de.skymatic.model.SalesEntry;
-import de.skymatic.output.InvoiceGenerator;
+import de.skymatic.output.HTMLGenerator;
+import de.skymatic.output.HTMLWriter;
 import de.skymatic.parser.AppleParser;
 import de.skymatic.parser.CSVParser;
 import de.skymatic.parser.ParseException;
 import de.skymatic.parser.ParseResult;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -28,6 +31,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Map;
 import java.util.Optional;
 
 public class PrimaryController {
@@ -47,6 +51,9 @@ public class PrimaryController {
 	private final BooleanProperty isFileSelected;
 	private final BooleanProperty isReadyToGenerate;
 	private final SettingsProvider settingsProvider;
+	private final ObjectBinding<Path> templatePath;
+	private final ObjectBinding<Path> outputPath;
+	private final HTMLGenerator htmlGenerator;
 
 	private Optional<MonthlyInvoices> monthlyInvoices;
 	private Settings settings;
@@ -62,6 +69,9 @@ public class PrimaryController {
 		settingsProvider = new SettingsProvider();
 		settings = settingsProvider.loadSettings();
 		monthlyInvoices = Optional.empty();
+		htmlGenerator = new HTMLGenerator();
+		templatePath = Bindings.createObjectBinding(() -> Path.of(settings.getTemplatePath()), settings.templatePathProperty());
+		outputPath = Bindings.createObjectBinding(() -> Path.of(settings.getOutputPath()), settings.outputPathProperty());
 	}
 
 	@FXML
@@ -144,13 +154,15 @@ public class PrimaryController {
 
 	@FXML
 	public void generateInvoices() {
-		var generator = InvoiceGenerator.createInvoiceGenerator(InvoiceGenerator.OutputFormat.HTML);
 		try {
-			generator.generateAndWriteInvoices(monthlyInvoices.get(), Path.of(settings.getTemplatePath()), Path.of(settings.getOutputPath()));
+			Map<String, StringBuilder> htmlInvoices = htmlGenerator.createHTMLInvoices(templatePath.get(), monthlyInvoices.get().getInvoices());
+			System.out.println(htmlInvoices.get("0").toString());
+			new HTMLWriter().write(outputPath.get(), htmlInvoices);
 		} catch (IOException e) {
 			//TODO: error handling
 			e.printStackTrace();
 		}
+
 	}
 
 	// Getter & Setter
