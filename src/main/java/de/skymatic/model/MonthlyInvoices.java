@@ -55,7 +55,7 @@ public class MonthlyInvoices {
 		return yearMonth;
 	}
 
-	public void changeInvoiceNumber(Subsidiary subsidiary, String invoiceNumber) {
+	public void changeSingleInvoiceNumber(Subsidiary subsidiary, String invoiceNumber) {
 		if (invoices.containsKey(subsidiary)) {
 			invoices.get(subsidiary).setNumberString(invoiceNumber);
 		} else {
@@ -63,7 +63,7 @@ public class MonthlyInvoices {
 		}
 	}
 
-	public void changeIssueDate(Subsidiary subsidiary, LocalDate issueDate) {
+	public void changeSingleIssueDate(Subsidiary subsidiary, LocalDate issueDate) {
 		if (invoices.containsKey(subsidiary)) {
 			invoices.get(subsidiary).setIssueDate(issueDate);
 		} else {

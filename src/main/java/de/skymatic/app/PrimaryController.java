@@ -87,7 +87,7 @@ public class PrimaryController {
 			TablePosition<Invoice, String> pos = event.getTablePosition();
 			String newNumberString = event.getNewValue();
 			Invoice invoice = event.getTableView().getItems().get(pos.getRow());
-			monthlyInvoices.get().changeInvoiceNumber(invoice.getSubsidiary(), newNumberString);
+			monthlyInvoices.get().changeSingleInvoiceNumber(invoice.getSubsidiary(), newNumberString);
 			//invoice.setNumberString(newNumberString);
 		});
 		columnSubsidiary.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(invoice.getValue().getSubsidiary().toString()));
