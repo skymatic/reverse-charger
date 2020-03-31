@@ -141,8 +141,7 @@ public class PrimaryController {
 	private void chooseTemplateFile() {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Template file");
-		//TODO add extensionFilter
-		// fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Comma separated values file", "*.csv"));
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML template file", "*.html","*.htm"));
 		File selectedFile = fileChooser.showOpenDialog(owner);
 		if (selectedFile != null) {
 			settings.setTemplatePath(selectedFile.toPath().toString());
