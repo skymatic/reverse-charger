@@ -21,12 +21,15 @@ public class SettingsProvider {
 
 	private static final String ENV_SETTINGS_PATH = "settingsPath";
 	private static final String DEFAULT_SETTINGS_PATH = System.getProperty("java.io.tmpdir");
+	private static final Path RELATIVE_HOME_DIR = Path.of("~");
+	private static final Path ABSOLUTE_HOME_DIR = Path.of(System.getProperty("user.home"));
 
 	private final Gson gson;
 	private final Path path;
 
 	public SettingsProvider() {
-		path = Path.of(Optional.ofNullable(System.getProperty(ENV_SETTINGS_PATH)).orElse(DEFAULT_SETTINGS_PATH));
+		String tempPath = Optional.ofNullable(System.getProperty(ENV_SETTINGS_PATH)).orElse(DEFAULT_SETTINGS_PATH);
+		path = replaceHomeDir(Path.of(tempPath));
 		gson = new GsonBuilder().setPrettyPrinting().setLenient().registerTypeAdapter(Settings.class, new SettingsJsonAdapter()).create();
 	}
 
@@ -51,5 +54,13 @@ public class SettingsProvider {
 			gson.toJson(settings, writer);
 		}
 		Files.move(tmpPath, path, StandardCopyOption.REPLACE_EXISTING);
+	}
+
+	private Path replaceHomeDir(Path path) {
+		if (path.startsWith(RELATIVE_HOME_DIR)) {
+			return ABSOLUTE_HOME_DIR.resolve(RELATIVE_HOME_DIR.relativize(path));
+		} else {
+			return path;
+		}
 	}
 }
