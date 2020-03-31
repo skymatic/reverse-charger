@@ -21,7 +21,7 @@ public class AppStoreReverseCharger extends Application {
 	@Override
 	public void start(Stage stage) throws IOException {
 		this.stage = stage;
-		scene = new Scene(loadFXML("primary", stage), 640, 480);
+		scene = new Scene(loadFXML("primary", stage));
 		stage.setScene(scene);
 		stage.setTitle(WINDOW_TITLE);
 		stage.show();
