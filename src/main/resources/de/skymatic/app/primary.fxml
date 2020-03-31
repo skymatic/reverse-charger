@@ -38,6 +38,10 @@
 				<Button fx:id="outputDirectoryChooserButton" text="Choose..." onAction="#chooseOutputDirectory"/>
 			</HBox>
 		</VBox>
+		<HBox alignment="BASELINE_LEFT" spacing="20.0">
+			<CheckBox fx:id="persistSettingsCheckBox"/>
+			<Label alignment="BASELINE_LEFT" labelFor="$persistSettingsCheckBox" text="Save and overwrite settings, when generating output"/>
+		</HBox>
 		<ButtonBar buttonMinWidth="120" buttonOrder="X_I">
 			<buttons>
 				<Button text="Start parsing" ButtonBar.buttonData="NEXT_FORWARD" onAction="#parseFinancialReport" disable="${controller.isFileSelected}"/>

@@ -22,6 +22,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TextField;
@@ -46,9 +47,10 @@ public class PrimaryController {
 	private TableColumn<Invoice, String> columnAmount;
 	@FXML
 	private TableColumn<Invoice, String> columnProceeds;
-
 	@FXML
 	private TextField invoicePrefixField;
+	@FXML
+	private CheckBox persistSettingsCheckBox;
 
 	private final Stage owner;
 	private final ObservableList<Invoice> invoices;
@@ -107,6 +109,8 @@ public class PrimaryController {
 		invoicePrefixField.setText(settings.getInvoiceNumberPrefix());
 		settings.invoiceNumberPrefixProperty().bind(invoicePrefixField.textProperty());
 		settings.invoiceNumberPrefixProperty().addListener(this::updateInvoiceNumberPrefix);
+
+		settings.saveAndOverwriteSettingsProperty().bind(persistSettingsCheckBox.selectedProperty());
 	}
 
 	private void updateInvoiceNumberPrefix(ObservableValue<? extends String> invoiceNoProperty, String oldPrefix, String newPrefix) {
@@ -167,6 +171,14 @@ public class PrimaryController {
 
 	@FXML
 	public void generateInvoices() {
+		if (settings.isSaveAndOverwriteSettings()) {
+			try {
+				settingsProvider.save(settings);
+			} catch (IOException e) {
+				//TODO: error handling
+				e.printStackTrace();
+			}
+		}
 		try {
 			Map<String, StringBuilder> htmlInvoices = htmlGenerator.createHTMLInvoices(templatePath.get(), monthlyInvoices.get().getInvoices());
 			new HTMLWriter().write(outputPath.get(), htmlInvoices);
