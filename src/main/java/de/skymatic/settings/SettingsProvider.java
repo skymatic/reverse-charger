@@ -1,4 +1,4 @@
-package de.skymatic.app;
+package de.skymatic.settings;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

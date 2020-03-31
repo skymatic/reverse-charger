@@ -9,6 +9,9 @@ import de.skymatic.parser.AppleParser;
 import de.skymatic.parser.CSVParser;
 import de.skymatic.parser.ParseException;
 import de.skymatic.parser.ParseResult;
+import de.skymatic.settings.Settings;
+import de.skymatic.settings.SettingsProvider;
+
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.BooleanProperty;

@@ -1,4 +1,4 @@
-package de.skymatic.app;
+package de.skymatic.settings;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
