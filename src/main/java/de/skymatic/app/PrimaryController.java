@@ -26,6 +26,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TextField;
@@ -40,6 +41,15 @@ import java.nio.file.Path;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * TODO: Template Path soll nicht mehr in den Settings sein.
+ * -> nur noch entscheidung, ob man das Default nimmt oder nicht
+ * -> Auswahl über radio button
+ * -> bei default gibt es kein textfeld oder button
+ * -> ansonsten wird die akutellen GUI-Elemente angezeigt
+ * <p>
+ * TODO: Checkbox, ob bei der Output Generierung des aktuelle Template als Default gespeichert werden soll
+ */
 public class PrimaryController {
 
 	@FXML
@@ -54,6 +64,10 @@ public class PrimaryController {
 	private TextField invoicePrefixField;
 	@FXML
 	private CheckBox persistSettingsCheckBox;
+	@FXML
+	private RadioButton useExternalTemplateRadioButton;
+	@FXML
+	private RadioButton useStoredTemplateRadioButton;
 
 	private final Stage owner;
 	private final ObservableList<Invoice> invoices;
@@ -64,6 +78,7 @@ public class PrimaryController {
 	private final ObjectBinding<Path> templatePath;
 	private final ObjectBinding<Path> outputPath;
 	private final HTMLGenerator htmlGenerator;
+	private final Path defaultTemplatePath;
 
 	private Optional<MonthlyInvoices> monthlyInvoices;
 	private Settings settings;
@@ -80,7 +95,14 @@ public class PrimaryController {
 		settings = settingsProvider.loadSettings();
 		monthlyInvoices = Optional.empty();
 		htmlGenerator = new HTMLGenerator();
-		templatePath = Bindings.createObjectBinding(() -> Path.of(settings.getExternalTemplatePath()), settings.externalTemplatePathProperty());
+		defaultTemplatePath = settingsProvider.getStoragePath().resolve(Settings.STORED_TEMPLATE_NAME);
+		templatePath = Bindings.createObjectBinding(() -> {
+			if (settings.isUsingExternalTemplate()) {
+				return Path.of(settings.getExternalTemplatePath());
+			} else {
+				return defaultTemplatePath;
+			}
+		}, settings.externalTemplatePathProperty(), settings.usingExternalTemplateProperty());
 		outputPath = Bindings.createObjectBinding(() -> Path.of(settings.getOutputPath()), settings.outputPathProperty());
 		outputPath.addListener(o -> updateIsReadyToGenerate());
 	}
@@ -116,6 +138,8 @@ public class PrimaryController {
 
 		persistSettingsCheckBox.setSelected(settings.isSaveAndOverwriteSettings());
 		settings.saveAndOverwriteSettingsProperty().bind(persistSettingsCheckBox.selectedProperty());
+
+		settings.usingExternalTemplateProperty().bind(useExternalTemplateRadioButton.selectedProperty());
 	}
 
 	private void updateInvoiceNumberPrefix(ObservableValue<? extends String> invoiceNoProperty, String oldPrefix, String newPrefix) {
