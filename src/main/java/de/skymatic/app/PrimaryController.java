@@ -80,7 +80,7 @@ public class PrimaryController {
 		settings = settingsProvider.loadSettings();
 		monthlyInvoices = Optional.empty();
 		htmlGenerator = new HTMLGenerator();
-		templatePath = Bindings.createObjectBinding(() -> Path.of(settings.getTemplatePath()), settings.templatePathProperty());
+		templatePath = Bindings.createObjectBinding(() -> Path.of(settings.getExternalTemplatePath()), settings.externalTemplatePathProperty());
 		outputPath = Bindings.createObjectBinding(() -> Path.of(settings.getOutputPath()), settings.outputPathProperty());
 		outputPath.addListener(o -> updateIsReadyToGenerate());
 	}
@@ -144,7 +144,7 @@ public class PrimaryController {
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML template file", "*.html","*.htm"));
 		File selectedFile = fileChooser.showOpenDialog(owner);
 		if (selectedFile != null) {
-			settings.setTemplatePath(selectedFile.toPath().toString());
+			settings.setExternalTemplatePath(selectedFile.toPath().toString());
 		}
 	}
 

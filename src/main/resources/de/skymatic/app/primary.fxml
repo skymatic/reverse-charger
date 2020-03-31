@@ -19,7 +19,7 @@
 				<padding>
 					<Insets left="20"/>
 				</padding>
-				<TextField fx:id="pathOfTemplateFile" text="${controller.settings.templatePath}" HBox.hgrow="ALWAYS"/>
+				<TextField fx:id="pathOfTemplateFile" text="${controller.settings.externalTemplatePath}" HBox.hgrow="ALWAYS"/>
 				<Button fx:id="templateFileChooserButton" text="Choose..." onAction="#chooseTemplateFile"/>
 			</HBox>
 		</VBox>

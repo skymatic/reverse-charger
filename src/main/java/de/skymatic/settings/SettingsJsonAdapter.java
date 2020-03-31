@@ -11,7 +11,7 @@ public class SettingsJsonAdapter extends TypeAdapter<Settings> {
 	@Override
 	public void write(JsonWriter out, Settings settings) throws IOException {
 		out.beginObject();
-		out.name("templatePath").value(settings.getTemplatePath());
+		out.name("externalTemplatePath").value(settings.getExternalTemplatePath());
 		out.name("invoiceNumberPrefix").value(settings.getInvoiceNumberPrefix());
 		out.name("lastUsedInvoiceNumber").value(settings.getLastUsedInvoiceNumber());
 		out.name("outputPath").value(settings.getOutputPath());
@@ -26,8 +26,8 @@ public class SettingsJsonAdapter extends TypeAdapter<Settings> {
 		while (in.hasNext()) {
 			String name = in.nextName();
 			switch (name) {
-				case "templatePath":
-					settings.setTemplatePath(in.nextString());
+				case "externalTemplatePath":
+					settings.setExternalTemplatePath(in.nextString());
 					break;
 				case "invoiceNumberPrefix":
 					settings.setInvoiceNumberPrefix(in.nextString());

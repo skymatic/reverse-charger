@@ -9,14 +9,14 @@ import javafx.beans.property.StringProperty;
 
 public class Settings {
 
-	private static final String DEFAULT_TEMPLATE_PATH = ""; //TODO
+	private static final String DEFAULT_EXTERNAL_TEMPLATE_PATH = ""; //TODO
 	private static final String DEFAULT_OUTPUT_PATH = ""; //TODO
 	private static final String DEFAULT_INVOICE_NUMBER_PREFIX = ""; //TODO
 	private static final int DEFAULT_LAST_USED_INVOICE_NUMBER = 0;
 	private static final boolean DEFAULT_SAVE_AND_OVERWRITE_SETTINGS = false;
 
 
-	private final StringProperty templatePath = new SimpleStringProperty(DEFAULT_TEMPLATE_PATH);
+	private final StringProperty externalTemplatePath = new SimpleStringProperty(DEFAULT_EXTERNAL_TEMPLATE_PATH);
 	private final StringProperty outputPath = new SimpleStringProperty(DEFAULT_OUTPUT_PATH);
 	private final StringProperty invoiceNumberPrefix = new SimpleStringProperty(DEFAULT_INVOICE_NUMBER_PREFIX);
 	private final IntegerProperty lastUsedInvoiceNumber = new SimpleIntegerProperty(DEFAULT_LAST_USED_INVOICE_NUMBER);
@@ -26,16 +26,16 @@ public class Settings {
 	/*
 	Getter and Setter
 	 */
-	public String getTemplatePath() {
-		return templatePath.get();
+	public String getExternalTemplatePath() {
+		return externalTemplatePath.get();
 	}
 
-	public StringProperty templatePathProperty() {
-		return templatePath;
+	public StringProperty externalTemplatePathProperty() {
+		return externalTemplatePath;
 	}
 
-	public void setTemplatePath(String templatePath) {
-		this.templatePath.set(templatePath);
+	public void setExternalTemplatePath(String externalTemplatePath) {
+		this.externalTemplatePath.set(externalTemplatePath);
 	}
 
 	public String getOutputPath() {

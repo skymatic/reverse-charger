@@ -25,16 +25,20 @@ public class SettingsProvider {
 	private static final Path ABSOLUTE_HOME_DIR = Path.of(System.getProperty("user.home"));
 
 	private final Gson gson;
-	private final Path path;
+	private final Path storagePath;
 
 	public SettingsProvider() {
 		String tempPath = Optional.ofNullable(System.getProperty(ENV_SETTINGS_PATH)).orElse(DEFAULT_SETTINGS_PATH);
-		path = replaceHomeDir(Path.of(tempPath));
-		gson = new GsonBuilder().setPrettyPrinting().setLenient().registerTypeAdapter(Settings.class, new SettingsJsonAdapter()).create();
+		storagePath = replaceHomeDir(Path.of(tempPath));
+		gson = new GsonBuilder()
+				.setPrettyPrinting()
+				.setLenient()
+				.registerTypeAdapter(Settings.class, new SettingsJsonAdapter())
+				.create();
 	}
 
 	public Settings loadSettings() {
-		try (InputStream in = Files.newInputStream(path, StandardOpenOption.READ); //
+		try (InputStream in = Files.newInputStream(storagePath, StandardOpenOption.READ); //
 			 Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
 			Settings settings = gson.fromJson(reader, Settings.class);
 			if (settings == null) {
@@ -47,13 +51,13 @@ public class SettingsProvider {
 	}
 
 	public void save(Settings settings) throws IOException {
-		Files.createDirectories(path.getParent());
-		Path tmpPath = path.resolveSibling(path.getFileName().toString() + ".tmp");
+		Files.createDirectories(storagePath.getParent());
+		Path tmpPath = storagePath.resolveSibling(storagePath.getFileName().toString() + ".tmp");
 		try (OutputStream out = Files.newOutputStream(tmpPath, StandardOpenOption.CREATE_NEW); //
 			 Writer writer = new OutputStreamWriter(out, StandardCharsets.UTF_8)) {
 			gson.toJson(settings, writer);
 		}
-		Files.move(tmpPath, path, StandardCopyOption.REPLACE_EXISTING);
+		Files.move(tmpPath, storagePath, StandardCopyOption.REPLACE_EXISTING);
 	}
 
 	private Path replaceHomeDir(Path path) {
@@ -62,5 +66,9 @@ public class SettingsProvider {
 		} else {
 			return path;
 		}
+	}
+
+	public Path getStoragePath() {
+		return storagePath;
 	}
 }
