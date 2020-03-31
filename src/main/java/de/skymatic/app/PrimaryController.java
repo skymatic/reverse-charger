@@ -104,6 +104,7 @@ public class PrimaryController {
 		});
 		columnProceeds.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>((String.format("%.2f", invoice.getValue().sum()))));
 
+		invoicePrefixField.setText(settings.getInvoiceNumberPrefix());
 		settings.invoiceNumberPrefixProperty().bind(invoicePrefixField.textProperty());
 		settings.invoiceNumberPrefixProperty().addListener(this::updateInvoiceNumberPrefix);
 	}
