@@ -14,12 +14,12 @@
 		<VBox fx:id="templateVBox" alignment="BASELINE_LEFT" spacing="10.0">
 			<Label text="Template file" labelFor="$templateVBox"/>
 			<HBox spacing="10.0" alignment="CENTER_LEFT">
-				<RadioButton fx:id="useStoredTemplateRadioButton" toggleGroup="${templateFileToggler}" text="Use stored template" visible="true" managed="true"/>
+				<RadioButton fx:id="storedTemplateRadioButton" toggleGroup="${templateFileToggler}" text="Use stored template" visible="true" managed="true"/>
 				<Button fx:id="replaceStoredTemplateButton" text="Change..." />
 			</HBox>
 			<HBox spacing="10.0" alignment="CENTER_LEFT">
-				<RadioButton fx:id="useExternalTemplateRadioButton" toggleGroup="${templateFileToggler}" text="Use external template" onAction="#chooseTemplateFile"/>
-				<TextField fx:id="pathOfTemplateFile" text="${controller.settings.externalTemplatePath}" HBox.hgrow="ALWAYS"/>
+				<RadioButton fx:id="externalTemplateRadioButton" toggleGroup="${templateFileToggler}" text="Use external template" onAction="#chooseExternalTemplate"/>
+				<TextField fx:id="pathOfTemplate" text="${controller.settings.externalTemplatePath}" HBox.hgrow="ALWAYS"/>
 			</HBox>
 		</VBox>
 		<VBox alignment="BASELINE_LEFT" spacing="10.0">

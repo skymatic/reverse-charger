@@ -65,9 +65,9 @@ public class PrimaryController {
 	@FXML
 	private CheckBox persistSettingsCheckBox;
 	@FXML
-	private RadioButton useExternalTemplateRadioButton;
+	private RadioButton externalTemplateRadioButton;
 	@FXML
-	private RadioButton useStoredTemplateRadioButton;
+	private RadioButton storedTemplateRadioButton;
 
 	private final Stage owner;
 	private final ObservableList<Invoice> invoices;
@@ -139,7 +139,7 @@ public class PrimaryController {
 		persistSettingsCheckBox.setSelected(settings.isSaveAndOverwriteSettings());
 		settings.saveAndOverwriteSettingsProperty().bind(persistSettingsCheckBox.selectedProperty());
 
-		settings.usingExternalTemplateProperty().bind(useExternalTemplateRadioButton.selectedProperty());
+		settings.usingExternalTemplateProperty().bind(externalTemplateRadioButton.selectedProperty());
 	}
 
 	private void updateInvoiceNumberPrefix(ObservableValue<? extends String> invoiceNoProperty, String oldPrefix, String newPrefix) {
@@ -162,7 +162,7 @@ public class PrimaryController {
 	}
 
 	@FXML
-	private void chooseTemplateFile() {
+	private void chooseExternalTemplate() {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Template file");
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML template file", "*.html","*.htm"));
