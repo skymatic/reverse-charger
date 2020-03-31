@@ -37,7 +37,9 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Map;
 import java.util.Optional;
 
@@ -158,6 +160,24 @@ public class PrimaryController {
 		File selectedFile = fileChooser.showOpenDialog(owner);
 		if (selectedFile != null) {
 			csvPathString.setValue(selectedFile.toPath().toString());
+		}
+	}
+
+	@FXML
+	private void replaceStoredTemplate() {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Open Template file");
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML template file", "*.html", "*.htm"));
+		File selectedFile = fileChooser.showOpenDialog(owner);
+		if (selectedFile != null) {
+			try {
+				Path tmpFile = settingsProvider.getStoragePath().resolve("tmp.html");
+				Files.copy(selectedFile.toPath(), tmpFile);
+				Files.move(tmpFile, defaultTemplatePath, StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException e) {
+				//TODO: error Handling
+				e.printStackTrace();
+			}
 		}
 	}
 
