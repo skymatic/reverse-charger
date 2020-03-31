@@ -169,6 +169,8 @@ public class PrimaryController {
 		File selectedFile = fileChooser.showOpenDialog(owner);
 		if (selectedFile != null) {
 			settings.setExternalTemplatePath(selectedFile.toPath().toString());
+		} else {
+			storedTemplateRadioButton.setSelected(true);
 		}
 	}
 
