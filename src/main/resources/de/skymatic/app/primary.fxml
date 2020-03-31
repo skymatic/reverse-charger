@@ -20,8 +20,8 @@
 			</HBox>
 		</VBox>
 		<HBox alignment="BASELINE_LEFT" spacing="20.0">
-			<Label text="Prefix for Invoice Numbers:" labelFor="$invoiceNomberField"/>
-			<TextField fx:id="invoiceNomberField" promptText="Common prefix for all invoice numbers"  minWidth="200" maxWidth="400" onAction="#updatePrefix"/>
+			<Label text="Prefix for Invoice Numbers:" labelFor="$invoiceNumberField"/>
+			<TextField fx:id="invoiceNumberField" promptText="Common prefix for all invoice numbers"  minWidth="200" maxWidth="400"/>
 		</HBox>
 		<TableView fx:id="tableView" items="${controller.invoices}" maxHeight="200" maxWidth="400" editable="true">
 			<columns>
