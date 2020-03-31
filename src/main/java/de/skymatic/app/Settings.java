@@ -1,6 +1,8 @@
 package de.skymatic.app;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -11,12 +13,15 @@ public class Settings {
 	private static final String DEFAULT_OUTPUT_PATH = ""; //TODO
 	private static final String DEFAULT_INVOICE_NUMBER_PREFIX = ""; //TODO
 	private static final int DEFAULT_LAST_USED_INVOICE_NUMBER = 0;
+	private static final boolean DEFAULT_SAVE_AND_OVERWRITE_SETTINGS = false;
 
 
 	private final StringProperty templatePath = new SimpleStringProperty(DEFAULT_TEMPLATE_PATH);
 	private final StringProperty outputPath = new SimpleStringProperty(DEFAULT_OUTPUT_PATH);
 	private final StringProperty invoiceNumberPrefix = new SimpleStringProperty(DEFAULT_INVOICE_NUMBER_PREFIX);
 	private final IntegerProperty lastUsedInvoiceNumber = new SimpleIntegerProperty(DEFAULT_LAST_USED_INVOICE_NUMBER);
+	private final BooleanProperty saveAndOverwriteSettings = new SimpleBooleanProperty(DEFAULT_SAVE_AND_OVERWRITE_SETTINGS);
+
 
 	/*
 	Getter and Setter
@@ -69,4 +74,15 @@ public class Settings {
 		this.invoiceNumberPrefix.set(invoiceNumberPrefix);
 	}
 
+	public boolean isSaveAndOverwriteSettings() {
+		return saveAndOverwriteSettings.get();
+	}
+
+	public BooleanProperty saveAndOverwriteSettingsProperty() {
+		return saveAndOverwriteSettings;
+	}
+
+	public void setSaveAndOverwriteSettings(boolean saveAndOverwriteSettings) {
+		this.saveAndOverwriteSettings.set(saveAndOverwriteSettings);
+	}
 }

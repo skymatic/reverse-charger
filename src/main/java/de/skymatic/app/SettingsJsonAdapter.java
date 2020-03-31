@@ -15,6 +15,7 @@ public class SettingsJsonAdapter extends TypeAdapter<Settings> {
 		out.name("invoiceNumberPrefix").value(settings.getInvoiceNumberPrefix());
 		out.name("lastUsedInvoiceNumber").value(settings.getLastUsedInvoiceNumber());
 		out.name("outputPath").value(settings.getOutputPath());
+		out.name("saveAndOverwriteSettings").value(settings.isSaveAndOverwriteSettings());
 		out.endObject();
 	}
 
@@ -36,6 +37,10 @@ public class SettingsJsonAdapter extends TypeAdapter<Settings> {
 					break;
 				case "outputPath":
 					settings.setOutputPath(in.nextString());
+					break;
+				case "saveAndOverwriteSettings":
+					settings.setSaveAndOverwriteSettings(in.nextBoolean());
+					break;
 				default:
 					in.skipValue();
 					break;
