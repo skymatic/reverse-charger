@@ -14,14 +14,15 @@ public class Settings {
 	private static final String DEFAULT_INVOICE_NUMBER_PREFIX = ""; //TODO
 	private static final int DEFAULT_LAST_USED_INVOICE_NUMBER = 0;
 	private static final boolean DEFAULT_SAVE_AND_OVERWRITE_SETTINGS = false;
+	private static final boolean DEFAULT_USING_EXTERNAL_TEMPLATE = false;
 
 
 	private final StringProperty externalTemplatePath = new SimpleStringProperty(DEFAULT_EXTERNAL_TEMPLATE_PATH);
 	private final StringProperty outputPath = new SimpleStringProperty(DEFAULT_OUTPUT_PATH);
 	private final StringProperty invoiceNumberPrefix = new SimpleStringProperty(DEFAULT_INVOICE_NUMBER_PREFIX);
 	private final IntegerProperty lastUsedInvoiceNumber = new SimpleIntegerProperty(DEFAULT_LAST_USED_INVOICE_NUMBER);
+	private final BooleanProperty usingExternalTemplate = new SimpleBooleanProperty(DEFAULT_USING_EXTERNAL_TEMPLATE);
 	private final BooleanProperty saveAndOverwriteSettings = new SimpleBooleanProperty(DEFAULT_SAVE_AND_OVERWRITE_SETTINGS);
-
 
 	/*
 	Getter and Setter
@@ -84,5 +85,17 @@ public class Settings {
 
 	public void setSaveAndOverwriteSettings(boolean saveAndOverwriteSettings) {
 		this.saveAndOverwriteSettings.set(saveAndOverwriteSettings);
+	}
+
+	public boolean isUsingExternalTemplate() {
+		return usingExternalTemplate.get();
+	}
+
+	public BooleanProperty usingExternalTemplateProperty() {
+		return usingExternalTemplate;
+	}
+
+	public void setUsingExternalTemplate(boolean usingExternalTemplate) {
+		this.usingExternalTemplate.set(usingExternalTemplate);
 	}
 }

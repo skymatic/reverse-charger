@@ -16,6 +16,7 @@ public class SettingsJsonAdapter extends TypeAdapter<Settings> {
 		out.name("lastUsedInvoiceNumber").value(settings.getLastUsedInvoiceNumber());
 		out.name("outputPath").value(settings.getOutputPath());
 		out.name("saveAndOverwriteSettings").value(settings.isSaveAndOverwriteSettings());
+		out.name("usingExternalTemplate").value(settings.isUsingExternalTemplate());
 		out.endObject();
 	}
 
@@ -40,6 +41,9 @@ public class SettingsJsonAdapter extends TypeAdapter<Settings> {
 					break;
 				case "saveAndOverwriteSettings":
 					settings.setSaveAndOverwriteSettings(in.nextBoolean());
+					break;
+				case "usingExternalTemplate":
+					settings.setUsingExternalTemplate(in.nextBoolean());
 					break;
 				default:
 					in.skipValue();
