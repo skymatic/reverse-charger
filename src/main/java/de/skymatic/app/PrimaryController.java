@@ -72,13 +72,14 @@ public class PrimaryController {
 		isFileSelected = new SimpleBooleanProperty();
 		isFileSelected.bind(csvPathString.isEmpty());
 		isReadyToGenerate = new SimpleBooleanProperty(false);
-		invoices.addListener((ListChangeListener) (e -> isReadyToGenerate.setValue(!invoices.isEmpty())));
+		invoices.addListener((ListChangeListener) (e -> updateIsReadyToGenerate()));
 		settingsProvider = new SettingsProvider();
 		settings = settingsProvider.loadSettings();
 		monthlyInvoices = Optional.empty();
 		htmlGenerator = new HTMLGenerator();
 		templatePath = Bindings.createObjectBinding(() -> Path.of(settings.getTemplatePath()), settings.templatePathProperty());
 		outputPath = Bindings.createObjectBinding(() -> Path.of(settings.getOutputPath()), settings.outputPathProperty());
+		outputPath.addListener(o -> updateIsReadyToGenerate());
 	}
 
 	@FXML
@@ -116,6 +117,10 @@ public class PrimaryController {
 
 	private void updateInvoiceNumberPrefix(ObservableValue<? extends String> invoiceNoProperty, String oldPrefix, String newPrefix) {
 		monthlyInvoices.ifPresent(m -> m.changeNumberPrefix(newPrefix));
+	}
+
+	private void updateIsReadyToGenerate() {
+		isReadyToGenerate.setValue(!(settings.getOutputPath().isEmpty() || invoices.isEmpty()));
 	}
 
 	@FXML
