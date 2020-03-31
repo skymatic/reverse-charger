@@ -11,7 +11,6 @@ import de.skymatic.parser.ParseException;
 import de.skymatic.parser.ParseResult;
 import de.skymatic.settings.Settings;
 import de.skymatic.settings.SettingsProvider;
-
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.BooleanProperty;
@@ -49,8 +48,6 @@ import java.util.Optional;
  * -> Auswahl über radio button
  * -> bei default gibt es kein textfeld oder button
  * -> ansonsten wird die akutellen GUI-Elemente angezeigt
- * <p>
- * TODO: Checkbox, ob bei der Output Generierung des aktuelle Template als Default gespeichert werden soll
  */
 public class PrimaryController {
 
@@ -89,14 +86,15 @@ public class PrimaryController {
 		this.owner = owner;
 		this.invoices = FXCollections.observableArrayList();
 		csvPathString = new SimpleStringProperty();
+
 		isFileSelected = new SimpleBooleanProperty();
 		isFileSelected.bind(csvPathString.isEmpty());
+
 		isReadyToGenerate = new SimpleBooleanProperty(false);
 		invoices.addListener((ListChangeListener) (e -> updateIsReadyToGenerate()));
+
 		settingsProvider = new SettingsProvider();
 		settings = settingsProvider.loadSettings();
-		monthlyInvoices = Optional.empty();
-		htmlGenerator = new HTMLGenerator();
 		defaultTemplatePath = settingsProvider.getStoragePath().resolve(Settings.STORED_TEMPLATE_NAME);
 		templatePath = Bindings.createObjectBinding(() -> {
 			if (settings.isUsingExternalTemplate()) {
@@ -107,6 +105,9 @@ public class PrimaryController {
 		}, settings.externalTemplatePathProperty(), settings.usingExternalTemplateProperty());
 		outputPath = Bindings.createObjectBinding(() -> Path.of(settings.getOutputPath()), settings.outputPathProperty());
 		outputPath.addListener(o -> updateIsReadyToGenerate());
+
+		monthlyInvoices = Optional.empty();
+		htmlGenerator = new HTMLGenerator();
 	}
 
 	@FXML
@@ -120,6 +121,7 @@ public class PrimaryController {
 			monthlyInvoices.get().changeSingleInvoiceNumber(invoice.getSubsidiary(), newNumberString);
 			//invoice.setNumberString(newNumberString);
 		});
+
 		columnSubsidiary.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(invoice.getValue().getSubsidiary().toString()));
 		columnAmount.setCellFactory(column -> {
 			var cell = new TextFieldTableCell<Invoice, String>();
@@ -127,6 +129,7 @@ public class PrimaryController {
 			return cell;
 		});
 		columnAmount.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(String.valueOf(invoice.getValue().getAmount())));
+
 		columnProceeds.setCellFactory(column -> {
 			var cell = new TextFieldTableCell<Invoice, String>();
 			cell.setAlignment(Pos.BASELINE_RIGHT);
@@ -185,7 +188,7 @@ public class PrimaryController {
 	private void chooseExternalTemplate() {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Template file");
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML template file", "*.html","*.htm"));
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML template file", "*.html", "*.htm"));
 		File selectedFile = fileChooser.showOpenDialog(owner);
 		if (selectedFile != null) {
 			settings.setExternalTemplatePath(selectedFile.toPath().toString());
