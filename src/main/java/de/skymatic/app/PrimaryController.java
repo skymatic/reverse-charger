@@ -110,6 +110,7 @@ public class PrimaryController {
 		settings.invoiceNumberPrefixProperty().bind(invoicePrefixField.textProperty());
 		settings.invoiceNumberPrefixProperty().addListener(this::updateInvoiceNumberPrefix);
 
+		persistSettingsCheckBox.setSelected(settings.isSaveAndOverwriteSettings());
 		settings.saveAndOverwriteSettingsProperty().bind(persistSettingsCheckBox.selectedProperty());
 	}
 
