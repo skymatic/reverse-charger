@@ -42,13 +42,6 @@ import java.nio.file.StandardCopyOption;
 import java.util.Map;
 import java.util.Optional;
 
-/**
- * TODO: Template Path soll nicht mehr in den Settings sein.
- * -> nur noch entscheidung, ob man das Default nimmt oder nicht
- * -> Auswahl über radio button
- * -> bei default gibt es kein textfeld oder button
- * -> ansonsten wird die akutellen GUI-Elemente angezeigt
- */
 public class PrimaryController {
 
 	@FXML
