@@ -8,20 +8,9 @@
 		<ToggleGroup fx:id="templateFileToggler"/>
 	</fx:define>
 	<padding>
-		<Insets topRightBottomLeft="24"/>
+		<Insets topRightBottomLeft="25"/>
 	</padding>
 	<children>
-		<VBox fx:id="templateVBox" alignment="BASELINE_LEFT" spacing="10.0">
-			<Label text="Template file" labelFor="$templateVBox"/>
-			<HBox spacing="10.0" alignment="CENTER_LEFT">
-				<RadioButton fx:id="storedTemplateRadioButton" toggleGroup="${templateFileToggler}" text="Use stored template" visible="true" managed="true"/>
-				<Button fx:id="replaceStoredTemplateButton" text="Replace..." onAction="#replaceStoredTemplate" />
-			</HBox>
-			<HBox spacing="10.0" alignment="CENTER_LEFT">
-				<RadioButton fx:id="externalTemplateRadioButton" toggleGroup="${templateFileToggler}" text="Use external template" onAction="#chooseExternalTemplate"/>
-				<TextField fx:id="pathOfTemplate" text="${controller.settings.externalTemplatePath}" HBox.hgrow="ALWAYS"/>
-			</HBox>
-		</VBox>
 		<VBox alignment="BASELINE_LEFT" spacing="10.0">
 			<Label alignment="BASELINE_LEFT" text="Choose financial report file:" labelFor="$csvFileChooserButton"/>
 			<HBox alignment="CENTER" spacing="10.0">
@@ -59,6 +48,17 @@
 				<TableColumn fx:id="columnProceeds" text="Proceeds"/>
 			</columns>
 		</TableView>
+		<VBox fx:id="templateVBox" alignment="BASELINE_LEFT" spacing="10.0">
+			<Label text="Template file" labelFor="$templateVBox"/>
+			<HBox spacing="10.0" alignment="CENTER_LEFT">
+				<RadioButton fx:id="storedTemplateRadioButton" toggleGroup="${templateFileToggler}" text="Use stored template" visible="true" managed="true"/>
+				<Button fx:id="replaceStoredTemplateButton" text="Replace..." onAction="#replaceStoredTemplate" />
+			</HBox>
+			<HBox spacing="10.0" alignment="CENTER_LEFT">
+				<RadioButton fx:id="externalTemplateRadioButton" toggleGroup="${templateFileToggler}" text="Use external template" onAction="#chooseExternalTemplate"/>
+				<TextField fx:id="pathOfTemplate" text="${controller.settings.externalTemplatePath}" HBox.hgrow="ALWAYS"/>
+			</HBox>
+		</VBox>
 		<VBox alignment="BASELINE_LEFT" spacing="10.0">
 			<Label alignment="BASELINE_LEFT" text="Choose output directory:"/>
 			<HBox alignment="CENTER" spacing="10.0" >
@@ -77,7 +77,4 @@
 			</buttons>
 		</ButtonBar>
 	</children>
-	<padding>
-		<Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-	</padding>
 </VBox>
