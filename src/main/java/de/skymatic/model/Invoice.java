@@ -38,7 +38,7 @@ public class Invoice {
 		return salesPerCountryPlusCurrency.values().stream().mapToInt(SalesEntry::getUnitsSold).sum();
 	}
 
-	public void addSales(SalesEntry s) {
+	void addSales(SalesEntry s) {
 		final var rpc = s.getRpc();
 		if (salesPerCountryPlusCurrency.containsKey(rpc)) {
 			throw new IllegalArgumentException("RegionPlusCurrency already exists!");
