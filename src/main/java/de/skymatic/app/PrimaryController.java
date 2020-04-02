@@ -60,6 +60,8 @@ public class PrimaryController {
 	private RadioButton externalTemplateRadioButton;
 	@FXML
 	private RadioButton storedTemplateRadioButton;
+	@FXML
+	private CheckBox generateInvoiceNumbersCheckbox;
 
 	private final Stage owner;
 	private final ObservableList<Invoice> invoices;
@@ -138,6 +140,8 @@ public class PrimaryController {
 		settings.saveAndOverwriteSettingsProperty().bind(persistSettingsCheckBox.selectedProperty());
 
 		settings.usingExternalTemplateProperty().bind(externalTemplateRadioButton.selectedProperty());
+
+		//TODO: set the checkbox according to the settings
 	}
 
 	private void updateInvoiceNumberPrefix(ObservableValue<? extends String> invoiceNoProperty, String oldPrefix, String newPrefix) {

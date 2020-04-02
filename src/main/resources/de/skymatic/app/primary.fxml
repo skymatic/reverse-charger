@@ -29,10 +29,28 @@
 				<Button fx:id="csvFileChooserButton" text="Choose..." onAction="#chooseCSVFile"/>
 			</HBox>
 		</VBox>
-		<HBox alignment="BASELINE_LEFT" spacing="10.0">
-			<Label text="Prefix for Invoice Numbers:" labelFor="$invoicePrefixField"/>
-			<TextField fx:id="invoicePrefixField" promptText="Prefix added to all invoices" minWidth="200" maxWidth="400"/>
-		</HBox>
+		<VBox spacing="10.0" disable="true">
+			<HBox alignment="BASELINE_LEFT" spacing="10.0">
+				<CheckBox fx:id="generateInvoiceNumbersCheckbox" />
+				<Label text="Generate invoice numbers automatically" labelFor="$generateInvoiceNumbersCheckbox"/>
+			</HBox>
+			<VBox spacing="10.0" disable="${!generateInvoiceNumbersCheckbox.selected}">
+				<HBox spacing="10.0" alignment="CENTER_LEFT">
+					<padding>
+						<Insets left="25"/>
+					</padding>
+					<Label text="Prefix:" labelFor="$invoicePrefixField"/>
+					<TextField fx:id="invoicePrefixField" promptText="added to every invoice number" minWidth="200" maxWidth="400"/>
+				</HBox>
+				<HBox spacing="10.0" alignment="CENTER_LEFT">
+					<padding>
+						<Insets left="25"/>
+					</padding>
+					<Label text="First Number:" labelFor="$firstInvoiceNumberField"/>
+					<TextField fx:id="firstInvoiceNumberField" promptText="to start the numbering from" minWidth="200" maxWidth="400"/>
+				</HBox>
+			</VBox>
+		</VBox>
 		<TableView fx:id="tableView" items="${controller.invoices}" maxHeight="200" maxWidth="400" editable="true">
 			<columns>
 				<TableColumn fx:id="columnInvoiceNumber" text="Invoice Number"/>
