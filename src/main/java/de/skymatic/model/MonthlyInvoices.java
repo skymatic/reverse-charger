@@ -14,23 +14,14 @@ public class MonthlyInvoices {
 
 	private final YearMonth yearMonth;
 	private final Map<Subsidiary, Invoice> invoices;
-	private final IntSupplier invoiceNumberGenerator;
+	private final InvoiceNumberGenerator invoiceNumberGenerator;
 
 	private String numberPrefix;
 
 	public MonthlyInvoices(YearMonth yearMonth, String numberPrefix, int numberingSeed, SalesEntry... sales) {
 		this.yearMonth = yearMonth;
 		this.numberPrefix = numberPrefix;
-		this.invoiceNumberGenerator = new IntSupplier() {
-			private int current = numberingSeed;
-
-			@Override
-			public int getAsInt() {
-				var old = current;
-				current += 1;
-				return old;
-			}
-		};
+		this.invoiceNumberGenerator = new InvoiceNumberGenerator(numberingSeed);
 		this.invoices = new Hashtable<>();
 		for (var sale : sales) {
 			addSalesEntry(sale);
@@ -71,6 +62,10 @@ public class MonthlyInvoices {
 		}
 	}
 
+	public int getNextInvoiceNumber() {
+		return invoiceNumberGenerator.next;
+	}
+
 	/**
 	 * TODO: method of replacing the old invoice number
 	 * @param newPrefix
@@ -89,4 +84,19 @@ public class MonthlyInvoices {
 		return sb.toString();
 	}
 
+	private class InvoiceNumberGenerator implements IntSupplier {
+
+		int next;
+
+		InvoiceNumberGenerator(int seed) {
+			next = seed;
+		}
+
+		@Override
+		public int getAsInt() {
+			var current = next;
+			next += 1;
+			return current;
+		}
+	}
 }
