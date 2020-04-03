@@ -43,9 +43,9 @@
 		<TableView fx:id="tableView" items="${controller.invoices}" maxHeight="200" maxWidth="400" editable="true">
 			<columns>
 				<TableColumn fx:id="columnInvoiceNumber" text="Invoice Number"/>
-				<TableColumn fx:id="columnSubsidiary" text="Subsidiary"/>
-				<TableColumn fx:id="columnAmount" text="Amount"/>
-				<TableColumn fx:id="columnProceeds" text="Proceeds"/>
+				<TableColumn fx:id="columnSubsidiary" text="Subsidiary" editable="false"/>
+				<TableColumn fx:id="columnAmount" text="Amount" editable="false"/>
+				<TableColumn fx:id="columnProceeds" text="Proceeds" editable="false"/>
 			</columns>
 		</TableView>
 		<VBox fx:id="templateVBox" alignment="BASELINE_LEFT" spacing="10.0">
