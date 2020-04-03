@@ -145,7 +145,7 @@ public class PrimaryController {
 	}
 
 	private void updateInvoiceNumberPrefix(ObservableValue<? extends String> invoiceNoProperty, String oldPrefix, String newPrefix) {
-		monthlyInvoices.ifPresent(m -> m.changeNumberPrefix(newPrefix));
+		//monthlyInvoices.ifPresent(m -> m.changeNumberPrefix(newPrefix));
 	}
 
 	private void updateIsReadyToGenerate() {
