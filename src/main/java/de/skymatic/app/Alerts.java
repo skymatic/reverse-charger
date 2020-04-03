@@ -9,7 +9,7 @@ public class Alerts {
 
 	private static final String ioExceptionDuringParse = "Reading from file failed.";
 	private static final String parseExceptionDuringParse = "Parsing the file failed. Please check the format and if the error persists contact the developers.";
-	private static final String illegalArgumentExceptionDuringParse = "Invoice consistency check failed. There are duplicate entries in your file.";
+	private static final String illegalArgumentExceptionDuringParse = "Creating the invoices from parsed content failed.";
 
 	public static Alert parseCSVFileError(Exception e) {
 		if (e instanceof IOException) {
@@ -22,7 +22,7 @@ public class Alerts {
 					+ "Thrown Exception and Message:\n"
 					+ e.getCause());
 		} else if (e instanceof IllegalArgumentException) {
-			return new Alert(Alert.AlertType.ERROR, illegalArgumentExceptionDuringParse + "\n\nThrown Exception and Message:\n" + e.getCause());
+			return new Alert(Alert.AlertType.ERROR, illegalArgumentExceptionDuringParse + "\n\nThrown Exception and Message:\n" + e);
 		} else {
 			throw new IllegalArgumentException("Unknown Exception.");
 		}
