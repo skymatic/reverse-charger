@@ -41,9 +41,9 @@ public class Invoice {
 	void addSales(SalesEntry s) {
 		final var rpc = s.getRpc();
 		if (salesPerCountryPlusCurrency.containsKey(rpc)) {
-			throw new IllegalArgumentException("RegionPlusCurrency already exists!");
+			throw new IllegalArgumentException("RegionPlusCurrency " + rpc.name() + " already exists!");
 		} else if (subsidiary != AppleUtility.mapRegionPlusCurrencyToSubsidiary(rpc)) {
-			throw new IllegalArgumentException("RegionPlusCurrency does not belong to this Subsidiary");
+			throw new IllegalArgumentException("RegionPlusCurrency " + rpc.name() + " does not belong to subsidiary " + this.subsidiary.name());
 		} else {
 			salesPerCountryPlusCurrency.put(rpc, s);
 		}
