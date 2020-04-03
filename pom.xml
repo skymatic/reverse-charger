@@ -54,6 +54,12 @@
             <artifactId>javafx-fxml</artifactId>
             <version>${openjfx.version}</version>
         </dependency>
+        <!--json output-->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.6</version>
+        </dependency>
 
         <!-- Testing -->
         <dependency>

@@ -1,18 +1,36 @@
 package de.skymatic.model;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.function.IntSupplier;
 
 public class MonthlyInvoices {
 
-	private YearMonth yearMonth;
-	private Map<Subsidiary, Invoice> invoices;
+	private static final LocalDate CURRENT_TIME = LocalDate.now();
 
-	public MonthlyInvoices(YearMonth yearMonth, SalesEntry... sales) {
+	private final YearMonth yearMonth;
+	private final Map<Subsidiary, Invoice> invoices;
+	private final IntSupplier invoiceNumberGenerator;
+
+	private String numberPrefix;
+
+	public MonthlyInvoices(YearMonth yearMonth, String numberPrefix, int numberingSeed, SalesEntry... sales) {
 		this.yearMonth = yearMonth;
+		this.numberPrefix = numberPrefix;
+		this.invoiceNumberGenerator = new IntSupplier() {
+			private int current = numberingSeed;
+
+			@Override
+			public int getAsInt() {
+				var old = current;
+				current += 1;
+				return old;
+			}
+		};
 		this.invoices = new Hashtable<>();
 		for (var sale : sales) {
 			addSalesEntry(sale);
@@ -24,16 +42,42 @@ public class MonthlyInvoices {
 		if (invoices.containsKey(subsidiary)) {
 			invoices.get(subsidiary).addSales(salesEntry);
 		} else {
-			invoices.put(subsidiary, new Invoice(salesEntry));
+			var numberString = numberPrefix + String.valueOf(invoiceNumberGenerator.getAsInt());
+			invoices.put(subsidiary, new Invoice(numberString, yearMonth, CURRENT_TIME, salesEntry));
 		}
-	}
-
-	public boolean existsSubsidiary(Subsidiary subsidiary) {
-		return invoices.containsKey(subsidiary);
 	}
 
 	public Collection<Invoice> getInvoices() {
 		return Collections.unmodifiableCollection(invoices.values());
+	}
+
+	public YearMonth getYearMonth() {
+		return yearMonth;
+	}
+
+	public void changeSingleInvoiceNumber(Subsidiary subsidiary, String invoiceNumber) {
+		if (invoices.containsKey(subsidiary)) {
+			invoices.get(subsidiary).setNumberString(invoiceNumber);
+		} else {
+			throw new IllegalArgumentException("Invoice for Subsidiary does not exists.");
+		}
+	}
+
+	public void changeSingleIssueDate(Subsidiary subsidiary, LocalDate issueDate) {
+		if (invoices.containsKey(subsidiary)) {
+			invoices.get(subsidiary).setIssueDate(issueDate);
+		} else {
+			throw new IllegalArgumentException("Invoice for Subsidiary does not exists.");
+		}
+	}
+
+	/**
+	 * TODO: method of replacing the old invoice number
+	 * @param newPrefix
+	 */
+	public void changeNumberPrefix(String newPrefix){
+		this.numberPrefix = newPrefix;
+		//invoices.forEach((s, invoice) -> invoice.setNumberString(""));
 	}
 
 	@Override

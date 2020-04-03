@@ -2,21 +2,20 @@ package de.skymatic.model;
 
 public enum Subsidiary {
 
-	AMERICA("Apple Inc.", "One Apple Park Way\nCupertino, CA 95014\nUSA"),
-	AUSTRALIA("Apple Pty Limited", "Level 3\n20 Martin Place\nSydney NSW 2000\nAustralia"),
-	CANADA("Apple Canada Inc.", "120 Bremner Boulevard, Suite 1600\nToronto, ON M5J 0A8\nCanada"),
-	JAPAN("iTunes K.K.", "〒 106-6140\n6-10-1 Roppongi, Minato-ku, Tokyo\nJapan"),
-	ROW("Apple Distribution International Limited", "Hollyhill Industrial Estate\nHollyhill\nCork\nIreland");
+	AMERICA(new String[]{"Apple Inc.", "One Apple Park Way", "Cupertino, CA 95014", "USA"}),
+	AUSTRALIA(new String[]{"Apple Pty Limited", "Level 3", "20 Martin Place", "Sydney NSW 2000", "Australia"}),
+	CANADA(new String[]{"Apple Canada Inc.", "120 Bremner Boulevard, Suite 1600", "Toronto, ON M5J 0A8", "Canada"}),
+	JAPAN(new String[]{"iTunes K.K.", "〒 106-6140", "6-10-1 Roppongi, Minato-ku, Tokyo", "Japan"}),
+	ROW(new String[]{"Apple Distribution International Limited", "Hollyhill Industrial Estate", "Hollyhill", "Cork", "Ireland"});
 
-	private String companyName;
-	private String mainOffice;
+	private String[] address;
 
-	Subsidiary(String companyName, String mainOffice) {
-		this.companyName = companyName;
-		this.mainOffice = mainOffice;
+	Subsidiary(String[] address) {
+		this.address = address;
 	}
 
-	public String getAddress() {
-		return companyName + "\n" + mainOffice;
+	public String[] getAddress() {
+		return address;
 	}
+
 }

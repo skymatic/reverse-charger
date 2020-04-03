@@ -11,16 +11,19 @@ import java.io.IOException;
 /**
  * JavaFX App
  */
-public class App extends Application {
+public class AppStoreReverseCharger extends Application {
 
+	private static final String WINDOW_TITLE = "Appstore reverse charger";
+	
 	private static Scene scene;
 	private static Stage stage;
 
 	@Override
 	public void start(Stage stage) throws IOException {
 		this.stage = stage;
-		scene = new Scene(loadFXML("primary", stage), 640, 480);
+		scene = new Scene(loadFXML("primary", stage));
 		stage.setScene(scene);
+		stage.setTitle(WINDOW_TITLE);
 		stage.show();
 	}
 
@@ -29,7 +32,7 @@ public class App extends Application {
 	}
 
 	private static Parent loadFXML(String fxml, Stage owner, Object... parameters) throws IOException {
-		FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(AppStoreReverseCharger.class.getResource(fxml + ".fxml"));
 		fxmlLoader.setControllerFactory(new ControllerFactory(owner, parameters));
 		return fxmlLoader.load();
 	}

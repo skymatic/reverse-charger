@@ -4,13 +4,19 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
+
 public class InvoiceTest {
+
+	private static final YearMonth dummyYearMonth = YearMonth.of(1999,1);
+	private static final LocalDate dummyIssueDate = LocalDate.now();
 
 	@Test
 	public void testEmptyInvoiceReturnsZero() {
 		SalesEntry s = Mockito.mock(SalesEntry.class);
 		Mockito.when(s.getRpc()).thenReturn(RegionPlusCurrency.AMERICAS_USD);
-		Invoice i = new Invoice(s);
+		Invoice i = new Invoice("0",dummyYearMonth, dummyIssueDate, s);
 		Assertions.assertEquals(0, i.sum());
 	}
 
@@ -21,7 +27,7 @@ public class InvoiceTest {
 		final RegionPlusCurrency expectedRPC = RegionPlusCurrency.JAPAN_JPY;
 		SalesEntry s = Mockito.mock(SalesEntry.class);
 		Mockito.when(s.getRpc()).thenReturn(expectedRPC);
-		Invoice i = new Invoice(s);
+		Invoice i = new Invoice("0", dummyYearMonth, dummyIssueDate, s);
 		Assertions.assertEquals(expectedSubsidiary, i.getSubsidiary());
 	}
 
@@ -34,7 +40,7 @@ public class InvoiceTest {
 		SalesEntry s2 = Mockito.mock(SalesEntry.class);
 		Mockito.when(s2.getRpc()).thenReturn(RegionPlusCurrency.NEW_ZEALAND_NZD);
 		Mockito.when(s2.getProceeds()).thenReturn((50.0));
-		Invoice i = new Invoice(s1);
+		Invoice i = new Invoice("0", dummyYearMonth, dummyIssueDate, s1);
 		i.addSales(s2);
 		Assertions.assertEquals(expectedSum, i.sum());
 	}
@@ -48,7 +54,7 @@ public class InvoiceTest {
 		SalesEntry s2 = Mockito.mock(SalesEntry.class);
 		Mockito.when(s2.getRpc()).thenReturn(RegionPlusCurrency.NEW_ZEALAND_NZD);
 		Mockito.when(s2.getUnitsSold()).thenReturn((50));
-		Invoice i = new Invoice(s1);
+		Invoice i = new Invoice("0", dummyYearMonth, dummyIssueDate, s1);
 		i.addSales(s2);
 		Assertions.assertEquals(expectedAmount, i.getAmount());
 	}
@@ -57,7 +63,7 @@ public class InvoiceTest {
 	public void testAlreadyExistingRPCThrowsException() {
 		SalesEntry s1 = Mockito.mock(SalesEntry.class);
 		Mockito.when(s1.getRpc()).thenReturn(RegionPlusCurrency.AUSTRALIA_AUD);
-		Invoice i = new Invoice(s1);
+		Invoice i = new Invoice("0", dummyYearMonth, dummyIssueDate, s1);
 		Assertions.assertThrows(IllegalArgumentException.class, () -> i.addSales(s1));
 	}
 
@@ -67,7 +73,7 @@ public class InvoiceTest {
 		Mockito.when(s1.getRpc()).thenReturn(RegionPlusCurrency.AUSTRALIA_AUD);
 		SalesEntry s2 = Mockito.mock(SalesEntry.class);
 		Mockito.when(s2.getRpc()).thenReturn(RegionPlusCurrency.JAPAN_JPY);
-		Invoice i = new Invoice(s1);
+		Invoice i = new Invoice("0", dummyYearMonth, dummyIssueDate, s1);
 		Assertions.assertThrows(IllegalArgumentException.class, () -> i.addSales(s2));
 	}
 }
