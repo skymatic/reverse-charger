@@ -222,7 +222,6 @@ public class PrimaryController {
 					settings.getLastUsedInvoiceNumber(), //
 					result.getSales().toArray(new SalesEntry[]{})));
 			invoices.addAll(monthlyInvoices.get().getInvoices());
-			//TODO update Settings with new latestUsedInvoiceNumber
 			settings.setLastUsedInvoiceNumber(monthlyInvoices.get().getNextInvoiceNumber());
 		} catch (IOException | ParseException | IllegalArgumentException e) {
 			Alerts.parseCSVFileError(e).show();

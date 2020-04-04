@@ -19,8 +19,6 @@ public class MonthlyInvoices {
 	private String numberPrefix;
 
 	public MonthlyInvoices(YearMonth yearMonth, String numberPrefix, int numberingSeed, SalesEntry... sales) {
-		//TODO: change numberingSeed to optional such that one can decide to use automatic numbering
-		// 	and check, if  numberStringPrefix needs to be refactored to!
 		this.yearMonth = yearMonth;
 		this.numberPrefix = numberPrefix;
 		this.invoiceNumberGenerator = new InvoiceNumberGenerator(numberingSeed);
