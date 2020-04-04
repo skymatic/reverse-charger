@@ -10,6 +10,7 @@ public class Alerts {
 	private static final String ioExceptionDuringParse = "Reading from file failed.";
 	private static final String parseExceptionDuringParse = "Parsing the file failed. Please check the format and if the error persists contact the developers.";
 	private static final String illegalArgumentExceptionDuringParse = "Creating the invoices from parsed content failed.";
+	private static final String duplicateInvoiceNumberExists = "The entered invoice number exists already. It will be reset to the previous value.";
 
 	public static Alert parseCSVFileError(Exception e) {
 		if (e instanceof IOException) {
@@ -26,6 +27,10 @@ public class Alerts {
 		} else {
 			throw new IllegalArgumentException("Unknown Exception.");
 		}
+	}
+
+	public static Alert duplicateInvoiceNumber() {
+		return new Alert(Alert.AlertType.WARNING, duplicateInvoiceNumberExists);
 	}
 
 }

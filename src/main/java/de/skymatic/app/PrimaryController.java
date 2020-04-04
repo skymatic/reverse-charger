@@ -27,7 +27,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TablePosition;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.DirectoryChooser;
@@ -110,11 +109,18 @@ public class PrimaryController {
 		columnInvoiceNumber.setCellFactory(TextFieldTableCell.<Invoice>forTableColumn());
 		columnInvoiceNumber.setCellValueFactory(invoice -> new SimpleStringProperty(invoice.getValue().getNumberString()));
 		columnInvoiceNumber.setOnEditCommit((TableColumn.CellEditEvent<Invoice, String> event) -> {
-			TablePosition<Invoice, String> pos = event.getTablePosition();
 			String newNumberString = event.getNewValue();
-			Invoice invoice = event.getTableView().getItems().get(pos.getRow());
-			monthlyInvoices.get().changeSingleInvoiceNumber(invoice.getSubsidiary(), newNumberString);
-			//invoice.setNumberString(newNumberString);
+			Invoice invoice = event.getRowValue();
+			if (invoices.stream()
+					.filter(i -> !i.equals(invoice))
+					.anyMatch(i -> i.getNumberString().equals(newNumberString))) {
+				Alerts.duplicateInvoiceNumber()
+						.showAndWait();
+				columnInvoiceNumber.getTableView().refresh();
+				columnInvoiceNumber.getTableView().requestFocus();
+			} else {
+				monthlyInvoices.get().changeSingleInvoiceNumber(invoice.getSubsidiary(), newNumberString);
+			}
 		});
 
 		columnSubsidiary.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(invoice.getValue().getSubsidiary().toString()));

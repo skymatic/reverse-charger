@@ -42,7 +42,7 @@
 		</VBox>
 		<TableView fx:id="tableView" items="${controller.invoices}" maxHeight="200" maxWidth="400" editable="true">
 			<columns>
-				<TableColumn fx:id="columnInvoiceNumber" text="Invoice Number"/>
+				<TableColumn fx:id="columnInvoiceNumber" text="Invoice Number" editable="true"/>
 				<TableColumn fx:id="columnSubsidiary" text="Subsidiary" editable="false"/>
 				<TableColumn fx:id="columnAmount" text="Amount" editable="false"/>
 				<TableColumn fx:id="columnProceeds" text="Proceeds" editable="false"/>
