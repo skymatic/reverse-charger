@@ -181,8 +181,8 @@ public class PrimaryController {
 				Files.copy(selectedFile.toPath(), tmpFile);
 				Files.move(tmpFile, defaultTemplatePath, StandardCopyOption.REPLACE_EXISTING);
 			} catch (IOException e) {
-				//TODO: error Handling
-				e.printStackTrace();
+				//TODO: better error Handling
+				Alerts.genericError(e, "Replacing the stored template by the new one.").showAndWait();
 			}
 		}
 	}
@@ -235,16 +235,16 @@ public class PrimaryController {
 			try {
 				settingsProvider.save(settings);
 			} catch (IOException e) {
-				//TODO: error handling
-				e.printStackTrace();
+				//TODO: better error handling
+				Alerts.genericError(e, "Saving settings on hard disk.").showAndWait();
 			}
 		}
 		try {
 			Map<String, StringBuilder> htmlInvoices = htmlGenerator.createHTMLInvoices(templatePath.get(), monthlyInvoices.get().getInvoices());
 			new HTMLWriter().write(outputPath.get(), htmlInvoices);
 		} catch (IOException e) {
-			//TODO: error handling
-			e.printStackTrace();
+			//TODO: better error handling
+			Alerts.genericError(e, "Generating the invoices from template and save them to hard disk.").showAndWait();
 		}
 
 	}
