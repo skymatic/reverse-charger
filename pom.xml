@@ -88,6 +88,35 @@
         </dependency>
     </dependencies>
 
+	<profiles>
+        <profile>
+            <id>windows-build</id>
+            <activation>
+                <os><family>windows</family></os>
+            </activation>
+            <properties>
+				<jpackage.jvmArgs.settings>-DsettingsPath="~/AppData/Roaming/AppStoreReverseCharger/settings.json"</jpackage.jvmArgs.settings>
+            </properties>
+        </profile>
+        <profile>
+            <id>macOS-build</id>
+            <activation>
+                <os><family>mac</family></os>
+            </activation>
+            <properties>
+                <jpackage.jvmArgs.settings>-DsettingsPath="~/AppData/Roaming/AppStoreReverseCharger/settings.json"</jpackage.jvmArgs.settings>
+            </properties>
+        </profile>
+        <profile>
+            <id>linux-build</id>
+            <activation>
+                <os><family>unix</family></os>
+            </activation>
+            <properties>
+                <jpackage.jvmArgs.settings>-DsettingsPath="~/.local/share/AppStoreReverseCharger/settings.json"</jpackage.jvmArgs.settings>
+            </properties>
+        </profile>
+    </profiles>
     <build>
         <plugins>
             <plugin>
@@ -153,7 +182,7 @@
                         <configuration>
                             <executable>${env.JAVA_HOME}/bin/jpackage</executable>
                             <workingDirectory>${project.build.directory}</workingDirectory>
-                            <commandlineArgs>--name charger --type app-image -m de.skymatic.app/de.skymatic.app.AppStoreReverseCharger --runtime-image runtimeImage --app-version ${project.version} --vendor "Skymatic GmbH"</commandlineArgs>
+                            <commandlineArgs>--name charger --type app-image -m de.skymatic.app/de.skymatic.app.AppStoreReverseCharger --runtime-image runtimeImage --app-version ${project.version} --vendor "Skymatic GmbH" --java-options ${jpackage.jvmArgs.settings}</commandlineArgs>
                         </configuration>
                     </execution>
                 </executions>
