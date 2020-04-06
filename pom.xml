@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.skymatic.app</groupId>
     <artifactId>appstore-reverse-charger</artifactId>
-    <version>0.1.1</version>
+    <version>0.1.2-SNAPSHOT</version>
 
     <organization>
         <name>Skymatic</name>
@@ -105,7 +105,7 @@
                 <os><family>mac</family></os>
             </activation>
             <properties>
-                <jpackage.jvmArgs.settings>-DsettingsPath="~/AppData/Roaming/AppStoreReverseCharger/settings.json"</jpackage.jvmArgs.settings>
+                <jpackage.jvmArgs.settings>-DsettingsPath="~/Library/Application Support/AppStoreReverseCharger/settings.json"</jpackage.jvmArgs.settings>
             </properties>
         </profile>
         <profile>
