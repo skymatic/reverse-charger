@@ -1,10 +1,10 @@
-module de.skymatic.app {
+module de.skymatic.appstore_invoices {
     requires javafx.controls;
     requires javafx.fxml;
     requires com.google.gson;
 
-    opens de.skymatic.app to javafx.fxml;
-    opens de.skymatic.settings to javafx.fxml;
+    opens de.skymatic.appstore_invoices.gui to javafx.fxml;
+    opens de.skymatic.appstore_invoices.settings to javafx.fxml;
 
-    exports de.skymatic.app;
+    exports de.skymatic.appstore_invoices.gui;
 }
