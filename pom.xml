@@ -111,7 +111,10 @@
         <profile>
             <id>linux-build</id>
             <activation>
-                <os><family>unix</family></os>
+                <os>
+                    <family>unix</family>
+                    <name>Linux</name>
+                </os>
             </activation>
             <properties>
                 <jpackage.jvmArgs.settings>-DsettingsPath="~/.local/share/AppStoreReverseCharger/settings.json"</jpackage.jvmArgs.settings>
