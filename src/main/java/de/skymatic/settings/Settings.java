@@ -17,9 +17,9 @@ public class Settings {
 	private static final boolean DEFAULT_USING_EXTERNAL_TEMPLATE = false;
 
 
-	private final StringProperty externalTemplatePath = new SimpleStringProperty();
+	private final StringProperty externalTemplatePath = new SimpleStringProperty("");
 	private final StringProperty outputPath = new SimpleStringProperty(DEFAULT_OUTPUT_PATH);
-	private final StringProperty invoiceNumberPrefix = new SimpleStringProperty();
+	private final StringProperty invoiceNumberPrefix = new SimpleStringProperty("");
 	private final IntegerProperty lastUsedInvoiceNumber = new SimpleIntegerProperty(DEFAULT_LAST_USED_INVOICE_NUMBER);
 	private final BooleanProperty usingExternalTemplate = new SimpleBooleanProperty(DEFAULT_USING_EXTERNAL_TEMPLATE);
 	private final BooleanProperty saveAndOverwriteSettings = new SimpleBooleanProperty(DEFAULT_SAVE_AND_OVERWRITE_SETTINGS);

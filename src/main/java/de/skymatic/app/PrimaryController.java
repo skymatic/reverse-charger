@@ -145,6 +145,11 @@ public class PrimaryController {
 		persistSettingsCheckBox.setSelected(settings.isSaveAndOverwriteSettings());
 		settings.saveAndOverwriteSettingsProperty().bind(persistSettingsCheckBox.selectedProperty());
 
+		if (settings.isUsingExternalTemplate()) {
+			externalTemplateRadioButton.setSelected(true);
+		} else {
+			storedTemplateRadioButton.setSelected(true);
+		}
 		settings.usingExternalTemplateProperty().bind(externalTemplateRadioButton.selectedProperty());
 
 		//TODO: set the checkbox according to the settings
