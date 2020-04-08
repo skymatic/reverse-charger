@@ -89,7 +89,7 @@ public class PrimaryController {
 		invoices.addListener((ListChangeListener) (e -> updateIsReadyToGenerate()));
 
 		settingsProvider = new SettingsProvider();
-		settings = settingsProvider.loadSettings();
+		settings = settingsProvider.get();
 		defaultTemplatePath = settingsProvider.getStoragePath().resolve(Settings.STORED_TEMPLATE_NAME);
 		templatePath = Bindings.createObjectBinding(() -> {
 			if (settings.isUsingExternalTemplate()) {
