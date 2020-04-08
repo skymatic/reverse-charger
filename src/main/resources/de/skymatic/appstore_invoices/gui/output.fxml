@@ -6,9 +6,44 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-			xmlns:fx="http://javafx.com/fxml"
-			fx:controller="de.skymatic.appstore_invoices.gui.OutputController"
-			prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="de.skymatic.appstore_invoices.gui.OutputController">
+	<fx:define>
+		<ToggleGroup fx:id="templateFileToggler"/>
+	</fx:define>
+	<TableView fx:id="tableView" items="${controller.invoices}" maxHeight="200" maxWidth="400" editable="true">
+		<columns>
+			<TableColumn fx:id="columnInvoiceNumber" text="Invoice Number" editable="true"/>
+			<TableColumn fx:id="columnSubsidiary" text="Subsidiary" editable="false"/>
+			<TableColumn fx:id="columnAmount" text="Amount" editable="false"/>
+			<TableColumn fx:id="columnProceeds" text="Proceeds" editable="false"/>
+		</columns>
+	</TableView>
+	<VBox fx:id="templateVBox" alignment="BASELINE_LEFT" spacing="10.0">
+		<Label text="Template file" labelFor="$templateVBox"/>
+		<HBox spacing="10.0" alignment="CENTER_LEFT">
+			<RadioButton fx:id="storedTemplateRadioButton" toggleGroup="${templateFileToggler}" text="Use stored template" visible="true" managed="true"/>
+			<Button fx:id="replaceStoredTemplateButton" text="Replace..." onAction="#replaceStoredTemplate"/>
+		</HBox>
+		<HBox spacing="10.0" alignment="CENTER_LEFT">
+			<RadioButton fx:id="externalTemplateRadioButton" toggleGroup="${templateFileToggler}" text="Use external template" onAction="#chooseExternalTemplate"/>
+			<TextField fx:id="pathOfTemplate" text="${controller.settings.externalTemplatePath}" HBox.hgrow="ALWAYS"/>
+		</HBox>
+	</VBox>
+	<VBox alignment="BASELINE_LEFT" spacing="10.0">
+		<Label alignment="BASELINE_LEFT" text="Choose output directory:"/>
+		<HBox alignment="CENTER" spacing="10.0">
+			<TextField fx:id="pathOfOutputDirectory" text="${controller.settings.outputPath}" HBox.hgrow="ALWAYS"/>
+			<Button fx:id="outputDirectoryChooserButton" text="Choose..." onAction="#chooseOutputDirectory"/>
+		</HBox>
+	</VBox>
+	<HBox alignment="BASELINE_LEFT" spacing="10.0">
+		<CheckBox fx:id="persistSettingsCheckBox"/>
+		<Label alignment="BASELINE_LEFT" labelFor="$persistSettingsCheckBox" text="Save and overwrite settings, when generating output"/>
+	</HBox>
+	<ButtonBar buttonMinWidth="120" buttonOrder="X_I">
+		<buttons>
+			<!-- TODO add back button-->
+			<Button text="Generate invoices" ButtonBar.buttonData="FINISH" onAction="#generateInvoices" disable="${!controller.isReadyToGenerate}"/>
+		</buttons>
+	</ButtonBar>
+</VBox>
