@@ -62,6 +62,8 @@ public class FxmlLoader {
 	public Object constructController(Class<?> aClass) {
 		if (aClass.equals(PrimaryController.class)) {
 			return new PrimaryController(caller);
+		} else if(aClass.equals((OutputController.class))) {
+			return new OutputController(caller);
 		} else {
 			throw new IllegalArgumentException("Unknown Controller");
 		}

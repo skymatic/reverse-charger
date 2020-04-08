@@ -24,6 +24,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
@@ -231,6 +232,8 @@ public class PrimaryController {
 		} catch (IOException | ParseException | IllegalArgumentException e) {
 			Alerts.parseCSVFileError(e).show();
 		}
+		FxmlLoader fxmlLoader = new FxmlLoader(owner);
+		owner.setScene(fxmlLoader.createScene("output"));
 	}
 
 	@FXML
