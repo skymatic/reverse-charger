@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="AppStoreReverseCharger macOS" type="Application" factoryName="Application" folderName="runConfigurations">
-    <option name="MAIN_CLASS_NAME" value="de.skymatic.app.AppStoreReverseCharger" />
+    <option name="MAIN_CLASS_NAME" value="de.skymatic.appstore_invoices.gui.AppStoreReverseCharger" />
     <module name="appstore-reverse-charger" />
     <option name="VM_PARAMETERS" value="-DsettingsPath=&quot;~/Library/Application Support/AppStoreReverseCharger/settings.json&quot; -Xss2m -Xmx512m" />
     <extension name="coverage">
