@@ -26,6 +26,7 @@ public class SettingsProvider {
 
 	private final Gson gson;
 	private final Path storagePath;
+	private Optional<Settings> settings;
 
 	public SettingsProvider() {
 		String tempPath = Optional.ofNullable(System.getProperty(ENV_SETTINGS_PATH)).orElse(DEFAULT_SETTINGS_PATH);
@@ -35,9 +36,10 @@ public class SettingsProvider {
 				.setLenient()
 				.registerTypeAdapter(Settings.class, new SettingsJsonAdapter())
 				.create();
+		settings = Optional.empty();
 	}
 
-	public Settings loadSettings() {
+	private Settings loadSettings() {
 		try (InputStream in = Files.newInputStream(storagePath, StandardOpenOption.READ); //
 			 Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
 			Settings settings = gson.fromJson(reader, Settings.class);
@@ -48,6 +50,10 @@ public class SettingsProvider {
 		} catch (IOException e) {
 			return new Settings();
 		}
+	}
+
+	public Settings get() {
+		return settings.orElse(loadSettings());
 	}
 
 	public void save(Settings settings) throws IOException {
