@@ -31,7 +31,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Map;
-import java.util.Optional;
 
 public class OutputController {
 
@@ -54,7 +53,7 @@ public class OutputController {
 	private final HTMLGenerator htmlGenerator;
 	private final Path defaultTemplatePath;
 	private final ObservableList<Invoice> invoices;
-	private final Stage stage;
+	private final Stage owner;
 	private final SettingsProvider settingsProvider;
 	private final BooleanProperty isReadyToGenerate;
 
@@ -62,8 +61,8 @@ public class OutputController {
 	private MonthlyInvoices monthlyInvoices;
 
 
-	public OutputController(Stage stage, SettingsProvider settingsProvider, MonthlyInvoices monthlyInvoices) {
-		this.stage = stage;
+	public OutputController(Stage owner, SettingsProvider settingsProvider, MonthlyInvoices monthlyInvoices) {
+		this.owner = owner;
 		this.settingsProvider = settingsProvider;
 		settings = settingsProvider.get();
 		this.invoices = FXCollections.observableArrayList();
@@ -141,7 +140,7 @@ public class OutputController {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Template file");
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML template file", "*.html", "*.htm"));
-		File selectedFile = fileChooser.showOpenDialog(stage);
+		File selectedFile = fileChooser.showOpenDialog(owner);
 		if (selectedFile != null) {
 			try {
 				Path tmpFile = settingsProvider.getStoragePath().resolve("tmp.html");
@@ -159,7 +158,7 @@ public class OutputController {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Template file");
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML template file", "*.html", "*.htm"));
-		File selectedFile = fileChooser.showOpenDialog(stage);
+		File selectedFile = fileChooser.showOpenDialog(owner);
 		if (selectedFile != null) {
 			settings.setExternalTemplatePath(selectedFile.toPath().toString());
 		} else {
@@ -171,7 +170,7 @@ public class OutputController {
 	private void chooseOutputDirectory() {
 		DirectoryChooser directoryChooser = new DirectoryChooser();
 		directoryChooser.setTitle(("Choose directory to save output to"));
-		File selectedDirectory = directoryChooser.showDialog(stage);
+		File selectedDirectory = directoryChooser.showDialog(owner);
 		if (selectedDirectory != null) {
 			settings.setOutputPath(selectedDirectory.toPath().toString());
 		}
@@ -197,6 +196,10 @@ public class OutputController {
 
 	}
 
+	public void back() {
+		ParseSceneFactory parseSF = new ParseSceneFactory(owner);
+		owner.setScene(parseSF.createScene());
+	}
 
 	// Getter & Setter
 

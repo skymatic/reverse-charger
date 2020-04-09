@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.geometry.Insets?>
 <VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="de.skymatic.appstore_invoices.gui.OutputController">
 	<padding>
 		<Insets topRightBottomLeft="25"/>
@@ -41,9 +41,9 @@
 		<CheckBox fx:id="persistSettingsCheckBox"/>
 		<Label alignment="BASELINE_LEFT" labelFor="$persistSettingsCheckBox" text="Save and overwrite settings, when generating output"/>
 	</HBox>
-	<ButtonBar buttonMinWidth="120" buttonOrder="X_I">
+	<ButtonBar buttonMinWidth="120" buttonOrder="B_I">
 		<buttons>
-			<!-- TODO add back button-->
+			<Button text="Back" ButtonBar.buttonData="BACK_PREVIOUS" onAction="#back"/>
 			<Button text="Generate invoices" ButtonBar.buttonData="FINISH" onAction="#generateInvoices" disable="${!controller.isReadyToGenerate}"/>
 		</buttons>
 	</ButtonBar>
