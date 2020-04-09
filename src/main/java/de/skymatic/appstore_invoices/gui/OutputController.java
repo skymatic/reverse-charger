@@ -99,7 +99,7 @@ public class OutputController {
 				columnInvoiceNumber.getTableView().refresh();
 				columnInvoiceNumber.getTableView().requestFocus();
 			} else {
-				monthlyInvoices.changeSingleInvoiceNumber(invoice.getSubsidiary(), newNumberString);
+				invoice.setNumberString(newNumberString);
 			}
 		});
 

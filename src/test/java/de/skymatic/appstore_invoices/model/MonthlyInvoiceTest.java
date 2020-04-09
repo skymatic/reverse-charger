@@ -34,18 +34,6 @@ public class MonthlyInvoiceTest {
 	}
 
 	@Test
-	public void testChangingNumberOfNotExistingInvoiceThrowsException() {
-		MonthlyInvoices monthlyInvoices = new MonthlyInvoices(YearMonth.of(2020, 3), "CVS", 0);
-		Assertions.assertThrows(IllegalArgumentException.class, () -> monthlyInvoices.changeSingleInvoiceNumber(Subsidiary.JAPAN, "CVS-333"));
-	}
-
-	@Test
-	public void testChangingIssueDateOfNotExistingInvoiceThrowsException() {
-		MonthlyInvoices monthlyInvoices = new MonthlyInvoices(YearMonth.of(2020, 3), "CVS", 0);
-		Assertions.assertThrows(IllegalArgumentException.class, () -> monthlyInvoices.changeSingleIssueDate(Subsidiary.JAPAN, LocalDate.now()));
-	}
-
-	@Test
 	public void testDefaultNumberingIncreasesWithNewInvoice() {
 		int numberingSeed = 5;
 		SalesEntry salesEntry = Mockito.mock(SalesEntry.class);

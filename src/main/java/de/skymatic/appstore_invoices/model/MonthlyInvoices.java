@@ -46,22 +46,6 @@ public class MonthlyInvoices {
 		return yearMonth;
 	}
 
-	public void changeSingleInvoiceNumber(Subsidiary subsidiary, String invoiceNumber) {
-		if (invoices.containsKey(subsidiary)) {
-			invoices.get(subsidiary).setNumberString(invoiceNumber);
-		} else {
-			throw new IllegalArgumentException("Invoice for Subsidiary does not exists.");
-		}
-	}
-
-	public void changeSingleIssueDate(Subsidiary subsidiary, LocalDate issueDate) {
-		if (invoices.containsKey(subsidiary)) {
-			invoices.get(subsidiary).setIssueDate(issueDate);
-		} else {
-			throw new IllegalArgumentException("Invoice for Subsidiary does not exists.");
-		}
-	}
-
 	public int getNextInvoiceNumber() {
 		return invoiceNumberGenerator.next;
 	}
