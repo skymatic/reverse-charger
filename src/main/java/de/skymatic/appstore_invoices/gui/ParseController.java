@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
 
-public class PrimaryController {
+public class ParseController {
 
 
 	@FXML
@@ -44,7 +44,7 @@ public class PrimaryController {
 	private Optional<MonthlyInvoices> monthlyInvoices;
 	private Settings settings;
 
-	public PrimaryController(Stage owner, SettingsProvider settingsProvider) {
+	public ParseController(Stage owner, SettingsProvider settingsProvider) {
 		this.owner = owner;
 		csvPathString = new SimpleStringProperty();
 		isFileSelected = new SimpleBooleanProperty();
@@ -91,8 +91,9 @@ public class PrimaryController {
 		} catch (IOException | ParseException | IllegalArgumentException e) {
 			Alerts.parseCSVFileError(e).show();
 		}
-		FxmlLoader fxmlLoader = new FxmlLoader(owner);
-		owner.setScene(fxmlLoader.createScene("output"));
+
+		OutputSceneFactory outputSF = new OutputSceneFactory(owner, monthlyInvoices.get());
+		owner.setScene(outputSF.createScene());
 	}
 
 

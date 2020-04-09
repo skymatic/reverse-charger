@@ -1,29 +1,30 @@
 package de.skymatic.appstore_invoices.gui;
 
+import de.skymatic.appstore_invoices.settings.SettingsProvider;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 
-public class FxmlLoader {
+public abstract class SceneFactory {
 
-	private final Stage caller;
+	protected static final SettingsProvider settingsProvider = new SettingsProvider();
 
-	public FxmlLoader(Stage caller) {
-		this.caller = caller;
+	protected final String fxmlResourceName;
+
+	public SceneFactory(String fxmlResourceName) {
+		this.fxmlResourceName = fxmlResourceName;
 	}
 
 	/**
 	 * {@link #load(String) Loads} the FXML file and creates a new Scene containing the loaded ui.
 	 *
-	 * @param fxmlResourceName Name of the resource (as in {@link Class#getResource(String)}).
 	 * @throws UncheckedIOException wrapping any IOException thrown by {@link #load(String)).
 	 */
-	public Scene createScene(String fxmlResourceName) {
+	public Scene createScene() {
 		String fxmlName = fxmlResourceName + ".fxml";
 		final FXMLLoader loader;
 		try {
@@ -59,13 +60,5 @@ public class FxmlLoader {
 		return loader;
 	}
 
-	public Object constructController(Class<?> aClass) {
-		if (aClass.equals(PrimaryController.class)) {
-			return new PrimaryController(caller);
-		} else if(aClass.equals((OutputController.class))) {
-			return new OutputController(caller);
-		} else {
-			throw new IllegalArgumentException("Unknown Controller");
-		}
-	}
+	abstract Object constructController(Class<?> aClass);
 }

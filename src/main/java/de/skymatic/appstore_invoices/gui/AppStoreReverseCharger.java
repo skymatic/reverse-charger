@@ -4,8 +4,6 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
 /**
  * JavaFX App
  */
@@ -15,9 +13,9 @@ public class AppStoreReverseCharger extends Application {
 
 
 	@Override
-	public void start(Stage stage) throws IOException {
-		FxmlLoader fxmlLoader = new FxmlLoader(stage);
-		Scene scene = fxmlLoader.createScene("primary");
+	public void start(Stage stage) {
+		ParseSceneFactory parseSF = new ParseSceneFactory(stage);
+		Scene scene = parseSF.createScene();
 		stage.setScene(scene);
 		stage.setTitle(WINDOW_TITLE);
 		stage.show();
