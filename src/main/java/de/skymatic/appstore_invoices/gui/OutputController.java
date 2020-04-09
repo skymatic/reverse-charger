@@ -81,6 +81,7 @@ public class OutputController {
 		outputPath.addListener(o -> updateIsReadyToGenerate());
 
 		this.monthlyInvoices = monthlyInvoices;
+		invoices.addAll(monthlyInvoices.getInvoices());
 		htmlGenerator = new HTMLGenerator();
 	}
 
@@ -187,7 +188,7 @@ public class OutputController {
 			}
 		}
 		try {
-			Map<String, StringBuilder> htmlInvoices = htmlGenerator.createHTMLInvoices(templatePath.get(), monthlyInvoices.getInvoices());
+			Map<String, StringBuilder> htmlInvoices = htmlGenerator.createHTMLInvoices(templatePath.get(), invoices);
 			new HTMLWriter().write(outputPath.get(), htmlInvoices);
 		} catch (IOException e) {
 			//TODO: better error handling
