@@ -10,12 +10,9 @@ import javafx.beans.property.StringProperty;
 public class Settings {
 
 	public static final String STORED_TEMPLATE_NAME = "template.html";
-
 	private static final String DEFAULT_OUTPUT_PATH = ""; //TODO
 	private static final int DEFAULT_LAST_USED_INVOICE_NUMBER = 1;
-	private static final boolean DEFAULT_SAVE_AND_OVERWRITE_SETTINGS = false;
 	private static final boolean DEFAULT_USING_EXTERNAL_TEMPLATE = false;
-
 
 	private final StringProperty externalTemplatePath = new SimpleStringProperty("");
 	private final StringProperty outputPath = new SimpleStringProperty(DEFAULT_OUTPUT_PATH);

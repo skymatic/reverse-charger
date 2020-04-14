@@ -209,4 +209,8 @@ public class OutputController {
 		return invoices;
 	}
 
+	public Settings getSettings() {
+		return settings;
+	}
+
 }
