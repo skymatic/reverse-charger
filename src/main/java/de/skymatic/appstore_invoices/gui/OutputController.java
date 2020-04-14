@@ -43,8 +43,6 @@ public class OutputController {
 	@FXML
 	private TableColumn<Invoice, String> columnProceeds;
 	@FXML
-	private CheckBox persistSettingsCheckBox;
-	@FXML
 	private RadioButton externalTemplateRadioButton;
 	@FXML
 	private RadioButton storedTemplateRadioButton;
@@ -81,6 +79,7 @@ public class OutputController {
 
 		this.monthlyInvoices = monthlyInvoices;
 		invoices.addAll(monthlyInvoices.getInvoices());
+		invoices.sort((i1, i2) -> CharSequence.compare(i1.getNumberString(), i2.getNumberString()));
 		htmlGenerator = new HTMLGenerator();
 	}
 
@@ -117,9 +116,6 @@ public class OutputController {
 			return cell;
 		});
 		columnProceeds.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>((String.format("%.2f", invoice.getValue().sum()))));
-
-		persistSettingsCheckBox.setSelected(settings.isSaveAndOverwriteSettings());
-		settings.saveAndOverwriteSettingsProperty().bind(persistSettingsCheckBox.selectedProperty());
 
 		if (settings.isUsingExternalTemplate()) {
 			externalTemplateRadioButton.setSelected(true);
@@ -178,13 +174,11 @@ public class OutputController {
 
 	@FXML
 	public void generateInvoices() {
-		if (settings.isSaveAndOverwriteSettings()) {
-			try {
-				settingsProvider.save(settings);
-			} catch (IOException e) {
-				//TODO: better error handling
-				Alerts.genericError(e, "Saving settings on hard disk.").showAndWait();
-			}
+		try {
+			settingsProvider.save(settings);
+		} catch (IOException e) {
+			//TODO: better error handling
+			Alerts.genericError(e, "Saving settings on hard disk.").showAndWait();
 		}
 		try {
 			Map<String, StringBuilder> htmlInvoices = htmlGenerator.createHTMLInvoices(templatePath.get(), invoices);

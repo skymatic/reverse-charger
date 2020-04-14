@@ -87,7 +87,7 @@ public class ParseController {
 					settings.getInvoiceNumberPrefix(), //
 					settings.getLastUsedInvoiceNumber(), //
 					result.getSales().toArray(new SalesEntry[]{})));
-			settings.setLastUsedInvoiceNumber(monthlyInvoices.get().getNextInvoiceNumber());
+			//settings.setLastUsedInvoiceNumber(monthlyInvoices.get().getNextInvoiceNumber());
 		} catch (IOException | ParseException | IllegalArgumentException e) {
 			Alerts.parseCSVFileError(e).show();
 		}

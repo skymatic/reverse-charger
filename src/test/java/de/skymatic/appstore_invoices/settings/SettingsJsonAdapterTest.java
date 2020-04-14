@@ -16,14 +16,12 @@ public class SettingsJsonAdapterTest {
 		String invoiceNumberPrefix = "53";
 		int lastUsedInvoiceNumber = 12;
 		String pathToOutput = "/Path/to/Output/file";
-		boolean saveAndOverwriteSettings = true;
 		boolean usingExternalTemplate = true;
 
 		String externalTemplatePathKey = "externalTemplatePath";
 		String invoiceNumberPrefixKey = "invoiceNumberPrefix";
 		String lastUsedInvoiceNumberKey = "lastUsedInvoiceNumber";
 		String outputPathKey = "outputPath";
-		String saveAndOverwriteSettingsKey = "saveAndOverwriteSettings";
 		String usingExternalTemplateKey = "usingExternalTemplate";
 
 		Settings settings = new Settings();
@@ -31,7 +29,6 @@ public class SettingsJsonAdapterTest {
 		settings.setInvoiceNumberPrefix(invoiceNumberPrefix);
 		settings.setLastUsedInvoiceNumber(lastUsedInvoiceNumber);
 		settings.setOutputPath(pathToOutput);
-		settings.setSaveAndOverwriteSettings(saveAndOverwriteSettings);
 		settings.setUsingExternalTemplate(usingExternalTemplate);
 
 		String json = adapter.toJson(settings);
@@ -39,7 +36,6 @@ public class SettingsJsonAdapterTest {
 		Assertions.assertTrue(json.contains("\"" + invoiceNumberPrefixKey + "\":\"" + invoiceNumberPrefix + "\""));
 		Assertions.assertTrue(json.contains("\"" + lastUsedInvoiceNumberKey + "\":" + lastUsedInvoiceNumber));
 		Assertions.assertTrue(json.contains("\"" + outputPathKey + "\":\"" + pathToOutput + "\""));
-		Assertions.assertTrue(json.contains("\"" + saveAndOverwriteSettingsKey + "\":" + saveAndOverwriteSettings));
 		Assertions.assertTrue(json.contains("\"" + usingExternalTemplateKey + "\":" + usingExternalTemplate));
 
 	}
@@ -50,7 +46,6 @@ public class SettingsJsonAdapterTest {
 		String invoiceNumberPrefix = "53";
 		int lastUsedInvoiceNumber = 12;
 		String pathToOutput = "/Path/to/Output/file";
-		boolean saveAndOverwriteSettings = true;
 		boolean usingExternalTemplate = true;
 
 		String json = "{\n" +
@@ -58,7 +53,6 @@ public class SettingsJsonAdapterTest {
 				"  \"invoiceNumberPrefix\": \"" + invoiceNumberPrefix + "\",\n" +
 				"  \"lastUsedInvoiceNumber\": \"" + lastUsedInvoiceNumber + "\",\n" +
 				"  \"outputPath\": \"" + pathToOutput + "\",\n" +
-				"  \"saveAndOverwriteSettings\": " + saveAndOverwriteSettings + ",\n" +
 				"  \"usingExternalTemplate\": " + usingExternalTemplate + "\n" +
 				"}";
 
@@ -68,7 +62,6 @@ public class SettingsJsonAdapterTest {
 		Assertions.assertEquals(invoiceNumberPrefix, settings.getInvoiceNumberPrefix());
 		Assertions.assertEquals(lastUsedInvoiceNumber, settings.getLastUsedInvoiceNumber());
 		Assertions.assertEquals(pathToOutput, settings.getOutputPath());
-		Assertions.assertEquals(saveAndOverwriteSettings, settings.isSaveAndOverwriteSettings());
 		Assertions.assertEquals(usingExternalTemplate, settings.isUsingExternalTemplate());
 	}
 
