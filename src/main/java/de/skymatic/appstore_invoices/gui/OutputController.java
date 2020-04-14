@@ -17,7 +17,6 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -27,6 +26,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -66,7 +66,14 @@ public class OutputController {
 		this.invoices = FXCollections.observableArrayList();
 		isReadyToGenerate = new SimpleBooleanProperty(false);
 		invoices.addListener((ListChangeListener) (e -> updateIsReadyToGenerate()));
-		defaultTemplatePath = settingsProvider.getStoragePath().resolve(Settings.STORED_TEMPLATE_NAME);
+		Path tempTemplatePath;
+		try {
+			tempTemplatePath = Path.of(getClass().getResource("template.html").toURI());
+		} catch (URISyntaxException e) {
+			tempTemplatePath = Path.of(System.getProperty("java.io.tmpdir"));
+		}
+		defaultTemplatePath = tempTemplatePath;
+
 		templatePath = Bindings.createObjectBinding(() -> {
 			if (settings.isUsingExternalTemplate()) {
 				return Path.of(settings.getExternalTemplatePath());
@@ -132,19 +139,17 @@ public class OutputController {
 	}
 
 	@FXML
-	private void replaceStoredTemplate() {
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Open Template file");
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML template file", "*.html", "*.htm"));
-		File selectedFile = fileChooser.showOpenDialog(owner);
-		if (selectedFile != null) {
+	private void exportStoredTemplate() {
+		DirectoryChooser directoryChooser = new DirectoryChooser();
+		directoryChooser.setTitle("Select directory to export to");
+		File selectedDirectory = directoryChooser.showDialog(owner);
+		if (selectedDirectory != null) {
 			try {
-				Path tmpFile = settingsProvider.getStoragePath().resolve("tmp.html");
-				Files.copy(selectedFile.toPath(), tmpFile);
-				Files.move(tmpFile, defaultTemplatePath, StandardCopyOption.REPLACE_EXISTING);
+				Path exportPath = selectedDirectory.toPath().resolve(defaultTemplatePath.getFileName());
+				Files.copy(defaultTemplatePath, exportPath, StandardCopyOption.REPLACE_EXISTING);
 			} catch (IOException e) {
 				//TODO: better error Handling
-				Alerts.genericError(e, "Replacing the stored template by the new one.").showAndWait();
+				Alerts.genericError(e, "Exporting the stored template file to directory.").showAndWait();
 			}
 		}
 	}

@@ -23,7 +23,7 @@
 		<Label text="Template file" labelFor="$templateVBox"/>
 		<HBox spacing="10.0" alignment="CENTER_LEFT">
 			<RadioButton fx:id="storedTemplateRadioButton" toggleGroup="${templateFileToggler}" text="Use stored template" visible="true" managed="true"/>
-			<Button fx:id="replaceStoredTemplateButton" text="Replace..." onAction="#replaceStoredTemplate"/>
+			<Button fx:id="exportStoredTemplateButton" text="Export template file" onAction="#exportStoredTemplate"/>
 		</HBox>
 		<HBox spacing="10.0" alignment="CENTER_LEFT">
 			<RadioButton fx:id="externalTemplateRadioButton" toggleGroup="${templateFileToggler}" text="Use external template" onAction="#chooseExternalTemplate"/>
