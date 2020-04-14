@@ -10,9 +10,11 @@
 			font-family: 'Open Sans', sans-serif;
 			font-size: 11px;
 		}
+
 		.top {
-			width:100%
+			width: 100%
 		}
+
 		.title {
 			font-size: 24px;
 			font-family: 'Quicksand', sans-serif;
@@ -88,8 +90,7 @@
 	<p align="right">Location, {{ ISSUE_DATE }}</p>
 	<p class="invoiceNumberAndSaleDates">
 		INVOICE N°: {{ INVOICE_NUMBER }}<br>
-		SALES DATE: {{ SALES_PERIOD_START }} -
-		{{ SALES_PERIOD_END }}<br> <!--Needs to be in separate line for parser to exchange!-->
+		SALES DATE: {{ SALES_PERIOD_START }} - {{ SALES_PERIOD_END }}<br>
 
 	</p>
 	<table class="tableOfSoldProducts">
@@ -118,6 +119,6 @@
 			</td>
 		</tr>
 	</table>
-	</div>
+</div>
 </body>
 </html>

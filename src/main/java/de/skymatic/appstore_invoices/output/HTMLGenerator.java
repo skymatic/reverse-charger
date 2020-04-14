@@ -26,23 +26,27 @@ public class HTMLGenerator {
 		try (BufferedReader br = Files.newBufferedReader(templatePath)) {
 			br.lines().forEach(line -> {
 				int pos = line.indexOf(PLACEHOLDER_START);
-				if (pos >= 0) {
-					int endPos = line.indexOf(PLACEHOLDER_END, pos);
-					String placeholderString = line.substring(pos + 2, endPos).trim().toUpperCase();
+				int lastEndPosPlus2 = 0;
+				while (pos >= 0) {
+					int currentEndPos = line.indexOf(PLACEHOLDER_END, pos);
+					String placeholderString = line.substring(pos + 2, currentEndPos).trim().toUpperCase();
 					try {
 						Placeholder p = Placeholder.valueOf(placeholderString);
-						invoices.forEach(invoice -> {
-							sbs.get(invoice.getNumberString())
-									.append(line, 0, pos)
-									.append(getReplacement(invoice, p))
-									.append(line, endPos + 2, line.length());
-						});
+						for (Invoice i : invoices) {
+							sbs.get(i.getNumberString())
+									.append(line, lastEndPosPlus2, pos)
+									.append(getReplacement(i, p));
+						}
 					} catch (IllegalArgumentException e) {
 						sbs.forEach((i, sb) -> sb.append(line));
 					}
-				} else {
-					sbs.forEach((i, sb) -> sb.append(line));
+					pos = line.indexOf(PLACEHOLDER_START, currentEndPos);
+					lastEndPosPlus2 = currentEndPos + 2;
 				}
+				for (Invoice i : invoices) {
+					sbs.get(i.getNumberString()).append(line, lastEndPosPlus2, line.length());
+				}
+
 			});
 		}
 		return sbs;
