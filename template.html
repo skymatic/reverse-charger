@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<style>
+		.invoice {
+			max-width: 210mm;
+			padding: 30px;
+			margin: auto;
+			font-family: 'Open Sans', sans-serif;
+			font-size: 11px;
+		}
+		.top {
+			width:100%
+		}
+		.title {
+			font-size: 24px;
+			font-family: 'Quicksand', sans-serif;
+			text-align: left;
+		}
+
+		.subsidiaryInformation {
+			font-weight: bold;
+		}
+
+		.smallCompanyAddress {
+			font-size: 7px;
+			text-decoration: underline;
+		}
+
+
+		.yourInformation {
+			font-size: 10px;
+		}
+
+		.invoiceNumberAndSaleDates {
+			font-weight: bold;
+		}
+
+		.tableOfSoldProducts {
+			border: 1px solid black;
+
+		}
+
+		.synopsis {
+			background-color: #4DADD8;
+			color: white;
+		}
+	</style>
+</head>
+
+<body>
+<div class="invoice">
+	<table cellpadding="0" cellspacing="0" width="100%">
+		<tr class="top">
+			<td class="title">
+				Invoice
+			</td>
+			<td class="logo">
+				<img src="https://skymatic.de/img/logo-500.png" style="width:100%; max-width:50px; padding:20px">
+			</td>
+			<td class="yourInformation" ali>
+				<b>Company Name</b><br>
+				CompanyStreet<br>
+				CompanyLocation<br>
+				CompanyCountry
+			</td>
+		</tr>
+
+		<tr>
+			<td colspan="1" class="smallCompanyAddress">
+				YourCompanyName - YourCompanyAddress - YourCompanyLocation
+			</td>
+			<td></td>
+			<td rowspan="2" class="yourInformation">
+				Contact Person: Abc Xyz<br>
+				Phone: +12 345 6789<br>
+				Email: abc@xyz.com
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="subsidiaryInformation">
+				{{ SUBSIDIARY_INFORMATION }}
+			</td>
+		</tr>
+	</table>
+	<br>
+	<p align="right">Location, {{ ISSUE_DATE }}</p>
+	<p class="invoiceNumberAndSaleDates">
+		INVOICE N°: {{ INVOICE_NUMBER }}<br>
+		SALES DATE: {{ SALES_PERIOD_START }} -
+		{{ SALES_PERIOD_END }}<br> <!--Needs to be in separate line for parser to exchange!-->
+
+	</p>
+	<table class="tableOfSoldProducts">
+		<tr style="border-bottom: 1px solid #ddd;">
+			<td>
+				<b>Product</b>
+			</td>
+			<td>
+				YourProductName
+			</td>
+		</tr>
+		<tr style="border-bottom: 1px solid #ddd;">
+			<td>
+				<b>Units Sold</b>
+			</td>
+			<td>
+				{{ PRODUCT_AMOUNT }}
+			</td>
+		</tr>
+		<tr class="synopsis">
+			<td>
+				<b>Paid to Supplier</b>
+			</td>
+			<td>
+				{{ PRODUCT_PROCEEDS }} EUR
+			</td>
+		</tr>
+	</table>
+	</div>
+</body>
+</html>
