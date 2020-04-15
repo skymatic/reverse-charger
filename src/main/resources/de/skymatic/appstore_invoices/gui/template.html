@@ -3,12 +3,14 @@
 <head>
 	<meta charset="utf-8">
 	<style>
-		.invoice {
-			max-width: 210mm;
+		.A4 {
+			width: 21cm;
+			height: 29.7cm;
 			padding: 30px;
-			margin: auto;
+			margin: 0 auto;
 			font-family: 'Open Sans', sans-serif;
-			font-size: 11px;
+			font-size: 16px;
+			display: block;
 		}
 
 		.top {
@@ -16,7 +18,7 @@
 		}
 
 		.title {
-			font-size: 24px;
+			font-size: 29px;
 			font-family: 'Quicksand', sans-serif;
 			text-align: left;
 		}
@@ -26,40 +28,78 @@
 		}
 
 		.smallCompanyAddress {
-			font-size: 7px;
+			font-size: 12px;
 			text-decoration: underline;
 		}
 
 
 		.yourInformation {
-			font-size: 10px;
+			font-size: 15px;
 		}
 
 		.invoiceNumberAndSaleDates {
 			font-weight: bold;
 		}
 
+		.footer {
+			position: fixed;
+			bottom: 20px;
+			width: 100%;
+			text-align: left;
+			font-size: 15px;
+
+		}
 		.tableOfSoldProducts {
 			border: 1px solid black;
+			border-collapse: collapse;
+		}
+		.table-cell{
+			border: 1px solid black;
+			padding-left: 5px;
+			padding-right: 5px;
 
 		}
 
 		.synopsis {
+			border: 1px solid black;
 			background-color: #4DADD8;
 			color: white;
+		}
+
+
+		@media print {
+			body {
+				margin: 0;
+				padding: 0;
+			}
+
+			.A4 {
+				box-shadow: none;
+				margin: 0;
+				width: auto;
+				height: auto;
+			}
+
+			.noprint {
+				display: none;
+			}
+
+			.enable-print {
+				display: block;
+			}
 		}
 	</style>
 </head>
 
 <body>
-<div class="invoice">
+<div class="A4">
 	<table cellpadding="0" cellspacing="0" width="100%">
 		<tr class="top">
 			<td class="title">
 				Invoice
 			</td>
 			<td class="logo">
-				<img src="https://skymatic.de/img/logo-500.png" style="width:100%; max-width:50px; padding:20px">
+				<img src="https://i.imgur.com/suFypDI.png" style="width:100%; width:100px; padding:20px">
 			</td>
 			<td class="yourInformation" ali>
 				<b>Company Name</b><br>
@@ -88,37 +128,42 @@
 	</table>
 	<br>
 	<p align="right">Location, {{ ISSUE_DATE }}</p>
+	<br>
 	<p class="invoiceNumberAndSaleDates">
 		INVOICE N°: {{ INVOICE_NUMBER }}<br>
 		SALES DATE: {{ SALES_PERIOD_START }} - {{ SALES_PERIOD_END }}<br>
 
 	</p>
 	<table class="tableOfSoldProducts">
-		<tr style="border-bottom: 1px solid #ddd;">
-			<td>
+		<tr>
+			<td class="table-cell" style="width: 20%">
 				<b>Product</b>
 			</td>
-			<td>
+			<td class="table-cell" style="width: 100%">
 				YourProductName
 			</td>
 		</tr>
-		<tr style="border-bottom: 1px solid #ddd;">
-			<td>
+		<tr>
+			<td class="table-cell">
 				<b>Units Sold</b>
 			</td>
-			<td>
+			<td class="table-cell">
 				{{ PRODUCT_AMOUNT }}
 			</td>
 		</tr>
 		<tr class="synopsis">
-			<td>
+			<td class="table-cell">
 				<b>Paid to Supplier</b>
 			</td>
-			<td>
+			<td class="table-cell">
 				{{ PRODUCT_PROCEEDS }} EUR
 			</td>
 		</tr>
 	</table>
+	<div class="footer">
+		<p>Place of Business: Location / VAT ID: AB123456<br>
+			Executive Board: </p>
+	</div>
 </div>
 </body>
 </html>
