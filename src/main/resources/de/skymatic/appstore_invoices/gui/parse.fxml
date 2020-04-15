@@ -3,13 +3,14 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="de.skymatic.appstore_invoices.gui.ParseController" >
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="de.skymatic.appstore_invoices.gui.ParseController" onDragDropped="#handleDrop" onDragOver="#handleDragOver">
 	<padding>
 		<Insets topRightBottomLeft="25"/>
 	</padding>
 	<children>
 		<VBox alignment="BASELINE_LEFT" spacing="10.0">
-			<Label alignment="BASELINE_LEFT" text="Choose financial report file:" labelFor="$csvFileChooserButton"/>
+			<Label alignment="BASELINE_LEFT" text="Drag and drop single financial report .csv file."/>
+			<Label alignment="BASELINE_LEFT" text="Or choose financial report file:" labelFor="$csvFileChooserButton"/>
 			<HBox alignment="CENTER" spacing="10.0">
 				<TextField fx:id="pathOfCSVFile" text="${controller.csvPathString}" HBox.hgrow="ALWAYS"/>
 				<Button fx:id="csvFileChooserButton" text="Choose..." onAction="#chooseCSVFile"/>

@@ -16,12 +16,16 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 
 public class ParseController {
@@ -94,6 +98,37 @@ public class ParseController {
 
 		OutputSceneFactory outputSF = new OutputSceneFactory(owner, monthlyInvoices.get());
 		owner.setScene(outputSF.createScene());
+	}
+
+	@FXML
+	private void handleDragOver(DragEvent event) {
+		String validExtension = "csv";
+		Dragboard dragboard = event.getDragboard();
+		if (dragboard.hasFiles() && dragboard.getFiles().size() == 1 && validExtension.equals(getExtension(dragboard.getFiles().get(0).getName()))) {
+			event.acceptTransferModes(TransferMode.ANY);
+		}
+	}
+
+	private String getExtension(String fileName) {
+		String extension = "";
+
+		int i = fileName.lastIndexOf('.');
+		if (i > 0 && i < fileName.length() - 1)
+			return fileName.substring(i + 1).toLowerCase();
+
+		return extension;
+	}
+
+	@FXML
+	private void handleDrop(DragEvent event) throws IOException {
+		List<File> files = event.getDragboard().getFiles();
+		if (files.size() > 1) {
+			throw new IOException();
+		} else {
+			csvPathString.setValue(event.getDragboard().getFiles().get(0).toString());
+			parseFinancialReport();
+		}
+
 	}
 
 
