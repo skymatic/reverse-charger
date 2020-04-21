@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.security.cert.Extension;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +44,7 @@ public class ParseController {
 	private final StringProperty csvPathString;
 	private final BooleanProperty isFileSelected;
 	private final SettingsProvider settingsProvider;
+	private static final String EXPECTED_PARSE_FILE_ENDING = "csv";
 
 
 	private Optional<MonthlyInvoices> monthlyInvoices;
@@ -74,7 +76,7 @@ public class ParseController {
 	private void chooseCSVFile() {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Financial Report");
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Comma separated values file", "*.csv"));
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Comma separated values file", "*" + EXPECTED_PARSE_FILE_ENDING));
 		File selectedFile = fileChooser.showOpenDialog(owner);
 		if (selectedFile != null) {
 			csvPathString.setValue(selectedFile.toPath().toString());
@@ -102,35 +104,28 @@ public class ParseController {
 
 	@FXML
 	private void handleDragOver(DragEvent event) {
-		String validExtension = "csv";
 		Dragboard dragboard = event.getDragboard();
-		if (dragboard.hasFiles() && dragboard.getFiles().size() == 1 && validExtension.equals(getExtension(dragboard.getFiles().get(0).getName()))) {
+		if (dragboard.hasFiles() && (dragboard.getFiles().size() == 1) && EXPECTED_PARSE_FILE_ENDING.equals(getExtension(dragboard.getFiles().get(0).getName()))) {
 			event.acceptTransferModes(TransferMode.ANY);
 		}
 	}
 
 	private String getExtension(String fileName) {
 		String extension = "";
-
 		int i = fileName.lastIndexOf('.');
-		if (i > 0 && i < fileName.length() - 1)
+		if (i > 0 && i < fileName.length() - 1) {
 			return fileName.substring(i + 1).toLowerCase();
-
-		return extension;
+		} else {
+			return extension;
+		}
 	}
 
 	@FXML
-	private void handleDrop(DragEvent event) throws IOException {
+	private void handleDrop(DragEvent event) {
 		List<File> files = event.getDragboard().getFiles();
-		if (files.size() > 1) {
-			throw new IOException();
-		} else {
-			csvPathString.setValue(event.getDragboard().getFiles().get(0).toString());
-			parseFinancialReport();
-		}
-
+		csvPathString.setValue(files.get(0).toString());
+		parseFinancialReport();
 	}
-
 
 	// Getter & Setter
 
