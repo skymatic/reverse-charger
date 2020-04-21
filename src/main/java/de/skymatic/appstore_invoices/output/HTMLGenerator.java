@@ -45,6 +45,7 @@ public class HTMLGenerator {
 				}
 				for (Invoice i : invoices) {
 					sbs.get(i.getNumberString()).append(line, lastEndPosPlus2, line.length());
+					sbs.get(i.getNumberString()).append("\n");
 				}
 
 			});

@@ -31,6 +31,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class OutputController {
 
@@ -54,10 +55,10 @@ public class OutputController {
 	private final Stage owner;
 	private final SettingsProvider settingsProvider;
 	private final BooleanProperty isReadyToGenerate;
+	private static final int REVEAL_TIMEOUT_MS = 5000;
 
 	private Settings settings;
 	private MonthlyInvoices monthlyInvoices;
-
 
 	public OutputController(Stage owner, SettingsProvider settingsProvider, MonthlyInvoices monthlyInvoices) {
 		this.owner = owner;
@@ -188,6 +189,7 @@ public class OutputController {
 		try {
 			Map<String, StringBuilder> htmlInvoices = htmlGenerator.createHTMLInvoices(templatePath.get(), invoices);
 			new HTMLWriter().write(outputPath.get(), htmlInvoices);
+			reveal(outputPath.get());
 		} catch (IOException e) {
 			//TODO: better error handling
 			Alerts.genericError(e, "Generating the invoices from template and save them to hard disk.").showAndWait();
@@ -198,6 +200,27 @@ public class OutputController {
 	public void back() {
 		ParseSceneFactory parseSF = new ParseSceneFactory(owner);
 		owner.setScene(parseSF.createScene());
+	}
+
+	private boolean reveal(Path pathToReveal) {
+		try {
+			ProcessBuilder revealCommand = new ProcessBuilder("explorer", pathToReveal.toString());
+			Process proc = revealCommand.start();
+			boolean finishedInTime = proc.waitFor(REVEAL_TIMEOUT_MS, TimeUnit.MILLISECONDS);
+			if (finishedInTime) {
+				// The check proc.exitValue() == 0 is always false since Windows explorer return every time an exit value of 1
+				return true;
+			} else {
+				proc.destroyForcibly();
+				return false;
+			}
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			return false;
+		} catch (IOException e) {
+			Alerts.genericError(e, "Failed to open output path").showAndWait();
+			return false;
+		}
 	}
 
 	// Getter & Setter
