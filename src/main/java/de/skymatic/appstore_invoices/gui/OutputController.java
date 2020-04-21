@@ -32,6 +32,8 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.awt.Desktop;
+
 
 public class OutputController {
 
@@ -202,24 +204,11 @@ public class OutputController {
 		owner.setScene(parseSF.createScene());
 	}
 
-	private boolean reveal(Path pathToReveal) {
+	private void reveal(Path pathToReveal) {
 		try {
-			ProcessBuilder revealCommand = new ProcessBuilder("explorer", pathToReveal.toString());
-			Process proc = revealCommand.start();
-			boolean finishedInTime = proc.waitFor(REVEAL_TIMEOUT_MS, TimeUnit.MILLISECONDS);
-			if (finishedInTime) {
-				// The check proc.exitValue() == 0 is always false since Windows explorer return every time an exit value of 1
-				return true;
-			} else {
-				proc.destroyForcibly();
-				return false;
-			}
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-			return false;
+			Desktop.getDesktop().open(new File(pathToReveal.toString()));
 		} catch (IOException e) {
 			Alerts.genericError(e, "Failed to open output path").showAndWait();
-			return false;
 		}
 	}
 
