@@ -96,7 +96,7 @@
                 <os><family>windows</family></os>
             </activation>
             <properties>
-				<jpackage.jvmArgs.settings>-DsettingsPath="~/AppData/Roaming/AppStoreReverseCharger/settings.json"</jpackage.jvmArgs.settings>
+				<jpackage.jvmArgs.settings>-DsettingsPath="~/AppData/Roaming/AppStoreReverse' 'Charger/settings.json"</jpackage.jvmArgs.settings>
             </properties>
         </profile>
         <profile>
@@ -105,7 +105,7 @@
                 <os><family>mac</family></os>
             </activation>
             <properties>
-                <jpackage.jvmArgs.settings>-DsettingsPath="~/Library/Application\ Support/AppStoreReverseCharger/settings.json"</jpackage.jvmArgs.settings>
+                <jpackage.jvmArgs.settings>-DsettingsPath="~/Library/Application' 'Support/AppStoreReverseCharger/settings.json"</jpackage.jvmArgs.settings>
             </properties>
         </profile>
         <profile>
