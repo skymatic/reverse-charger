@@ -1,0 +1,86 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Create Release with tag
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    tags:
+      - 'v*'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    name: Builds the project appstore-reverse-charger for multiple systems
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - uses: actions/checkout@v2.1.0
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - name: Set up JDK
+      uses: actions/setup-java@v1.3.0
+      with:
+        java-version:  14
+    - name: Build with maven
+      run: mvn -B install --file pom.xml
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: charger-${{matrix.os}}.zip
+        path: target/charger.zip
+  release: 
+    name: Creates a release
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2.1.0
+      - id: create release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: Automatic created release by github actions.
+          draft: false
+          prerelease: false
+      - name: Downloads generated files (Linux)
+        uses: actions/download-artifact@v1
+        with:
+          name: charger-ubuntu-latest.zip
+      - uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./charger-ubuntu-latest.zip #/javafx-testkit-ubuntu-latest.zip
+          asset_name: charger-linux.zip
+          asset_content_type: application/zip
+      - name: Downloads generated files (Windows)
+        uses: actions/download-artifact@v1
+        with:
+          name: charger-windows-latest.zip
+      - uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./charger-windows-latest.zip #javafx-testkit-windows-latest.zip
+          asset_name: charger-windows.zip
+          asset_content_type: application/zip
+      - name: Downloads generated files (MacOS)
+        uses: actions/download-artifact@v1
+        with:
+          name: javafx-testkit-macOS-latest.zip
+      - uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./charger-macOS-latest.zip #/javafx-testkit-macOS-latest.zip
+          asset_name: charger-macOS.zip
+          asset_content_type: application/zip
