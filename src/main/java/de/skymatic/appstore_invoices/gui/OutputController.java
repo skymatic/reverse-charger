@@ -195,10 +195,7 @@ public class OutputController {
 		try {
 			Map<String, StringBuilder> htmlInvoices = htmlGenerator.createHTMLInvoices(templatePath.get(), invoices);
 			new HTMLWriter().write(outputPath.get(), htmlInvoices);
-
-			if (!revealCommand.isEmpty()) { //Reveal OutputPath if Os and default command is found.
-				reveal(outputPath.get());
-			}
+			revealCommand.ifPresent(processBuilder -> reveal(outputPath.get()));
 		} catch (IOException e) {
 			//TODO: better error handling
 			Alerts.genericError(e, "Generating the invoices from template and save them to hard disk.").showAndWait();

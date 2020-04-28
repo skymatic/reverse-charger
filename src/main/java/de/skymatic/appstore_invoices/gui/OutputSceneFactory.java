@@ -3,7 +3,6 @@ package de.skymatic.appstore_invoices.gui;
 import de.skymatic.appstore_invoices.model.MonthlyInvoices;
 import javafx.stage.Stage;
 
-import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -13,13 +12,12 @@ public class OutputSceneFactory extends SceneFactory {
 
 	private final MonthlyInvoices monthlyInvoices;
 	private final Stage owner;
-	private Optional<ProcessBuilder> revealCommand;
+
 
 	public OutputSceneFactory(Stage owner, MonthlyInvoices monthlyInvoices) {
 		super(fxmlResourceName);
 		this.monthlyInvoices = monthlyInvoices;
 		this.owner = owner;
-		revealCommand = getRevealProcess();
 	}
 
 	private enum OS {
@@ -41,7 +39,7 @@ public class OutputSceneFactory extends SceneFactory {
 		} else return OS.OTHER;
 	}
 
-	public static Optional<ProcessBuilder> getRevealProcess() {
+	public Optional<ProcessBuilder> getRevealProcess() {
 		OS os = getOs();
 		ProcessBuilder revealCommand;
 		String systemSpecificCommand;
@@ -56,7 +54,6 @@ public class OutputSceneFactory extends SceneFactory {
 				systemSpecificCommand = "xdg-open";
 				break;
 			default:
-				systemSpecificCommand = "";
 				return Optional.empty();
 		}
 		revealCommand = new ProcessBuilder(systemSpecificCommand);
@@ -65,6 +62,7 @@ public class OutputSceneFactory extends SceneFactory {
 
 	@Override
 	Object constructController(Class<?> aClass) {
+		Optional<ProcessBuilder> revealCommand = getRevealProcess();
 		return new OutputController(owner, SceneFactory.settingsProvider, monthlyInvoices, revealCommand);
 	}
 }
