@@ -76,7 +76,7 @@ public class ParseController {
 	private void chooseCSVFile() {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Financial Report");
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Comma separated values file", "*" + EXPECTED_PARSE_FILE_ENDING));
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Comma separated values file", "*." + EXPECTED_PARSE_FILE_ENDING));
 		File selectedFile = fileChooser.showOpenDialog(owner);
 		if (selectedFile != null) {
 			csvPathString.setValue(selectedFile.toPath().toString());
