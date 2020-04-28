@@ -28,11 +28,13 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-import java.awt.Desktop;
 
 
 public class OutputController {
@@ -61,8 +63,9 @@ public class OutputController {
 
 	private Settings settings;
 	private MonthlyInvoices monthlyInvoices;
+	private Optional<ProcessBuilder> revealCommand;
 
-	public OutputController(Stage owner, SettingsProvider settingsProvider, MonthlyInvoices monthlyInvoices) {
+	public OutputController(Stage owner, SettingsProvider settingsProvider, MonthlyInvoices monthlyInvoices, Optional<ProcessBuilder> revealCommand) {
 		this.owner = owner;
 		this.settingsProvider = settingsProvider;
 		settings = settingsProvider.get();
@@ -91,6 +94,7 @@ public class OutputController {
 		invoices.addAll(monthlyInvoices.getInvoices());
 		invoices.sort((i1, i2) -> CharSequence.compare(i1.getNumberString(), i2.getNumberString()));
 		htmlGenerator = new HTMLGenerator();
+		this.revealCommand = revealCommand;
 	}
 
 	@FXML
@@ -191,7 +195,10 @@ public class OutputController {
 		try {
 			Map<String, StringBuilder> htmlInvoices = htmlGenerator.createHTMLInvoices(templatePath.get(), invoices);
 			new HTMLWriter().write(outputPath.get(), htmlInvoices);
-			reveal(outputPath.get());
+
+			if (!revealCommand.isEmpty()) { //Reveal OutputPath if Os and default command is found.
+				reveal(outputPath.get());
+			}
 		} catch (IOException e) {
 			//TODO: better error handling
 			Alerts.genericError(e, "Generating the invoices from template and save them to hard disk.").showAndWait();
@@ -204,11 +211,25 @@ public class OutputController {
 		owner.setScene(parseSF.createScene());
 	}
 
-	private void reveal(Path pathToReveal) {
+	private boolean reveal(Path pathToReveal) {
 		try {
-			Desktop.getDesktop().open(new File(pathToReveal.toString()));
+			List<String> command = revealCommand.get().command();
+			command.add(pathToReveal.toString());
+			revealCommand.get().command(command);
+			Process proc = revealCommand.get().start();
+			boolean finishedInTime = proc.waitFor(REVEAL_TIMEOUT_MS, TimeUnit.MILLISECONDS);
+			if (finishedInTime) {
+				return true;
+			} else {
+				proc.destroyForcibly();
+				return false;
+			}
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			return false;
 		} catch (IOException e) {
 			Alerts.genericError(e, "Failed to open output path").showAndWait();
+			return false;
 		}
 	}
 
