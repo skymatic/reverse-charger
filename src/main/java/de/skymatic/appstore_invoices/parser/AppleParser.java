@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 public class AppleParser implements CSVParser {
 
 	private static final int MIN_COLUMN_COUNT = 10;
+	private boolean endOfReport = false;
 
 	public ParseResult parseCSV(Path p) throws IOException, ParseException {
 		StringReference lastReadLine = new StringReference();
@@ -23,7 +24,7 @@ public class AppleParser implements CSVParser {
 			String[] monthYear = header.substring(header.indexOf('(') + 1, header.indexOf(')')).split(",");
 			YearMonth yearMonth = YearMonth.of(Integer.valueOf(monthYear[1].trim()), Month.valueOf(monthYear[0].trim().toUpperCase()));
 
-			Collection<SalesEntry> sales = br.lines().filter(line -> line.startsWith("\""))
+			Collection<SalesEntry> sales = br.lines().filter(line -> !isLastLine(line) && line.startsWith("\""))
 					.map(line -> lastReadLine.copyAndReturn(line))
 					.map(line -> line.replaceAll("[\"]", "").split(","))
 					.map(splittedLine -> {
@@ -44,6 +45,11 @@ public class AppleParser implements CSVParser {
 		} catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
 			throw new ParseException("Error parsing line:  " + lastReadLine.get(), e);
 		}
+	}
+
+	private boolean isLastLine(String line) {
+		if (line.contains("Paid to")) endOfReport = true;
+		return endOfReport;
 	}
 
 	private RegionPlusCurrency getRegionPlusCurrency(String rpcString) {
