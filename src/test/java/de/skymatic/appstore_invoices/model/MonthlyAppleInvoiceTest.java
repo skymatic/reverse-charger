@@ -7,7 +7,7 @@ import org.mockito.Mockito;
 import java.time.LocalDate;
 import java.time.YearMonth;
 
-public class MonthlyInvoiceTest {
+public class MonthlyAppleInvoiceTest {
 
 	@Test
 	public void testAddingSalesEntryOfNoneExistingInvoiceCreatesIt() {

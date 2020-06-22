@@ -13,7 +13,7 @@ public class MonthlyInvoices {
 	private static final LocalDate CURRENT_TIME = LocalDate.now();
 
 	private final YearMonth yearMonth;
-	private final Map<Subsidiary, Invoice> invoices;
+	private final Map<AppleSubsidiary, AppleInvoice> invoices;
 	private final InvoiceNumberGenerator invoiceNumberGenerator;
 
 	private String numberPrefix;
@@ -29,16 +29,16 @@ public class MonthlyInvoices {
 	}
 
 	public void addSalesEntry(SalesEntry salesEntry) {
-		Subsidiary subsidiary = AppleUtility.mapRegionPlusCurrencyToSubsidiary(salesEntry.getRpc());
-		if (invoices.containsKey(subsidiary)) {
-			invoices.get(subsidiary).addSales(salesEntry);
+		AppleSubsidiary appleSubsidiary = AppleUtility.mapRegionPlusCurrencyToSubsidiary(salesEntry.getRpc());
+		if (invoices.containsKey(appleSubsidiary)) {
+			invoices.get(appleSubsidiary).addSales(salesEntry);
 		} else {
 			var numberString = numberPrefix + String.valueOf(invoiceNumberGenerator.getAsInt());
-			invoices.put(subsidiary, new Invoice(numberString, yearMonth, CURRENT_TIME, salesEntry));
+			invoices.put(appleSubsidiary, new AppleInvoice(numberString, yearMonth, CURRENT_TIME, salesEntry));
 		}
 	}
 
-	public Collection<Invoice> getInvoices() {
+	public Collection<AppleInvoice> getInvoices() {
 		return Collections.unmodifiableCollection(invoices.values());
 	}
 

@@ -1,6 +1,6 @@
 package de.skymatic.appstore_invoices.gui;
 
-import de.skymatic.appstore_invoices.model.Invoice;
+import de.skymatic.appstore_invoices.model.AppleInvoice;
 import de.skymatic.appstore_invoices.model.MonthlyInvoices;
 import de.skymatic.appstore_invoices.output.HTMLGenerator;
 import de.skymatic.appstore_invoices.output.HTMLWriter;
@@ -40,13 +40,13 @@ import java.util.concurrent.TimeUnit;
 public class OutputController {
 
 	@FXML
-	private TableColumn<Invoice, String> columnInvoiceNumber;
+	private TableColumn<AppleInvoice, String> columnInvoiceNumber;
 	@FXML
-	private TableColumn<Invoice, String> columnSubsidiary;
+	private TableColumn<AppleInvoice, String> columnSubsidiary;
 	@FXML
-	private TableColumn<Invoice, String> columnAmount;
+	private TableColumn<AppleInvoice, String> columnAmount;
 	@FXML
-	private TableColumn<Invoice, String> columnProceeds;
+	private TableColumn<AppleInvoice, String> columnProceeds;
 	@FXML
 	private RadioButton externalTemplateRadioButton;
 	@FXML
@@ -55,7 +55,7 @@ public class OutputController {
 	private final ObjectBinding<Path> outputPath;
 	private final HTMLGenerator htmlGenerator;
 	private final Path defaultTemplatePath;
-	private final ObservableList<Invoice> invoices;
+	private final ObservableList<AppleInvoice> invoices;
 	private final Stage owner;
 	private final SettingsProvider settingsProvider;
 	private final BooleanProperty isReadyToGenerate;
@@ -99,11 +99,11 @@ public class OutputController {
 
 	@FXML
 	public void initialize() {
-		columnInvoiceNumber.setCellFactory(TextFieldTableCell.<Invoice>forTableColumn());
+		columnInvoiceNumber.setCellFactory(TextFieldTableCell.<AppleInvoice>forTableColumn());
 		columnInvoiceNumber.setCellValueFactory(invoice -> new SimpleStringProperty(invoice.getValue().getNumberString()));
-		columnInvoiceNumber.setOnEditCommit((TableColumn.CellEditEvent<Invoice, String> event) -> {
+		columnInvoiceNumber.setOnEditCommit((TableColumn.CellEditEvent<AppleInvoice, String> event) -> {
 			String newNumberString = event.getNewValue();
-			Invoice invoice = event.getRowValue();
+			AppleInvoice invoice = event.getRowValue();
 			if (invoices.stream()
 					.filter(i -> !i.equals(invoice))
 					.anyMatch(i -> i.getNumberString().equals(newNumberString))) {
@@ -116,16 +116,16 @@ public class OutputController {
 			}
 		});
 
-		columnSubsidiary.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(invoice.getValue().getSubsidiary().toString()));
+		columnSubsidiary.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(invoice.getValue().getAppleSubsidiary().toString()));
 		columnAmount.setCellFactory(column -> {
-			var cell = new TextFieldTableCell<Invoice, String>();
+			var cell = new TextFieldTableCell<AppleInvoice, String>();
 			cell.setAlignment(Pos.BASELINE_RIGHT);
 			return cell;
 		});
 		columnAmount.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(String.valueOf(invoice.getValue().getAmount())));
 
 		columnProceeds.setCellFactory(column -> {
-			var cell = new TextFieldTableCell<Invoice, String>();
+			var cell = new TextFieldTableCell<AppleInvoice, String>();
 			cell.setAlignment(Pos.BASELINE_RIGHT);
 			return cell;
 		});
@@ -240,7 +240,7 @@ public class OutputController {
 		return isReadyToGenerate.get();
 	}
 
-	public ObservableList<Invoice> getInvoices() {
+	public ObservableList<AppleInvoice> getInvoices() {
 		return invoices;
 	}
 

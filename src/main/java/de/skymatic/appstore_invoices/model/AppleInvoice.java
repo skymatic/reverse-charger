@@ -5,10 +5,10 @@ import java.time.YearMonth;
 import java.util.Hashtable;
 import java.util.Map;
 
-public class Invoice {
+public class AppleInvoice {
 
 
-	private final Subsidiary subsidiary;
+	private final AppleSubsidiary appleSubsidiary;
 	private final LocalDate startOfPeriod;
 	private final LocalDate endOfPeriod;
 	private final Map<RegionPlusCurrency, SalesEntry> salesPerCountryPlusCurrency;
@@ -16,8 +16,8 @@ public class Invoice {
 	private LocalDate issueDate;
 	private String numberString;
 
-	public Invoice(String numberString, YearMonth yearMonth, LocalDate issueDate, SalesEntry s) {
-		this.subsidiary = AppleUtility.mapRegionPlusCurrencyToSubsidiary(s.getRpc());
+	public AppleInvoice(String numberString, YearMonth yearMonth, LocalDate issueDate, SalesEntry s) {
+		this.appleSubsidiary = AppleUtility.mapRegionPlusCurrencyToSubsidiary(s.getRpc());
 		this.numberString = numberString;
 		this.issueDate = issueDate;
 		this.startOfPeriod = yearMonth.atDay(1);
@@ -26,8 +26,8 @@ public class Invoice {
 		salesPerCountryPlusCurrency.put(s.getRpc(), s);
 	}
 
-	public Subsidiary getSubsidiary() {
-		return subsidiary;
+	public AppleSubsidiary getAppleSubsidiary() {
+		return appleSubsidiary;
 	}
 
 	public double sum() {
@@ -42,8 +42,8 @@ public class Invoice {
 		final var rpc = s.getRpc();
 		if (salesPerCountryPlusCurrency.containsKey(rpc)) {
 			throw new IllegalArgumentException("RegionPlusCurrency " + rpc.name() + " already exists!");
-		} else if (subsidiary != AppleUtility.mapRegionPlusCurrencyToSubsidiary(rpc)) {
-			throw new IllegalArgumentException("RegionPlusCurrency " + rpc.name() + " does not belong to subsidiary " + this.subsidiary.name());
+		} else if (appleSubsidiary != AppleUtility.mapRegionPlusCurrencyToSubsidiary(rpc)) {
+			throw new IllegalArgumentException("RegionPlusCurrency " + rpc.name() + " does not belong to subsidiary " + this.appleSubsidiary.name());
 		} else {
 			salesPerCountryPlusCurrency.put(rpc, s);
 		}

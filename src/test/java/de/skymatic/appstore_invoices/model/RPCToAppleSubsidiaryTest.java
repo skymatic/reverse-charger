@@ -3,7 +3,7 @@ package de.skymatic.appstore_invoices.model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class RPCToSubsidiaryTest {
+public class RPCToAppleSubsidiaryTest {
 
 	@Test
 	public void testEachExistingRPCIsMappedToASubsidiary() {

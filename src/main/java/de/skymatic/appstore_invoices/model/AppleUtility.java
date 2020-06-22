@@ -2,22 +2,22 @@ package de.skymatic.appstore_invoices.model;
 
 public class AppleUtility {
 
-	public static Subsidiary mapRegionPlusCurrencyToSubsidiary(RegionPlusCurrency rpc) {
+	public static AppleSubsidiary mapRegionPlusCurrencyToSubsidiary(RegionPlusCurrency rpc) {
 		switch (rpc) {
 			case CANADA_CAD:
-				return Subsidiary.CANADA;
+				return AppleSubsidiary.CANADA;
 			case AUSTRALIA_AUD:
 			case NEW_ZEALAND_NZD:
-				return Subsidiary.AUSTRALIA;
+				return AppleSubsidiary.AUSTRALIA;
 			case BRAZIL_BRL:
 			case CHILE_CLP:
 			case COLOMBIA_COP:
 			case MEXICO_MXN:
 			case AMERICAS_USD:
 			case PERU_PEN:
-				return Subsidiary.AMERICA;
+				return AppleSubsidiary.AMERICA;
 			case JAPAN_JPY:
-				return Subsidiary.JAPAN;
+				return AppleSubsidiary.JAPAN;
 			case SWITZERLAND_CHF:
 			case EURO_ZONE_EUR:
 			case UNITED_ARAB_EMIRATES_AED:
@@ -54,7 +54,7 @@ public class AppleUtility {
 			case VIETNAM_VND:
 			case REST_OF_WORLD_USD:
 			case SOUTH_AFRICA_ZAR:
-				return Subsidiary.ROW;
+				return AppleSubsidiary.ROW;
 			default:
 				throw new IllegalArgumentException("No existing mapping for RegionPlusCurrency: " + rpc.toString());
 		}
