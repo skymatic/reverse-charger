@@ -1,6 +1,6 @@
 package de.skymatic.appstore_invoices.output;
 
-import de.skymatic.appstore_invoices.model.AppleInvoice;
+import de.skymatic.appstore_invoices.model.apple.AppleInvoice;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;

@@ -1,4 +1,4 @@
-package de.skymatic.appstore_invoices.model;
+package de.skymatic.appstore_invoices.model.apple;
 
 public class AppleSalesEntry {
 

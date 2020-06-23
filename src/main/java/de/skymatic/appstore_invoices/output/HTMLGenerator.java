@@ -1,6 +1,6 @@
 package de.skymatic.appstore_invoices.output;
 
-import de.skymatic.appstore_invoices.model.AppleInvoice;
+import de.skymatic.appstore_invoices.model.apple.AppleInvoice;
 
 import java.io.BufferedReader;
 import java.io.IOException;

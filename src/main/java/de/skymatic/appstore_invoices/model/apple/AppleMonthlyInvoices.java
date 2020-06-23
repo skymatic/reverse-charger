@@ -1,4 +1,4 @@
-package de.skymatic.appstore_invoices.model;
+package de.skymatic.appstore_invoices.model.apple;
 
 import java.time.LocalDate;
 import java.time.YearMonth;

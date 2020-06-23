@@ -1,4 +1,4 @@
-package de.skymatic.appstore_invoices.model;
+package de.skymatic.appstore_invoices.model.apple;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

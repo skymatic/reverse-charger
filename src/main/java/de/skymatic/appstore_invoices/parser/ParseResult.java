@@ -1,6 +1,6 @@
 package de.skymatic.appstore_invoices.parser;
 
-import de.skymatic.appstore_invoices.model.AppleSalesEntry;
+import de.skymatic.appstore_invoices.model.apple.AppleSalesEntry;
 
 import java.time.YearMonth;
 import java.util.Collection;

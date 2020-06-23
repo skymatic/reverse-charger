@@ -1,7 +1,7 @@
 package de.skymatic.appstore_invoices.parser;
 
-import de.skymatic.appstore_invoices.model.RegionPlusCurrency;
-import de.skymatic.appstore_invoices.model.AppleSalesEntry;
+import de.skymatic.appstore_invoices.model.apple.RegionPlusCurrency;
+import de.skymatic.appstore_invoices.model.apple.AppleSalesEntry;
 
 import java.io.BufferedReader;
 import java.io.IOException;

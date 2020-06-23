@@ -1,7 +1,7 @@
 package de.skymatic.appstore_invoices.gui;
 
-import de.skymatic.appstore_invoices.model.AppleInvoice;
-import de.skymatic.appstore_invoices.model.AppleMonthlyInvoices;
+import de.skymatic.appstore_invoices.model.apple.AppleInvoice;
+import de.skymatic.appstore_invoices.model.apple.AppleMonthlyInvoices;
 import de.skymatic.appstore_invoices.output.HTMLGenerator;
 import de.skymatic.appstore_invoices.output.HTMLWriter;
 import de.skymatic.appstore_invoices.settings.Settings;

@@ -1,7 +1,7 @@
 package de.skymatic.appstore_invoices.gui;
 
-import de.skymatic.appstore_invoices.model.AppleMonthlyInvoices;
-import de.skymatic.appstore_invoices.model.AppleSalesEntry;
+import de.skymatic.appstore_invoices.model.apple.AppleMonthlyInvoices;
+import de.skymatic.appstore_invoices.model.apple.AppleSalesEntry;
 import de.skymatic.appstore_invoices.parser.AppleParser;
 import de.skymatic.appstore_invoices.parser.CSVParser;
 import de.skymatic.appstore_invoices.parser.ParseException;
