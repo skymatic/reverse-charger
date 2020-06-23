@@ -1,7 +1,7 @@
 package de.skymatic.appstore_invoices.parser;
 
 import de.skymatic.appstore_invoices.model.RegionPlusCurrency;
-import de.skymatic.appstore_invoices.model.SalesEntry;
+import de.skymatic.appstore_invoices.model.AppleSalesEntry;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class AppleParser implements CSVParser {
 			String[] monthYear = header.substring(header.indexOf('(') + 1, header.indexOf(')')).split(",");
 			YearMonth yearMonth = YearMonth.of(Integer.valueOf(monthYear[1].trim()), Month.valueOf(monthYear[0].trim().toUpperCase()));
 
-			Collection<SalesEntry> sales = br.lines().filter(line -> !isLastLine(line) && line.startsWith("\""))
+			Collection<AppleSalesEntry> sales = br.lines().filter(line -> !isLastLine(line) && line.startsWith("\""))
 					.map(line -> lastReadLine.copyAndReturn(line))
 					.map(line -> line.replaceAll("[\"]", "").split(","))
 					.map(splittedLine -> {
@@ -38,7 +38,7 @@ public class AppleParser implements CSVParser {
 						double totalOwned = Double.parseDouble(splittedLine[7]);
 						double exchangeRate = Double.parseDouble(splittedLine[8]);
 						double proceeds = Double.parseDouble(splittedLine[9]);
-						return new SalesEntry(rpc, units, earned, pretaxSubtotal, inputTax, adjustments, withholdingTax, totalOwned, exchangeRate, proceeds);
+						return new AppleSalesEntry(rpc, units, earned, pretaxSubtotal, inputTax, adjustments, withholdingTax, totalOwned, exchangeRate, proceeds);
 					}).collect(Collectors.toList());
 
 			return new ParseResult(yearMonth, sales);

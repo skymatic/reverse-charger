@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.time.LocalDate;
 import java.time.YearMonth;
 
 public class MonthlyAppleInvoiceTest {
@@ -14,20 +13,20 @@ public class MonthlyAppleInvoiceTest {
 		MonthlyInvoices monthlyInvoices = new MonthlyInvoices(YearMonth.of(2020, 3), "CVS", 0);
 		Assertions.assertEquals(0, monthlyInvoices.getInvoices().size());
 
-		SalesEntry salesEntry = Mockito.mock(SalesEntry.class);
-		Mockito.when(salesEntry.getRpc()).thenReturn(RegionPlusCurrency.AMERICAS_USD);
-		monthlyInvoices.addSalesEntry(salesEntry);
+		AppleSalesEntry appleSalesEntry = Mockito.mock(AppleSalesEntry.class);
+		Mockito.when(appleSalesEntry.getRpc()).thenReturn(RegionPlusCurrency.AMERICAS_USD);
+		monthlyInvoices.addSalesEntry(appleSalesEntry);
 		Assertions.assertEquals(1, monthlyInvoices.getInvoices().size());
 	}
 
 	@Test
 	public void testAddingSalesEntryOfExistingSubsidiaryAddsIt() {
-		SalesEntry salesEntry = Mockito.mock(SalesEntry.class);
-		Mockito.when(salesEntry.getRpc()).thenReturn(RegionPlusCurrency.AMERICAS_USD);
-		MonthlyInvoices monthlyInvoices = new MonthlyInvoices(YearMonth.of(2020, 3), "CVS", 0, salesEntry);
+		AppleSalesEntry appleSalesEntry = Mockito.mock(AppleSalesEntry.class);
+		Mockito.when(appleSalesEntry.getRpc()).thenReturn(RegionPlusCurrency.AMERICAS_USD);
+		MonthlyInvoices monthlyInvoices = new MonthlyInvoices(YearMonth.of(2020, 3), "CVS", 0, appleSalesEntry);
 		int expected = monthlyInvoices.getInvoices().size();
 
-		SalesEntry other = Mockito.mock(SalesEntry.class);
+		AppleSalesEntry other = Mockito.mock(AppleSalesEntry.class);
 		Mockito.when(other.getRpc()).thenReturn(RegionPlusCurrency.MEXICO_MXN);
 		monthlyInvoices.addSalesEntry(other);
 		Assertions.assertEquals(expected, monthlyInvoices.getInvoices().size());
@@ -36,11 +35,11 @@ public class MonthlyAppleInvoiceTest {
 	@Test
 	public void testDefaultNumberingIncreasesWithNewInvoice() {
 		int numberingSeed = 5;
-		SalesEntry salesEntry = Mockito.mock(SalesEntry.class);
-		Mockito.when(salesEntry.getRpc()).thenReturn(RegionPlusCurrency.AMERICAS_USD);
-		MonthlyInvoices monthlyInvoices = new MonthlyInvoices(YearMonth.of(2020, 3), "CVS", numberingSeed, salesEntry);
+		AppleSalesEntry appleSalesEntry = Mockito.mock(AppleSalesEntry.class);
+		Mockito.when(appleSalesEntry.getRpc()).thenReturn(RegionPlusCurrency.AMERICAS_USD);
+		MonthlyInvoices monthlyInvoices = new MonthlyInvoices(YearMonth.of(2020, 3), "CVS", numberingSeed, appleSalesEntry);
 
-		SalesEntry other = Mockito.mock(SalesEntry.class);
+		AppleSalesEntry other = Mockito.mock(AppleSalesEntry.class);
 		Mockito.when(other.getRpc()).thenReturn(RegionPlusCurrency.JAPAN_JPY);
 		monthlyInvoices.addSalesEntry(other);
 

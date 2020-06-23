@@ -14,7 +14,7 @@ public class AppleInvoiceTest {
 
 	@Test
 	public void testEmptyInvoiceReturnsZero() {
-		SalesEntry s = Mockito.mock(SalesEntry.class);
+		AppleSalesEntry s = Mockito.mock(AppleSalesEntry.class);
 		Mockito.when(s.getRpc()).thenReturn(RegionPlusCurrency.AMERICAS_USD);
 		AppleInvoice i = new AppleInvoice("0",dummyYearMonth, dummyIssueDate, s);
 		Assertions.assertEquals(0, i.sum());
@@ -25,7 +25,7 @@ public class AppleInvoiceTest {
 		//RegionPlusCurrency.JAPAN_JPY will be mapped to Subsidiary.JAPAN, see AppleUtility class
 		final AppleSubsidiary expectedAppleSubsidiary = AppleSubsidiary.JAPAN;
 		final RegionPlusCurrency expectedRPC = RegionPlusCurrency.JAPAN_JPY;
-		SalesEntry s = Mockito.mock(SalesEntry.class);
+		AppleSalesEntry s = Mockito.mock(AppleSalesEntry.class);
 		Mockito.when(s.getRpc()).thenReturn(expectedRPC);
 		AppleInvoice i = new AppleInvoice("0", dummyYearMonth, dummyIssueDate, s);
 		Assertions.assertEquals(expectedAppleSubsidiary, i.getAppleSubsidiary());
@@ -34,10 +34,10 @@ public class AppleInvoiceTest {
 	@Test
 	public void testSumFunctionCalculatesSum() {
 		final double expectedSum = 100.0;
-		SalesEntry s1 = Mockito.mock(SalesEntry.class);
+		AppleSalesEntry s1 = Mockito.mock(AppleSalesEntry.class);
 		Mockito.when(s1.getRpc()).thenReturn(RegionPlusCurrency.AUSTRALIA_AUD);
 		Mockito.when(s1.getProceeds()).thenReturn((50.0));
-		SalesEntry s2 = Mockito.mock(SalesEntry.class);
+		AppleSalesEntry s2 = Mockito.mock(AppleSalesEntry.class);
 		Mockito.when(s2.getRpc()).thenReturn(RegionPlusCurrency.NEW_ZEALAND_NZD);
 		Mockito.when(s2.getProceeds()).thenReturn((50.0));
 		AppleInvoice i = new AppleInvoice("0", dummyYearMonth, dummyIssueDate, s1);
@@ -48,10 +48,10 @@ public class AppleInvoiceTest {
 	@Test
 	public void testAmountFunctionCalculatesAmount() {
 		final int expectedAmount = 100;
-		SalesEntry s1 = Mockito.mock(SalesEntry.class);
+		AppleSalesEntry s1 = Mockito.mock(AppleSalesEntry.class);
 		Mockito.when(s1.getRpc()).thenReturn(RegionPlusCurrency.AUSTRALIA_AUD);
 		Mockito.when(s1.getUnitsSold()).thenReturn((50));
-		SalesEntry s2 = Mockito.mock(SalesEntry.class);
+		AppleSalesEntry s2 = Mockito.mock(AppleSalesEntry.class);
 		Mockito.when(s2.getRpc()).thenReturn(RegionPlusCurrency.NEW_ZEALAND_NZD);
 		Mockito.when(s2.getUnitsSold()).thenReturn((50));
 		AppleInvoice i = new AppleInvoice("0", dummyYearMonth, dummyIssueDate, s1);
@@ -61,7 +61,7 @@ public class AppleInvoiceTest {
 
 	@Test
 	public void testAlreadyExistingRPCThrowsException() {
-		SalesEntry s1 = Mockito.mock(SalesEntry.class);
+		AppleSalesEntry s1 = Mockito.mock(AppleSalesEntry.class);
 		Mockito.when(s1.getRpc()).thenReturn(RegionPlusCurrency.AUSTRALIA_AUD);
 		AppleInvoice i = new AppleInvoice("0", dummyYearMonth, dummyIssueDate, s1);
 		Assertions.assertThrows(IllegalArgumentException.class, () -> i.addSales(s1));
@@ -69,9 +69,9 @@ public class AppleInvoiceTest {
 
 	@Test
 	public void testAddingNonMatchingSubsidiaryToInvoiceThrowsException() {
-		SalesEntry s1 = Mockito.mock(SalesEntry.class);
+		AppleSalesEntry s1 = Mockito.mock(AppleSalesEntry.class);
 		Mockito.when(s1.getRpc()).thenReturn(RegionPlusCurrency.AUSTRALIA_AUD);
-		SalesEntry s2 = Mockito.mock(SalesEntry.class);
+		AppleSalesEntry s2 = Mockito.mock(AppleSalesEntry.class);
 		Mockito.when(s2.getRpc()).thenReturn(RegionPlusCurrency.JAPAN_JPY);
 		AppleInvoice i = new AppleInvoice("0", dummyYearMonth, dummyIssueDate, s1);
 		Assertions.assertThrows(IllegalArgumentException.class, () -> i.addSales(s2));

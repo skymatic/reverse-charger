@@ -1,7 +1,7 @@
 package de.skymatic.appstore_invoices.gui;
 
 import de.skymatic.appstore_invoices.model.MonthlyInvoices;
-import de.skymatic.appstore_invoices.model.SalesEntry;
+import de.skymatic.appstore_invoices.model.AppleSalesEntry;
 import de.skymatic.appstore_invoices.parser.AppleParser;
 import de.skymatic.appstore_invoices.parser.CSVParser;
 import de.skymatic.appstore_invoices.parser.ParseException;
@@ -25,7 +25,6 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.security.cert.Extension;
 import java.util.List;
 import java.util.Optional;
 
@@ -92,7 +91,7 @@ public class ParseController {
 			monthlyInvoices = Optional.of(new MonthlyInvoices(result.getYearMonth(), //
 					settings.getInvoiceNumberPrefix(), //
 					settings.getLastUsedInvoiceNumber(), //
-					result.getSales().toArray(new SalesEntry[]{})));
+					result.getSales().toArray(new AppleSalesEntry[]{})));
 			//settings.setLastUsedInvoiceNumber(monthlyInvoices.get().getNextInvoiceNumber());
 		} catch (IOException | ParseException | IllegalArgumentException e) {
 			Alerts.parseCSVFileError(e).show();

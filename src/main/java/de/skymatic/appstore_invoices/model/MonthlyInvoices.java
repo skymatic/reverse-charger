@@ -18,7 +18,7 @@ public class MonthlyInvoices {
 
 	private String numberPrefix;
 
-	public MonthlyInvoices(YearMonth yearMonth, String numberPrefix, int numberingSeed, SalesEntry... sales) {
+	public MonthlyInvoices(YearMonth yearMonth, String numberPrefix, int numberingSeed, AppleSalesEntry... sales) {
 		this.yearMonth = yearMonth;
 		this.numberPrefix = numberPrefix;
 		this.invoiceNumberGenerator = new InvoiceNumberGenerator(numberingSeed);
@@ -28,13 +28,13 @@ public class MonthlyInvoices {
 		}
 	}
 
-	public void addSalesEntry(SalesEntry salesEntry) {
-		AppleSubsidiary appleSubsidiary = AppleUtility.mapRegionPlusCurrencyToSubsidiary(salesEntry.getRpc());
+	public void addSalesEntry(AppleSalesEntry appleSalesEntry) {
+		AppleSubsidiary appleSubsidiary = AppleUtility.mapRegionPlusCurrencyToSubsidiary(appleSalesEntry.getRpc());
 		if (invoices.containsKey(appleSubsidiary)) {
-			invoices.get(appleSubsidiary).addSales(salesEntry);
+			invoices.get(appleSubsidiary).addSales(appleSalesEntry);
 		} else {
 			var numberString = numberPrefix + String.valueOf(invoiceNumberGenerator.getAsInt());
-			invoices.put(appleSubsidiary, new AppleInvoice(numberString, yearMonth, CURRENT_TIME, salesEntry));
+			invoices.put(appleSubsidiary, new AppleInvoice(numberString, yearMonth, CURRENT_TIME, appleSalesEntry));
 		}
 	}
 
