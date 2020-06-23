@@ -1,7 +1,7 @@
 package de.skymatic.appstore_invoices.gui;
 
 import de.skymatic.appstore_invoices.model.AppleInvoice;
-import de.skymatic.appstore_invoices.model.MonthlyInvoices;
+import de.skymatic.appstore_invoices.model.AppleMonthlyInvoices;
 import de.skymatic.appstore_invoices.output.HTMLGenerator;
 import de.skymatic.appstore_invoices.output.HTMLWriter;
 import de.skymatic.appstore_invoices.settings.Settings;
@@ -28,7 +28,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
@@ -62,10 +61,10 @@ public class OutputController {
 	private static final int REVEAL_TIMEOUT_MS = 5000;
 
 	private Settings settings;
-	private MonthlyInvoices monthlyInvoices;
+	private AppleMonthlyInvoices appleMonthlyInvoices;
 	private Optional<ProcessBuilder> revealCommand;
 
-	public OutputController(Stage owner, SettingsProvider settingsProvider, MonthlyInvoices monthlyInvoices, Optional<ProcessBuilder> revealCommand) {
+	public OutputController(Stage owner, SettingsProvider settingsProvider, AppleMonthlyInvoices appleMonthlyInvoices, Optional<ProcessBuilder> revealCommand) {
 		this.owner = owner;
 		this.settingsProvider = settingsProvider;
 		settings = settingsProvider.get();
@@ -90,8 +89,8 @@ public class OutputController {
 		outputPath = Bindings.createObjectBinding(() -> Path.of(settings.getOutputPath()), settings.outputPathProperty());
 		outputPath.addListener(o -> updateIsReadyToGenerate());
 
-		this.monthlyInvoices = monthlyInvoices;
-		invoices.addAll(monthlyInvoices.getInvoices());
+		this.appleMonthlyInvoices = appleMonthlyInvoices;
+		invoices.addAll(appleMonthlyInvoices.getInvoices());
 		invoices.sort((i1, i2) -> CharSequence.compare(i1.getNumberString(), i2.getNumberString()));
 		htmlGenerator = new HTMLGenerator();
 		this.revealCommand = revealCommand;

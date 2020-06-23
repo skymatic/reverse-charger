@@ -8,7 +8,7 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.function.IntSupplier;
 
-public class MonthlyInvoices {
+public class AppleMonthlyInvoices {
 
 	private static final LocalDate CURRENT_TIME = LocalDate.now();
 
@@ -18,7 +18,7 @@ public class MonthlyInvoices {
 
 	private String numberPrefix;
 
-	public MonthlyInvoices(YearMonth yearMonth, String numberPrefix, int numberingSeed, AppleSalesEntry... sales) {
+	public AppleMonthlyInvoices(YearMonth yearMonth, String numberPrefix, int numberingSeed, AppleSalesEntry... sales) {
 		this.yearMonth = yearMonth;
 		this.numberPrefix = numberPrefix;
 		this.invoiceNumberGenerator = new InvoiceNumberGenerator(numberingSeed);
