@@ -1,12 +1,13 @@
 package de.skymatic.appstore_invoices.model.apple;
 
+import de.skymatic.appstore_invoices.model.InvoiceNumberGenerator;
+
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.function.IntSupplier;
 
 public class AppleMonthlyInvoices {
 
@@ -47,7 +48,7 @@ public class AppleMonthlyInvoices {
 	}
 
 	public int getNextInvoiceNumber() {
-		return invoiceNumberGenerator.next;
+		return invoiceNumberGenerator.peek();
 	}
 
 	@Override
@@ -59,19 +60,4 @@ public class AppleMonthlyInvoices {
 		return sb.toString();
 	}
 
-	private class InvoiceNumberGenerator implements IntSupplier {
-
-		int next;
-
-		InvoiceNumberGenerator(int seed) {
-			next = seed;
-		}
-
-		@Override
-		public int getAsInt() {
-			var current = next;
-			next += 1;
-			return current;
-		}
-	}
 }
