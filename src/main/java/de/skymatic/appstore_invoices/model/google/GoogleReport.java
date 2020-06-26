@@ -58,6 +58,7 @@ public class GoogleReport {
 	}
 
 	public Set<Invoice> createInvoices(LocalDate issueDate) {
+		//TODO:
 		return null;
 	}
 }

@@ -19,6 +19,11 @@ public enum GoogleSubsidiary implements Recipient {
 	}
 
 	@Override
+	public String getAbbreviation() {
+		return this.name();
+	}
+
+	@Override
 	public String[] getAddress() {
 		return address;
 	}

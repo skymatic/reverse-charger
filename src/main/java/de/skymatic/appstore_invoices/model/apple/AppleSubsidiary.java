@@ -20,6 +20,11 @@ public enum AppleSubsidiary implements Recipient {
 	}
 
 	@Override
+	public String getAbbreviation() {
+		return this.name();
+	}
+
+	@Override
 	public String[] getAddress() {
 		return address;
 	}

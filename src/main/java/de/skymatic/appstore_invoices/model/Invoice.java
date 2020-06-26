@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class Invoice extends AbstractCollection<InvoiceItem> {
 
-	private final int internalId;
+	private final String id;
 	private final Recipient recipient;
 	private final LocalDate startOfBillingPeriod;
 	private final LocalDate endOfBillingPeriod;
@@ -19,8 +19,8 @@ public class Invoice extends AbstractCollection<InvoiceItem> {
 
 	private LocalDate issueDate;
 
-	public Invoice(int internalId, Recipient recipient, LocalDate startOfBillingPeriod, LocalDate endOfBillingPeriod, LocalDate issueDate) {
-		this.internalId = internalId;
+	public Invoice(String id, Recipient recipient, LocalDate startOfBillingPeriod, LocalDate endOfBillingPeriod, LocalDate issueDate) {
+		this.id = id;
 		this.recipient = recipient;
 		this.issueDate = issueDate;
 		this.startOfBillingPeriod = startOfBillingPeriod;
@@ -61,6 +61,10 @@ public class Invoice extends AbstractCollection<InvoiceItem> {
 
 	public LocalDate getEndOfPeriod() {
 		return endOfBillingPeriod;
+	}
+
+	public Recipient getRecipient(){
+		return recipient;
 	}
 
 }
