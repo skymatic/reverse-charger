@@ -5,31 +5,30 @@ import de.skymatic.appstore_invoices.model.Invoice;
 
 import java.time.YearMonth;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public class GoogleSubsidiaryReport implements Invoicable {
 
 	private final GoogleSubsidiary subsidiary;
 	private final YearMonth billingMonth;
-	private final Map<Locale.IsoCountryCode, GoogleSaleEntry> salesPerCountry;
+	private final Map<String, GoogleSaleEntry> salesPerProduct;
 
 	public GoogleSubsidiaryReport(YearMonth billingMonth, GoogleSaleEntry sale) {
 		this.billingMonth = billingMonth;
-		this.salesPerCountry = new HashMap<>();
+		this.salesPerProduct = new HashMap<>();
 		this.subsidiary = GoogleUtility.mapCountryToSubsidiary(sale.getCountry());
 		add(sale);
 	}
 
-	public GoogleSubsidiaryReport(YearMonth billingMonth, GoogleSubsidiary subsidiary, GoogleSaleEntry ... sales){
+	public GoogleSubsidiaryReport(YearMonth billingMonth, GoogleSubsidiary subsidiary, GoogleSaleEntry... sales) {
 		this.billingMonth = billingMonth;
 		this.subsidiary = subsidiary;
-		this.salesPerCountry = new HashMap<>();
+		this.salesPerProduct = new HashMap<>();
 
-		for( var sale : sales){
-			try{
+		for (var sale : sales) {
+			try {
 				add(sale);
-			} catch (IllegalArgumentException e){
+			} catch (IllegalArgumentException e) {
 				//TODO;
 			}
 		}
@@ -37,13 +36,14 @@ public class GoogleSubsidiaryReport implements Invoicable {
 
 
 	public void add(GoogleSaleEntry sale) throws IllegalArgumentException {
+		final var productTitle = sale.getProductTitle();
 		final var country = sale.getCountry();
-		if( salesPerCountry.containsKey(country)){
-			throw new IllegalArgumentException("Country "+country.name()+" already exists.");
-		} else if( subsidiary != GoogleUtility.mapCountryToSubsidiary(country)){
-			throw new IllegalArgumentException("Sales entry of country "+ country.name()+"does not belong to this subsidiary ("+subsidiary+").");
+		if (salesPerProduct.containsKey(productTitle)) {
+			throw new IllegalArgumentException("Product " + productTitle + " already exists.");
+		} else if (subsidiary != GoogleUtility.mapCountryToSubsidiary(country)) {
+			throw new IllegalArgumentException("Sales entry of productTitle " + productTitle + "does not belong to this subsidiary (" + subsidiary + ").");
 		} else {
-			salesPerCountry.put(country, sale);
+			salesPerProduct.put(productTitle, sale);
 		}
 
 	}
