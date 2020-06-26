@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Collection of GoogleReportOfSubsidiary, for each subsidiary can only exists one object.
+ * Collection of {@link GoogleSubsidiaryReport}, for each subsidiary can only exists one object.
  */
 public class GoogleReport {
 
