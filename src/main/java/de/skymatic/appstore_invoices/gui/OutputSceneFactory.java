@@ -1,6 +1,6 @@
 package de.skymatic.appstore_invoices.gui;
 
-import de.skymatic.appstore_invoices.model.apple.AppleMonthlyInvoices;
+import de.skymatic.appstore_invoices.model.apple.AppleReport;
 import javafx.stage.Stage;
 
 import java.util.Locale;
@@ -10,13 +10,13 @@ public class OutputSceneFactory extends SceneFactory {
 
 	private static final String fxmlResourceName = "output";
 
-	private final AppleMonthlyInvoices appleMonthlyInvoices;
+	private final AppleReport appleReport;
 	private final Stage owner;
 
 
-	public OutputSceneFactory(Stage owner, AppleMonthlyInvoices appleMonthlyInvoices) {
+	public OutputSceneFactory(Stage owner, AppleReport appleReport) {
 		super(fxmlResourceName);
-		this.appleMonthlyInvoices = appleMonthlyInvoices;
+		this.appleReport = appleReport;
 		this.owner = owner;
 	}
 
@@ -63,6 +63,6 @@ public class OutputSceneFactory extends SceneFactory {
 	@Override
 	Object constructController(Class<?> aClass) {
 		Optional<ProcessBuilder> revealCommand = getRevealProcess();
-		return new OutputController(owner, SceneFactory.settingsProvider, appleMonthlyInvoices, revealCommand);
+		return new OutputController(owner, SceneFactory.settingsProvider, appleReport, revealCommand);
 	}
 }

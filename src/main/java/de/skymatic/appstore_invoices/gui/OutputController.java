@@ -1,7 +1,7 @@
 package de.skymatic.appstore_invoices.gui;
 
-import de.skymatic.appstore_invoices.model.apple.AppleInvoice;
-import de.skymatic.appstore_invoices.model.apple.AppleMonthlyInvoices;
+import de.skymatic.appstore_invoices.model.apple.AppleSubsidiaryReport;
+import de.skymatic.appstore_invoices.model.apple.AppleReport;
 import de.skymatic.appstore_invoices.output.HTMLGenerator;
 import de.skymatic.appstore_invoices.output.HTMLWriter;
 import de.skymatic.appstore_invoices.settings.Settings;
@@ -39,13 +39,13 @@ import java.util.concurrent.TimeUnit;
 public class OutputController {
 
 	@FXML
-	private TableColumn<AppleInvoice, String> columnInvoiceNumber;
+	private TableColumn<AppleSubsidiaryReport, String> columnInvoiceNumber;
 	@FXML
-	private TableColumn<AppleInvoice, String> columnSubsidiary;
+	private TableColumn<AppleSubsidiaryReport, String> columnSubsidiary;
 	@FXML
-	private TableColumn<AppleInvoice, String> columnAmount;
+	private TableColumn<AppleSubsidiaryReport, String> columnAmount;
 	@FXML
-	private TableColumn<AppleInvoice, String> columnProceeds;
+	private TableColumn<AppleSubsidiaryReport, String> columnProceeds;
 	@FXML
 	private RadioButton externalTemplateRadioButton;
 	@FXML
@@ -54,17 +54,17 @@ public class OutputController {
 	private final ObjectBinding<Path> outputPath;
 	private final HTMLGenerator htmlGenerator;
 	private final Path defaultTemplatePath;
-	private final ObservableList<AppleInvoice> invoices;
+	private final ObservableList<AppleSubsidiaryReport> invoices;
 	private final Stage owner;
 	private final SettingsProvider settingsProvider;
 	private final BooleanProperty isReadyToGenerate;
 	private static final int REVEAL_TIMEOUT_MS = 5000;
 
 	private Settings settings;
-	private AppleMonthlyInvoices appleMonthlyInvoices;
+	private AppleReport appleReport;
 	private Optional<ProcessBuilder> revealCommand;
 
-	public OutputController(Stage owner, SettingsProvider settingsProvider, AppleMonthlyInvoices appleMonthlyInvoices, Optional<ProcessBuilder> revealCommand) {
+	public OutputController(Stage owner, SettingsProvider settingsProvider, AppleReport appleReport, Optional<ProcessBuilder> revealCommand) {
 		this.owner = owner;
 		this.settingsProvider = settingsProvider;
 		settings = settingsProvider.get();
@@ -89,8 +89,8 @@ public class OutputController {
 		outputPath = Bindings.createObjectBinding(() -> Path.of(settings.getOutputPath()), settings.outputPathProperty());
 		outputPath.addListener(o -> updateIsReadyToGenerate());
 
-		this.appleMonthlyInvoices = appleMonthlyInvoices;
-		invoices.addAll(appleMonthlyInvoices.getInvoices());
+		this.appleReport = appleReport;
+		invoices.addAll(appleReport.getInvoices());
 		invoices.sort((i1, i2) -> CharSequence.compare(i1.getNumberString(), i2.getNumberString()));
 		htmlGenerator = new HTMLGenerator();
 		this.revealCommand = revealCommand;
@@ -98,11 +98,11 @@ public class OutputController {
 
 	@FXML
 	public void initialize() {
-		columnInvoiceNumber.setCellFactory(TextFieldTableCell.<AppleInvoice>forTableColumn());
+		columnInvoiceNumber.setCellFactory(TextFieldTableCell.<AppleSubsidiaryReport>forTableColumn());
 		columnInvoiceNumber.setCellValueFactory(invoice -> new SimpleStringProperty(invoice.getValue().getNumberString()));
-		columnInvoiceNumber.setOnEditCommit((TableColumn.CellEditEvent<AppleInvoice, String> event) -> {
+		columnInvoiceNumber.setOnEditCommit((TableColumn.CellEditEvent<AppleSubsidiaryReport, String> event) -> {
 			String newNumberString = event.getNewValue();
-			AppleInvoice invoice = event.getRowValue();
+			AppleSubsidiaryReport invoice = event.getRowValue();
 			if (invoices.stream()
 					.filter(i -> !i.equals(invoice))
 					.anyMatch(i -> i.getNumberString().equals(newNumberString))) {
@@ -117,14 +117,14 @@ public class OutputController {
 
 		columnSubsidiary.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(invoice.getValue().getAppleSubsidiary().toString()));
 		columnAmount.setCellFactory(column -> {
-			var cell = new TextFieldTableCell<AppleInvoice, String>();
+			var cell = new TextFieldTableCell<AppleSubsidiaryReport, String>();
 			cell.setAlignment(Pos.BASELINE_RIGHT);
 			return cell;
 		});
 		columnAmount.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(String.valueOf(invoice.getValue().getAmount())));
 
 		columnProceeds.setCellFactory(column -> {
-			var cell = new TextFieldTableCell<AppleInvoice, String>();
+			var cell = new TextFieldTableCell<AppleSubsidiaryReport, String>();
 			cell.setAlignment(Pos.BASELINE_RIGHT);
 			return cell;
 		});
@@ -239,7 +239,7 @@ public class OutputController {
 		return isReadyToGenerate.get();
 	}
 
-	public ObservableList<AppleInvoice> getInvoices() {
+	public ObservableList<AppleSubsidiaryReport> getInvoices() {
 		return invoices;
 	}
 

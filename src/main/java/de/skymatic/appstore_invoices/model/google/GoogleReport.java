@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class GoogleReport {
 
 	private final YearMonth billingMonth;
-	private final Map<GoogleSubsidiary, GoogleReportOfSubsidiary> reportsOfSubsidiaries;
+	private final Map<GoogleSubsidiary, GoogleSubsidiaryReport> reportsOfSubsidiaries;
 	private final InvoiceNumberGenerator numberGenerator;
 
 	public GoogleReport(YearMonth billingMonth, GoogleSaleEntry... sales) {
@@ -45,7 +45,7 @@ public class GoogleReport {
 		if (reportsOfSubsidiaries.containsKey(subsidiary)) {
 			reportsOfSubsidiaries.get(subsidiary).add(sale);
 		} else {
-			reportsOfSubsidiaries.put(subsidiary, new GoogleReportOfSubsidiary(billingMonth, subsidiary, sale));
+			reportsOfSubsidiaries.put(subsidiary, new GoogleSubsidiaryReport(billingMonth, subsidiary, sale));
 		}
 	}
 

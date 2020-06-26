@@ -5,7 +5,7 @@ import java.time.YearMonth;
 import java.util.Hashtable;
 import java.util.Map;
 
-public class AppleInvoice {
+public class AppleSubsidiaryReport {
 
 
 	private final AppleSubsidiary appleSubsidiary;
@@ -16,7 +16,7 @@ public class AppleInvoice {
 	private LocalDate issueDate;
 	private String numberString;
 
-	public AppleInvoice(String numberString, YearMonth yearMonth, LocalDate issueDate, AppleSalesEntry s) {
+	public AppleSubsidiaryReport(String numberString, YearMonth yearMonth, LocalDate issueDate, AppleSalesEntry s) {
 		this.appleSubsidiary = AppleUtility.mapRegionPlusCurrencyToSubsidiary(s.getRpc());
 		this.numberString = numberString;
 		this.issueDate = issueDate;

@@ -1,6 +1,6 @@
 package de.skymatic.appstore_invoices.gui;
 
-import de.skymatic.appstore_invoices.model.apple.AppleMonthlyInvoices;
+import de.skymatic.appstore_invoices.model.apple.AppleReport;
 import de.skymatic.appstore_invoices.model.apple.AppleSalesEntry;
 import de.skymatic.appstore_invoices.parser.AppleParser;
 import de.skymatic.appstore_invoices.parser.CSVParser;
@@ -46,7 +46,7 @@ public class ParseController {
 	private static final String EXPECTED_PARSE_FILE_ENDING = "csv";
 
 
-	private Optional<AppleMonthlyInvoices> monthlyInvoices;
+	private Optional<AppleReport> monthlyInvoices;
 	private Settings settings;
 
 	public ParseController(Stage owner, SettingsProvider settingsProvider) {
@@ -88,7 +88,7 @@ public class ParseController {
 		CSVParser csvParser = new AppleParser();
 		try {
 			ParseResult result = csvParser.parseCSV(path);
-			monthlyInvoices = Optional.of(new AppleMonthlyInvoices(result.getYearMonth(), //
+			monthlyInvoices = Optional.of(new AppleReport(result.getYearMonth(), //
 					settings.getInvoiceNumberPrefix(), //
 					settings.getLastUsedInvoiceNumber(), //
 					result.getSales().toArray(new AppleSalesEntry[]{})));

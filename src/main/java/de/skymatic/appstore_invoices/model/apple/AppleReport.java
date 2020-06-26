@@ -9,17 +9,17 @@ import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Map;
 
-public class AppleMonthlyInvoices {
+public class AppleReport {
 
 	private static final LocalDate CURRENT_TIME = LocalDate.now();
 
 	private final YearMonth yearMonth;
-	private final Map<AppleSubsidiary, AppleInvoice> invoices;
+	private final Map<AppleSubsidiary, AppleSubsidiaryReport> invoices;
 	private final InvoiceNumberGenerator invoiceNumberGenerator;
 
 	private String numberPrefix;
 
-	public AppleMonthlyInvoices(YearMonth yearMonth, String numberPrefix, int numberingSeed, AppleSalesEntry... sales) {
+	public AppleReport(YearMonth yearMonth, String numberPrefix, int numberingSeed, AppleSalesEntry... sales) {
 		this.yearMonth = yearMonth;
 		this.numberPrefix = numberPrefix;
 		this.invoiceNumberGenerator = new InvoiceNumberGenerator(numberingSeed);
@@ -35,11 +35,11 @@ public class AppleMonthlyInvoices {
 			invoices.get(appleSubsidiary).addSales(appleSalesEntry);
 		} else {
 			var numberString = numberPrefix + String.valueOf(invoiceNumberGenerator.getAsInt());
-			invoices.put(appleSubsidiary, new AppleInvoice(numberString, yearMonth, CURRENT_TIME, appleSalesEntry));
+			invoices.put(appleSubsidiary, new AppleSubsidiaryReport(numberString, yearMonth, CURRENT_TIME, appleSalesEntry));
 		}
 	}
 
-	public Collection<AppleInvoice> getInvoices() {
+	public Collection<AppleSubsidiaryReport> getInvoices() {
 		return Collections.unmodifiableCollection(invoices.values());
 	}
 

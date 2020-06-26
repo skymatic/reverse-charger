@@ -1,6 +1,6 @@
 package de.skymatic.appstore_invoices.output;
 
-import de.skymatic.appstore_invoices.model.apple.AppleInvoice;
+import de.skymatic.appstore_invoices.model.apple.AppleSubsidiaryReport;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -21,9 +21,9 @@ public class HTMLGeneratorTest {
 		String invoiceNumber = "1ab";
 		String expectedResult = "<div>1ab</div>";
 		Path templatePath = Files.writeString(tmpDir.resolve("tmpTemplate"), input);
-		AppleInvoice i1 = Mockito.mock(AppleInvoice.class);
+		AppleSubsidiaryReport i1 = Mockito.mock(AppleSubsidiaryReport.class);
 		Mockito.when(i1.getNumberString()).thenReturn(invoiceNumber);
-		Collection<AppleInvoice> collection = Collections.singleton(i1);
+		Collection<AppleSubsidiaryReport> collection = Collections.singleton(i1);
 		HTMLGenerator htmlGenerator = new HTMLGenerator();
 		Assertions.assertEquals(expectedResult, htmlGenerator.createHTMLInvoices(templatePath, collection).get(invoiceNumber).toString());
 	}
@@ -33,9 +33,9 @@ public class HTMLGeneratorTest {
 		String input = "<div>{{ inns_bruck }}</div>";
 		String invoiceNumber = "1ab";
 		Path templatePath = Files.writeString(tmpDir.resolve("tmpTemplate"), input);
-		AppleInvoice i1 = Mockito.mock(AppleInvoice.class);
+		AppleSubsidiaryReport i1 = Mockito.mock(AppleSubsidiaryReport.class);
 		Mockito.when(i1.getNumberString()).thenReturn(invoiceNumber);
-		Collection<AppleInvoice> collection = Collections.singleton(i1);
+		Collection<AppleSubsidiaryReport> collection = Collections.singleton(i1);
 		HTMLGenerator htmlGenerator = new HTMLGenerator();
 		Assertions.assertEquals(input, htmlGenerator.createHTMLInvoices(templatePath, collection).get(invoiceNumber).toString());
 	}
@@ -43,11 +43,11 @@ public class HTMLGeneratorTest {
 	@Test
 	public void testForEachInvoiceExistsEntry(@TempDir Path tmpDir) throws IOException {
 		Path templateFile = Files.createFile(tmpDir.resolve("tmpTemplate"));
-		AppleInvoice i1 = Mockito.mock(AppleInvoice.class);
+		AppleSubsidiaryReport i1 = Mockito.mock(AppleSubsidiaryReport.class);
 		Mockito.when(i1.getNumberString()).thenReturn("abc");
-		AppleInvoice i2 = Mockito.mock(AppleInvoice.class);
+		AppleSubsidiaryReport i2 = Mockito.mock(AppleSubsidiaryReport.class);
 		Mockito.when(i2.getNumberString()).thenReturn("123");
-		Collection<AppleInvoice> collection = new ArrayList<AppleInvoice>();
+		Collection<AppleSubsidiaryReport> collection = new ArrayList<AppleSubsidiaryReport>();
 		collection.add(i1);
 		collection.add(i2);
 		HTMLGenerator htmlGenerator = new HTMLGenerator();

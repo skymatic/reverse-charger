@@ -8,20 +8,20 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class GoogleReportOfSubsidiary implements Invoicable {
+public class GoogleSubsidiaryReport implements Invoicable {
 
 	private final GoogleSubsidiary subsidiary;
 	private final YearMonth billingMonth;
 	private final Map<Locale.IsoCountryCode, GoogleSaleEntry> salesPerCountry;
 
-	public GoogleReportOfSubsidiary(YearMonth billingMonth, GoogleSaleEntry sale) {
+	public GoogleSubsidiaryReport(YearMonth billingMonth, GoogleSaleEntry sale) {
 		this.billingMonth = billingMonth;
 		this.salesPerCountry = new HashMap<>();
 		this.subsidiary = GoogleUtility.mapCountryToSubsidiary(sale.getCountry());
 		add(sale);
 	}
 
-	public GoogleReportOfSubsidiary(YearMonth billingMonth, GoogleSubsidiary subsidiary, GoogleSaleEntry ... sales){
+	public GoogleSubsidiaryReport(YearMonth billingMonth, GoogleSubsidiary subsidiary, GoogleSaleEntry ... sales){
 		this.billingMonth = billingMonth;
 		this.subsidiary = subsidiary;
 		this.salesPerCountry = new HashMap<>();
