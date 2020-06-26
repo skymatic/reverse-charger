@@ -1,24 +1,31 @@
 package de.skymatic.appstore_invoices.model.google;
 
-import java.util.Locale;
+public class GoogleProductSubsidiaryReport {
 
-public class GoogleSaleEntry {
+	private final String productTitle;
 
-	private Locale.IsoCountryCode country;
-
-	private String productTitle;
-
-	private double charges;
+	private int units;
+	private double amount;
 	private double taxes;
 	private double fees;
 	private double refunds;
 	private double feeRefunds;
 	private double taxRefunds;
 
-	public GoogleSaleEntry(Locale.IsoCountryCode country, String productTitle){
-		this.country = country;
+	public GoogleProductSubsidiaryReport(GoogleSale sale){
+		this.productTitle = sale.getProductTitle();
+		initialize();
+		update(sale);
+	}
+
+	public GoogleProductSubsidiaryReport(String productTitle){
 		this.productTitle = productTitle;
-		this.charges = 0;
+		initialize();
+	}
+
+	private void initialize(){
+		this.units = 0;
+		this.amount = 0;
 		this.taxes = 0;
 		this.fees = 0;
 		this.refunds = 0;
@@ -26,10 +33,10 @@ public class GoogleSaleEntry {
 		this.taxRefunds = 0;
 	}
 
-	public GoogleSaleEntry(Locale.IsoCountryCode country, String productTitle, double charges, double taxes, double fees, double refunds, double feeRefunds, double taxRefunds) {
-		this.country = country;
+	public GoogleProductSubsidiaryReport(String productTitle, int units, double amount, double taxes, double fees, double refunds, double feeRefunds, double taxRefunds) {
 		this.productTitle = productTitle;
-		this.charges = charges;
+		this.units = units;
+		this.amount = amount;
 		this.taxes = taxes;
 		this.fees = fees;
 		this.refunds = refunds;
@@ -37,16 +44,16 @@ public class GoogleSaleEntry {
 		this.taxRefunds = taxRefunds;
 	}
 
-	public Locale.IsoCountryCode getCountry() {
-		return country;
-	}
-
 	public String getProductTitle() {
 		return productTitle;
 	}
 
-	public double getCharges() {
-		return charges;
+	public int getUnits(){
+		return units;
+	}
+
+	public double getAmount() {
+		return amount;
 	}
 
 	public double getTaxes() {
@@ -67,5 +74,9 @@ public class GoogleSaleEntry {
 
 	public double getTaxRefunds() {
 		return taxRefunds;
+	}
+
+	public void update(GoogleSale sale){
+		//TODO
 	}
 }

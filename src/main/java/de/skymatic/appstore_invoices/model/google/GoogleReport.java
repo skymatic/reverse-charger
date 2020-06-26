@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Collection of {@link GoogleSubsidiaryReport}, for each subsidiary can only exists one object.
+ * Collection of {@link GoogleSubsidiaryReport}s of a single month. For each subsidiary only one report can exist.
  */
 public class GoogleReport {
 
@@ -20,7 +20,7 @@ public class GoogleReport {
 	private final Map<GoogleSubsidiary, GoogleSubsidiaryReport> reportsOfSubsidiaries;
 	private final InvoiceNumberGenerator numberGenerator;
 
-	public GoogleReport(YearMonth billingMonth, GoogleSaleEntry... sales) {
+	public GoogleReport(YearMonth billingMonth, GoogleSale... sales) {
 		this.billingMonth = billingMonth;
 		this.reportsOfSubsidiaries = new HashMap<>();
 		this.numberGenerator = new InvoiceNumberGenerator(1);
@@ -30,7 +30,7 @@ public class GoogleReport {
 		}
 	}
 
-	public GoogleReport(YearMonth billingMonth, int numberingSeed, GoogleSaleEntry... sales) {
+	public GoogleReport(YearMonth billingMonth, int numberingSeed, GoogleSale... sales) {
 		this.billingMonth = billingMonth;
 		this.reportsOfSubsidiaries = new HashMap<>();
 		this.numberGenerator = new InvoiceNumberGenerator(numberingSeed);
@@ -40,8 +40,8 @@ public class GoogleReport {
 		}
 	}
 
-	public void add(GoogleSaleEntry sale) {
-		GoogleSubsidiary subsidiary = GoogleUtility.mapCountryToSubsidiary(sale.getCountry());
+	public void add(GoogleSale sale) {
+		GoogleSubsidiary subsidiary = GoogleUtility.mapCountryToSubsidiary(sale.getBuyerCountry());
 		if (reportsOfSubsidiaries.containsKey(subsidiary)) {
 			reportsOfSubsidiaries.get(subsidiary).add(sale);
 		} else {

@@ -11,16 +11,16 @@ public class GoogleSubsidiaryReport implements Invoicable {
 
 	private final GoogleSubsidiary subsidiary;
 	private final YearMonth billingMonth;
-	private final Map<String, GoogleSaleEntry> salesPerProduct;
+	private final Map<String, GoogleProductSubsidiaryReport> salesPerProduct;
 
-	public GoogleSubsidiaryReport(YearMonth billingMonth, GoogleSaleEntry sale) {
+	public GoogleSubsidiaryReport(YearMonth billingMonth, GoogleSale sale) {
 		this.billingMonth = billingMonth;
 		this.salesPerProduct = new HashMap<>();
-		this.subsidiary = GoogleUtility.mapCountryToSubsidiary(sale.getCountry());
+		this.subsidiary = GoogleUtility.mapCountryToSubsidiary(sale.getBuyerCountry());
 		add(sale);
 	}
 
-	public GoogleSubsidiaryReport(YearMonth billingMonth, GoogleSubsidiary subsidiary, GoogleSaleEntry... sales) {
+	public GoogleSubsidiaryReport(YearMonth billingMonth, GoogleSubsidiary subsidiary, GoogleSale... sales) {
 		this.billingMonth = billingMonth;
 		this.subsidiary = subsidiary;
 		this.salesPerProduct = new HashMap<>();
@@ -34,16 +34,17 @@ public class GoogleSubsidiaryReport implements Invoicable {
 		}
 	}
 
-
-	public void add(GoogleSaleEntry sale) throws IllegalArgumentException {
+	public void add(GoogleSale sale) throws IllegalArgumentException {
 		final var productTitle = sale.getProductTitle();
-		final var country = sale.getCountry();
-		if (salesPerProduct.containsKey(productTitle)) {
-			throw new IllegalArgumentException("Product " + productTitle + " already exists.");
-		} else if (subsidiary != GoogleUtility.mapCountryToSubsidiary(country)) {
+		final var country = sale.getBuyerCountry();
+		if (subsidiary != GoogleUtility.mapCountryToSubsidiary(country)) {
 			throw new IllegalArgumentException("Sales entry of productTitle " + productTitle + "does not belong to this subsidiary (" + subsidiary + ").");
 		} else {
-			salesPerProduct.put(productTitle, sale);
+			if (salesPerProduct.containsKey(productTitle)) {
+				salesPerProduct.get(productTitle).update(sale);
+			} else {
+				salesPerProduct.put(productTitle, new GoogleProductSubsidiaryReport(sale));
+			}
 		}
 
 	}
