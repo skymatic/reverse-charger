@@ -23,7 +23,7 @@ public class AppleParserTest {
 	}
 
 	@Test
-	public void testParseResultContainsAllSalesEntry(@TempDir Path tmpDir) throws IOException, ParseException {
+	public void testParseResultContainsAllSalesEntry(@TempDir Path tmpDir) throws IOException, OldParseException {
 		int expectedAmountOfSales = 2;
 		Path reportFilePath = Files.createFile(tmpDir.resolve("tmpReport"));
 		String report = "\"iTunes Connect - Payments and Financial Reports\t(September, 2014)\",,,,,,,,,,,,\n" +
@@ -41,7 +41,7 @@ public class AppleParserTest {
 	}
 
 	@Test
-	public void testParseResultContainsYearAndMonth(@TempDir Path tmpDir) throws IOException, ParseException {
+	public void testParseResultContainsYearAndMonth(@TempDir Path tmpDir) throws IOException, OldParseException {
 		int expectedYear = 2014;
 		Month expectedMonth = Month.SEPTEMBER;
 		Path reportFilePath = Files.createFile(tmpDir.resolve("tmpReport"));
@@ -61,7 +61,7 @@ public class AppleParserTest {
 				"\"Japan (JPY)\",\"2\",\"179\",\"179\",\"0\",\"0\",\"-37\",\"142\",\"0.00817\",\"abcde\",\"EUR\",,\n";
 		Files.writeString(reportFilePath, report);
 		CSVParser csvParser = new AppleParser();
-		Assertions.assertThrows(ParseException.class, () -> csvParser.parseCSV(reportFilePath));
+		Assertions.assertThrows(OldParseException.class, () -> csvParser.parseCSV(reportFilePath));
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class AppleParserTest {
 				"\"Switzerland (CHF)\",\"29\",\"33.15\",\"33.15\",\"0\",\"0\",\"33.15\",\"0.80030\",\"26.53\",\"EUR\",,\n";
 		Files.writeString(reportFilePath, report);
 		CSVParser csvParser = new AppleParser();
-		Assertions.assertThrows(ParseException.class, () -> csvParser.parseCSV(reportFilePath));
+		Assertions.assertThrows(OldParseException.class, () -> csvParser.parseCSV(reportFilePath));
 	}
 
 	@Test
@@ -81,6 +81,6 @@ public class AppleParserTest {
 				"\"Moon (MNY)\",\"29\",\"33.15\",\"33.15\",\"0\",\"0\",\"0\",\"33.15\",\"0.80030\",\"26.53\",\"EUR\",,\n";
 		Files.writeString(reportFilePath, report);
 		CSVParser csvParser = new AppleParser();
-		Assertions.assertThrows(ParseException.class, () -> csvParser.parseCSV(reportFilePath));
+		Assertions.assertThrows(OldParseException.class, () -> csvParser.parseCSV(reportFilePath));
 	}
 }

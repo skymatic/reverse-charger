@@ -17,7 +17,7 @@ public class AppleParser implements CSVParser {
 	private static final int MIN_COLUMN_COUNT = 10;
 	private boolean endOfReport = false;
 
-	public ParseResult parseCSV(Path p) throws IOException, ParseException {
+	public ParseResult parseCSV(Path p) throws IOException, OldParseException {
 		StringReference lastReadLine = new StringReference();
 		try (BufferedReader br = Files.newBufferedReader(p)) {
 			String header = br.readLine();
@@ -43,7 +43,7 @@ public class AppleParser implements CSVParser {
 
 			return new ParseResult(yearMonth, sales);
 		} catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
-			throw new ParseException("Error parsing line:  " + lastReadLine.get(), e);
+			throw new OldParseException("Error parsing line:  " + lastReadLine.get(), e);
 		}
 	}
 

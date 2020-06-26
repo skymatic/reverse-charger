@@ -4,7 +4,7 @@ import de.skymatic.appstore_invoices.model.apple.AppleReport;
 import de.skymatic.appstore_invoices.model.apple.AppleSalesEntry;
 import de.skymatic.appstore_invoices.parser.AppleParser;
 import de.skymatic.appstore_invoices.parser.CSVParser;
-import de.skymatic.appstore_invoices.parser.ParseException;
+import de.skymatic.appstore_invoices.parser.OldParseException;
 import de.skymatic.appstore_invoices.parser.ParseResult;
 import de.skymatic.appstore_invoices.settings.Settings;
 import de.skymatic.appstore_invoices.settings.SettingsProvider;
@@ -93,7 +93,7 @@ public class ParseController {
 					settings.getLastUsedInvoiceNumber(), //
 					result.getSales().toArray(new AppleSalesEntry[]{})));
 			//settings.setLastUsedInvoiceNumber(monthlyInvoices.get().getNextInvoiceNumber());
-		} catch (IOException | ParseException | IllegalArgumentException e) {
+		} catch (IOException | OldParseException | IllegalArgumentException e) {
 			Alerts.parseCSVFileError(e).show();
 		}
 

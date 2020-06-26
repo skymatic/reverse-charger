@@ -1,6 +1,6 @@
 package de.skymatic.appstore_invoices.gui;
 
-import de.skymatic.appstore_invoices.parser.ParseException;
+import de.skymatic.appstore_invoices.parser.OldParseException;
 import javafx.scene.control.Alert;
 
 import java.io.IOException;
@@ -15,7 +15,7 @@ public class Alerts {
 	public static Alert parseCSVFileError(Exception e) {
 		if (e instanceof IOException) {
 			return new Alert(Alert.AlertType.ERROR, ioExceptionDuringParse + "\n\nThrown exception and message:\n" + e.getCause());
-		} else if (e instanceof ParseException) {
+		} else if (e instanceof OldParseException) {
 			return new Alert(Alert.AlertType.ERROR, parseExceptionDuringParse
 					+ "\n\n"
 					+ e.getMessage()

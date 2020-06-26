@@ -1,11 +1,12 @@
 package de.skymatic.appstore_invoices.parser;
 
-public class ParseException extends Exception {
+@Deprecated
+public class OldParseException extends Exception {
 
 	private final Throwable cause;
 	private final String message;
 
-	public ParseException(String message, Throwable cause) {
+	public OldParseException(String message, Throwable cause) {
 		this.message = message;
 		this.cause = cause;
 	}
