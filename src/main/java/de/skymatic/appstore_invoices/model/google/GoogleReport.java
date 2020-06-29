@@ -17,26 +17,63 @@ public class GoogleReport implements InvoiceCollection {
 
 	private final YearMonth billingMonth;
 	private final Map<GoogleSubsidiary, GoogleSubsidiaryReport> reportsOfSubsidiaries;
-	private final InvoiceNumberGenerator numberGenerator;
+	private final InvoiceNumberGenerator numberGenerator; //TODO: is this needed here?
 
-	public GoogleReport(YearMonth billingMonth, GoogleSale... sales) {
+	/**
+	 * Creates an empty report with the specified year and month.
+	 *
+	 * @param billingMonth
+	 */
+	public GoogleReport(YearMonth billingMonth) {
 		this.billingMonth = billingMonth;
 		this.reportsOfSubsidiaries = new HashMap<>();
 		this.numberGenerator = new InvoiceNumberGenerator(1);
+	}
 
+	/**
+	 * Creates a report from at least one {@link GoogleSale}.
+	 * <p>
+	 * Throws IllegalArgumentException, if not all sales belong to the same month.
+	 *
+	 * @param s
+	 * @param furtherSales
+	 */
+	public GoogleReport(GoogleSale s, GoogleSale... furtherSales) {
+		this.billingMonth = YearMonth.from(s.getTransactionDateTime());
+		this.reportsOfSubsidiaries = new HashMap<>();
+		this.numberGenerator = new InvoiceNumberGenerator(1);
+
+		add(s);
+		for (var sale : furtherSales) {
+			add(sale);
+		}
+	}
+
+	public GoogleReport(int numberingSeed, GoogleSale s, GoogleSale... sales) {
+		this.billingMonth = YearMonth.from(s.getTransactionDateTime());
+		this.reportsOfSubsidiaries = new HashMap<>();
+		this.numberGenerator = new InvoiceNumberGenerator(numberingSeed);
+
+		add(s);
 		for (var sale : sales) {
 			add(sale);
 		}
 	}
 
-	public GoogleReport(YearMonth billingMonth, int numberingSeed, GoogleSale... sales) {
-		this.billingMonth = billingMonth;
-		this.reportsOfSubsidiaries = new HashMap<>();
-		this.numberGenerator = new InvoiceNumberGenerator(numberingSeed);
+	public GoogleReport(GoogleSale... sales) {
+		if (sales.length == 0) {
+			throw new IllegalArgumentException("Parameter Sales must not be empty.");
+		} else {
+			this.billingMonth = YearMonth.from(sales[0].getTransactionDateTime());
 
-		for (var sale : sales) {
-			add(sale);
+			this.reportsOfSubsidiaries = new HashMap<>();
+			this.numberGenerator = new InvoiceNumberGenerator(1);
+
+			for (var sale : sales) {
+				add(sale);
+			}
 		}
+
 	}
 
 	public void add(GoogleSale sale) {
