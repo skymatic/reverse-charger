@@ -9,7 +9,7 @@ import java.util.Collection;
 
 public interface ReportParser {
 
-	InvoiceCollection parse(Path p) throws IOException, ParseException, IllegalArgumentException;
+	InvoiceCollection parse(Path p) throws IOException, ReportParseException, IllegalArgumentException;
 
 	default Collection<Object> parseUnresolved(Path p) throws IOException, ParseException {
 		throw new UnsupportedOperationException("Not implemented.");

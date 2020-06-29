@@ -44,13 +44,13 @@ public class GoogleParser implements ReportParser {
 	private static final DateTimeFormatter converter = DateTimeFormatter.ofPattern("LLL dd, yyyy KK:mm:ss a zzz", Locale.US);
 
 	@Override
-	public GoogleReport parse(Path p) throws IOException, ParseException, IllegalArgumentException {
+	public GoogleReport parse(Path p) throws IOException, ReportParseException, IllegalArgumentException {
 		Collection<GoogleSale> rawSales = parseInternal(p);
 		YearMonth yM = YearMonth.from(rawSales.iterator().next().getTransactionDateTime());
 		return new GoogleReport(yM, rawSales.toArray(new GoogleSale[]{}));
 	}
 
-	private Collection<GoogleSale> parseInternal(Path p) throws IOException, ParseException, IllegalArgumentException {
+	private Collection<GoogleSale> parseInternal(Path p) throws IOException, ReportParseException, IllegalArgumentException {
 		StringReference lastReadLine = new StringReference();
 
 		try (BufferedReader br = Files.newBufferedReader(p)) {
