@@ -1,8 +1,5 @@
 package de.skymatic.appstore_invoices.parser;
 
-//import de.skymatic.appstore_invoices.model.apple.AppleSalesEntry;
-
-import de.skymatic.appstore_invoices.model.Invoice;
 import de.skymatic.appstore_invoices.model.google.GoogleReport;
 import de.skymatic.appstore_invoices.model.google.GoogleSale;
 
@@ -61,7 +58,7 @@ public class GoogleParser implements ReportParser {
 
 			return br.lines()
 					.map(line -> lastReadLine.copyAndReturn(line))
-					.map(line -> line.split(",")) //TODO: if a column is empty it will shift the whole shiat -> handle this!
+					.map(line -> line.split(","))
 					.map(splittedLine -> {
 						String description = splittedLine[0];
 						LocalDateTime transactionDateTime = convertToLocalDateTime(splittedLine[1], splittedLine[2]);
