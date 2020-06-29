@@ -1,5 +1,7 @@
 package de.skymatic.appstore_invoices.parser;
 
+import de.skymatic.appstore_invoices.model.InvoiceCollection;
+import de.skymatic.appstore_invoices.model.apple.AppleReport;
 import de.skymatic.appstore_invoices.model.apple.AppleSalesEntry;
 import de.skymatic.appstore_invoices.model.apple.RegionPlusCurrency;
 
@@ -12,7 +14,7 @@ import java.time.YearMonth;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public class AppleParser implements CSVParser {
+public class AppleParser implements CSVParser, ReportParser {
 
 	private static final int MIN_COLUMN_COUNT = 10;
 	private boolean endOfReport = false;
@@ -59,4 +61,14 @@ public class AppleParser implements CSVParser {
 				.toUpperCase());
 	}
 
+	@Override
+	public InvoiceCollection parse(Path p) throws IOException, ReportParseException, IllegalArgumentException {
+		try {
+			//TODO: this is currently only for compiling purpose. AppleReport needs to be refactored.
+			ParseResult result = parseCSV(p);
+			return new AppleReport(result.getYearMonth(), "", 1, result.getSales().toArray(new AppleSalesEntry[]{}));
+		} catch (OldParseException e) {
+			throw new ReportParseException(e.getMessage(), -1, e.getCause());
+		}
+	}
 }

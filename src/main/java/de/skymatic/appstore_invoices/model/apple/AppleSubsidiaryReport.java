@@ -1,11 +1,14 @@
 package de.skymatic.appstore_invoices.model.apple;
 
+import de.skymatic.appstore_invoices.model.Invoicable;
+import de.skymatic.appstore_invoices.model.Invoice;
+
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.Hashtable;
 import java.util.Map;
 
-public class AppleSubsidiaryReport {
+public class AppleSubsidiaryReport implements Invoicable {
 
 
 	private final AppleSubsidiary appleSubsidiary;
@@ -76,5 +79,11 @@ public class AppleSubsidiaryReport {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		return sb.append(salesPerCountryPlusCurrency).append("\n").toString();
+	}
+
+	@Override
+	public Invoice toInvoice() {
+		//TODO
+		return null;
 	}
 }

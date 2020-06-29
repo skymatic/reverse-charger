@@ -1,5 +1,7 @@
 package de.skymatic.appstore_invoices.model.apple;
 
+import de.skymatic.appstore_invoices.model.Invoice;
+import de.skymatic.appstore_invoices.model.InvoiceCollection;
 import de.skymatic.appstore_invoices.model.InvoiceNumberGenerator;
 
 import java.time.LocalDate;
@@ -8,8 +10,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-public class AppleReport {
+/**
+ * Collection of {@link AppleSubsidiaryReport}s of a single month.
+ */
+public class AppleReport implements InvoiceCollection {
 
 	private static final LocalDate CURRENT_TIME = LocalDate.now();
 
@@ -60,4 +66,8 @@ public class AppleReport {
 		return sb.toString();
 	}
 
+	@Override
+	public Collection<Invoice> toInvoices() {
+		return invoices.values().stream().map(subReport -> subReport.toInvoice()).collect(Collectors.toUnmodifiableList());
+	}
 }
