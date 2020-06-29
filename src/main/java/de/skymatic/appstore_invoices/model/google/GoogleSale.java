@@ -1,7 +1,6 @@
 package de.skymatic.appstore_invoices.model.google;
 
 import java.time.LocalDateTime;
-import java.util.Locale;
 
 public class GoogleSale {
 
@@ -15,7 +14,7 @@ public class GoogleSale {
 	private int productType;
 	private String skuId;
 	private String hardware;
-	private Locale.IsoCountryCode buyerCountry;
+	private String buyerCountry;
 	private String buyerState;
 	private String buyerPostalCode;
 	private String buyerCurrency;
@@ -24,7 +23,7 @@ public class GoogleSale {
 	private String merchantCCurrency;
 	private double amountMerchantCurrency;
 
-	public GoogleSale(String description, LocalDateTime transactionDateTime, String taxType, String transactionType, String refundType, String productTitle, String productId, int productType, String skuId, String hardware, Locale.IsoCountryCode buyerCountry, String buyerState, String buyerPostalCode, String buyerCurrency, double amountBuyerCurrency, double currencyConversionRate, String merchantCCurrency, double amountMerchantCurrency) {
+	public GoogleSale(String description, LocalDateTime transactionDateTime, String taxType, String transactionType, String refundType, String productTitle, String productId, int productType, String skuId, String hardware, String buyerCountry, String buyerState, String buyerPostalCode, String buyerCurrency, double amountBuyerCurrency, double currencyConversionRate, String merchantCCurrency, double amountMerchantCurrency) {
 		this.description = description;
 		this.transactionDateTime = transactionDateTime;
 		this.taxType = taxType;
@@ -85,7 +84,7 @@ public class GoogleSale {
 		return hardware;
 	}
 
-	public Locale.IsoCountryCode getBuyerCountry() {
+	public String getBuyerCountry() {
 		return buyerCountry;
 	}
 

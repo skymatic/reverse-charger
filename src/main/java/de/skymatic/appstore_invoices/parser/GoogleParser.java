@@ -7,7 +7,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -70,7 +69,7 @@ public class GoogleParser implements ReportParser {
 						int productType = Integer.parseInt(splittedLine[8]);
 						String skuId = splittedLine[9];
 						String hardware = splittedLine[10];
-						Locale.IsoCountryCode buyerCountry = Locale.IsoCountryCode.valueOf(splittedLine[11]);
+						String buyerCountry = splittedLine[11];
 						String buyerState = splittedLine[12];
 						String buyerPostalCode = splittedLine[13];
 						String buyerCurrency = splittedLine[14];
