@@ -24,6 +24,27 @@ public class GoogleSale {
 	private String merchantCCurrency;
 	private double amountMerchantCurrency;
 
+	public GoogleSale(String description, LocalDateTime transactionDateTime, String taxType, String transactionType, String refundType, String productTitle, String productId, int productType, String skuId, String hardware, Locale.IsoCountryCode buyerCountry, String buyerState, String buyerPostalCode, String buyerCurrency, double amountBuyerCurrency, double currencyConversionRate, String merchantCCurrency, double amountMerchantCurrency) {
+		this.description = description;
+		this.transactionDateTime = transactionDateTime;
+		this.taxType = taxType;
+		this.transactionType = transactionType;
+		this.refundType = refundType;
+		this.productTitle = productTitle;
+		this.productId = productId;
+		this.productType = productType;
+		this.skuId = skuId;
+		this.hardware = hardware;
+		this.buyerCountry = buyerCountry;
+		this.buyerState = buyerState;
+		this.buyerPostalCode = buyerPostalCode;
+		this.buyerCurrency = buyerCurrency;
+		this.amountBuyerCurrency = amountBuyerCurrency;
+		this.currencyConversionRate = currencyConversionRate;
+		this.merchantCCurrency = merchantCCurrency;
+		this.amountMerchantCurrency = amountMerchantCurrency;
+	}
+
 	public String getDescription() {
 		return description;
 	}

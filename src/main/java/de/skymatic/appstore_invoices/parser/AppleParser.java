@@ -1,7 +1,7 @@
 package de.skymatic.appstore_invoices.parser;
 
-import de.skymatic.appstore_invoices.model.apple.RegionPlusCurrency;
 import de.skymatic.appstore_invoices.model.apple.AppleSalesEntry;
+import de.skymatic.appstore_invoices.model.apple.RegionPlusCurrency;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -57,20 +57,6 @@ public class AppleParser implements CSVParser {
 				.replace('-', '_')
 				.replaceAll("[\\(\\)]", "")
 				.toUpperCase());
-	}
-
-	private class StringReference {
-
-		private String s = "";
-
-		public String copyAndReturn(String s) {
-			this.s = s;
-			return s;
-		}
-
-		public String get() {
-			return s;
-		}
 	}
 
 }
