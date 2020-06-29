@@ -1,20 +1,19 @@
 package de.skymatic.appstore_invoices.model.google;
 
 import de.skymatic.appstore_invoices.model.Invoice;
+import de.skymatic.appstore_invoices.model.InvoiceCollection;
 import de.skymatic.appstore_invoices.model.InvoiceNumberGenerator;
 
-import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
  * Collection of {@link GoogleSubsidiaryReport}s of a single month. For each subsidiary only one report can exist.
  */
-public class GoogleReport {
+public class GoogleReport implements InvoiceCollection {
 
 	private final YearMonth billingMonth;
 	private final Map<GoogleSubsidiary, GoogleSubsidiaryReport> reportsOfSubsidiaries;
@@ -53,12 +52,8 @@ public class GoogleReport {
 		return billingMonth;
 	}
 
-	public Collection<Invoice> createInvoices() {
+	@Override
+	public Collection<Invoice> toInvoices() {
 		return reportsOfSubsidiaries.values().stream().map(r -> r.toInvoice()).collect(Collectors.toUnmodifiableList());
-	}
-
-	public Set<Invoice> createInvoices(LocalDate issueDate) {
-		//TODO:
-		return null;
 	}
 }

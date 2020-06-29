@@ -1,6 +1,6 @@
 package de.skymatic.appstore_invoices.parser;
 
-import de.skymatic.appstore_invoices.model.Invoice;
+import de.skymatic.appstore_invoices.model.InvoiceCollection;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -9,11 +9,7 @@ import java.util.Collection;
 
 public interface ReportParser {
 
-	Collection<Invoice> parseToInvoice(Path p) throws IOException, ParseException, IllegalArgumentException;
-
-	default Object parseToSpecificModel(Path p) throws IOException, ParseException {
-		throw new UnsupportedOperationException("Not implemented.");
-	}
+	InvoiceCollection parse(Path p) throws IOException, ParseException, IllegalArgumentException;
 
 	default Collection<Object> parseUnresolved(Path p) throws IOException, ParseException {
 		throw new UnsupportedOperationException("Not implemented.");
