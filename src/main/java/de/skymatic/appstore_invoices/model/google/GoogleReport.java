@@ -62,7 +62,7 @@ public class GoogleReport implements InvoiceCollection {
 
 	public GoogleReport(GoogleSale... sales) {
 		if (sales.length == 0) {
-			throw new IllegalArgumentException("Parameter Sales must not be empty.");
+			throw new IllegalArgumentException("Cannot set subsidiary and billing month: Parameter sales is empty.");
 		} else {
 			this.billingMonth = YearMonth.from(sales[0].getTransactionDateTime());
 
@@ -81,7 +81,7 @@ public class GoogleReport implements InvoiceCollection {
 		if (reportsOfSubsidiaries.containsKey(subsidiary)) {
 			reportsOfSubsidiaries.get(subsidiary).add(sale);
 		} else {
-			reportsOfSubsidiaries.put(subsidiary, new GoogleSubsidiaryReport(billingMonth, subsidiary, sale));
+			reportsOfSubsidiaries.put(subsidiary, new GoogleSubsidiaryReport(sale));
 		}
 	}
 
