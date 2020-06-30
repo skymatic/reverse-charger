@@ -1,7 +1,7 @@
 package de.skymatic.appstore_invoices.model.apple;
 
 import de.skymatic.appstore_invoices.model.Recipient;
-import de.skymatic.appstore_invoices.model.Type;
+import de.skymatic.appstore_invoices.model.Workflow;
 
 public enum AppleSubsidiary implements Recipient {
 
@@ -11,7 +11,7 @@ public enum AppleSubsidiary implements Recipient {
 	JAPAN(new String[]{"iTunes K.K.", "〒 106-6140", "6-10-1 Roppongi, Minato-ku, Tokyo", "Japan"}),
 	ROW(new String[]{"Apple Distribution International Limited", "Hollyhill Industrial Estate", "Hollyhill", "Cork", "Ireland"});
 
-	private static final Type type = Type.APPLE;
+	private static final Workflow WORKFLOW = Workflow.APPLE;
 
 	private String[] address;
 

@@ -1,6 +1,6 @@
 package de.skymatic.appstore_invoices.model;
 
-public enum Type {
+public enum Workflow {
 
 	APPLE,
 	GOOGLE;

@@ -4,6 +4,6 @@ public interface Subsidiary {
 
 	String [] getAddress();
 
-	Type getType();
+	Workflow getType();
 
 }
