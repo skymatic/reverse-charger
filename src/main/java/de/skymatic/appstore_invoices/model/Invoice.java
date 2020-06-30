@@ -14,13 +14,13 @@ import java.util.Map;
  */
 public class Invoice extends AbstractCollection<InvoiceItem> {
 
-	private final String id;
 	private final Recipient recipient;
 	private final LocalDate startOfBillingPeriod;
 	private final LocalDate endOfBillingPeriod;
 	private final List<InvoiceItem> items; //TODO: add more products
 	private final Map<String, Double> globalItems;
 
+	private String id;
 	private LocalDate issueDate;
 
 	public Invoice(String id, Recipient recipient, LocalDate startOfBillingPeriod, LocalDate endOfBillingPeriod, LocalDate issueDate) {
@@ -33,7 +33,7 @@ public class Invoice extends AbstractCollection<InvoiceItem> {
 		this.globalItems = new HashMap<>();
 	}
 
-	public double amount() {
+	public double proceeds() {
 		return items.stream().reduce(0.0, (x, i) -> x + i.getAmount(), Double::sum)
 				+ globalItems.values().stream().reduce(0.0, (result,x) -> result+x, Double::sum);
 	}
@@ -51,6 +51,14 @@ public class Invoice extends AbstractCollection<InvoiceItem> {
 	@Override
 	public boolean add(InvoiceItem i) {
 		return items.add(i);
+	}
+
+	public void setId(String newId){
+		this.id = newId;
+	}
+
+	public String getId(){
+		return id;
 	}
 
 	public void setIssueDate(LocalDate issueDate) {

@@ -1,15 +1,21 @@
 package de.skymatic.appstore_invoices.gui;
 
+import de.skymatic.appstore_invoices.model.InvoiceCollection;
+import de.skymatic.appstore_invoices.model.Workflow;
 import de.skymatic.appstore_invoices.model.apple.AppleReport;
 import de.skymatic.appstore_invoices.model.apple.AppleSalesEntry;
 import de.skymatic.appstore_invoices.parser.AppleParser;
 import de.skymatic.appstore_invoices.parser.CSVParser;
 import de.skymatic.appstore_invoices.parser.OldParseException;
 import de.skymatic.appstore_invoices.parser.ParseResult;
+import de.skymatic.appstore_invoices.parser.ReportParseException;
+import de.skymatic.appstore_invoices.parser.ReportParser;
+import de.skymatic.appstore_invoices.parser.ReportParserFactory;
 import de.skymatic.appstore_invoices.settings.Settings;
 import de.skymatic.appstore_invoices.settings.SettingsProvider;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
@@ -34,7 +40,6 @@ public class ParseController {
 	@FXML
 	private TextField invoicePrefixField;
 
-
 	@FXML
 	private CheckBox generateInvoiceNumbersCheckbox;
 
@@ -43,10 +48,11 @@ public class ParseController {
 	private final StringProperty csvPathString;
 	private final BooleanProperty isFileSelected;
 	private final SettingsProvider settingsProvider;
+	private final SimpleObjectProperty<Workflow> documentType;
 	private static final String EXPECTED_PARSE_FILE_ENDING = "csv";
 
 
-	private Optional<AppleReport> monthlyInvoices;
+	private Optional<InvoiceCollection> monthlyInvoices;
 	private Settings settings;
 
 	public ParseController(Stage owner, SettingsProvider settingsProvider) {
@@ -54,6 +60,7 @@ public class ParseController {
 		csvPathString = new SimpleStringProperty();
 		isFileSelected = new SimpleBooleanProperty();
 		isFileSelected.bind(csvPathString.isEmpty());
+		documentType = new SimpleObjectProperty<>(Workflow.AUTO);
 		this.settingsProvider = settingsProvider;
 		settings = settingsProvider.get();
 	}
@@ -99,6 +106,20 @@ public class ParseController {
 
 		OutputSceneFactory outputSF = new OutputSceneFactory(owner, monthlyInvoices.get());
 		owner.setScene(outputSF.createScene());
+	}
+
+	private void parseReport() {
+		Path path = Path.of(csvPathString.get());
+		ReportParser parser = ReportParserFactory.createParser(documentType.get());
+		try {
+			InvoiceCollection result = parser.parse(path);
+			//TODO: add results to monthlyInvoices
+			OutputSceneFactory outputSF = new OutputSceneFactory(owner, monthlyInvoices.get());
+			owner.setScene(outputSF.createScene());
+		} catch (IOException | ReportParseException | IllegalArgumentException | IllegalStateException e) {
+			Alerts.parseCSVFileError(e).show();
+		}
+
 	}
 
 	@FXML
