@@ -12,18 +12,18 @@ public class GoogleProductSubsidiaryReport {
 	private double feeRefunds;
 	private double taxRefunds;
 
-	public GoogleProductSubsidiaryReport(GoogleSale sale){
+	public GoogleProductSubsidiaryReport(GoogleSale sale) {
 		this.productTitle = sale.getProductTitle();
 		initialize();
 		update(sale);
 	}
 
-	public GoogleProductSubsidiaryReport(String productTitle){
+	public GoogleProductSubsidiaryReport(String productTitle) {
 		this.productTitle = productTitle;
 		initialize();
 	}
 
-	private void initialize(){
+	private void initialize() {
 		this.units = 0;
 		this.amount = 0;
 		this.taxes = 0;
@@ -48,7 +48,7 @@ public class GoogleProductSubsidiaryReport {
 		return productTitle;
 	}
 
-	public int getUnits(){
+	public int getUnits() {
 		return units;
 	}
 
@@ -76,7 +76,22 @@ public class GoogleProductSubsidiaryReport {
 		return taxRefunds;
 	}
 
-	public void update(GoogleSale sale){
-		//TODO
+	public void update(GoogleSale sale) {
+		if (sale.getProductTitle() != this.productTitle) {
+			throw new IllegalArgumentException("Invalid sale entry for update: Wrong ProductTitle.");
+		} else {
+			final double val = sale.getAmountMerchantCurrency();
+			switch (sale.getTransactionType()) {
+				case CHARGE -> {
+					units++;
+					amount += val;
+				}
+				case TAX -> taxes += val;
+				case GOOGLE_FEE -> fees += val;
+				case REFUND -> refunds += val;
+				case TAX_REFUND -> taxRefunds += val;
+				case GOOGLE_FEE_REFUND -> feeRefunds += val;
+			}
+		}
 	}
 }
