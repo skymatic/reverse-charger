@@ -2,12 +2,6 @@ package de.skymatic.appstore_invoices.gui;
 
 import de.skymatic.appstore_invoices.model.InvoiceCollection;
 import de.skymatic.appstore_invoices.model.Workflow;
-import de.skymatic.appstore_invoices.model.apple.AppleReport;
-import de.skymatic.appstore_invoices.model.apple.AppleSalesEntry;
-import de.skymatic.appstore_invoices.parser.AppleParser;
-import de.skymatic.appstore_invoices.parser.CSVParser;
-import de.skymatic.appstore_invoices.parser.OldParseException;
-import de.skymatic.appstore_invoices.parser.ParseResult;
 import de.skymatic.appstore_invoices.parser.ReportParseException;
 import de.skymatic.appstore_invoices.parser.ReportParser;
 import de.skymatic.appstore_invoices.parser.ReportParserFactory;
@@ -90,36 +84,17 @@ public class ParseController {
 	}
 
 	@FXML
-	private void parseFinancialReport() {
-		Path path = Path.of(csvPathString.get());
-		CSVParser csvParser = new AppleParser();
-		try {
-			ParseResult result = csvParser.parseCSV(path);
-			monthlyInvoices = Optional.of(new AppleReport(result.getYearMonth(), //
-					settings.getInvoiceNumberPrefix(), //
-					settings.getLastUsedInvoiceNumber(), //
-					result.getSales().toArray(new AppleSalesEntry[]{})));
-			//settings.setLastUsedInvoiceNumber(monthlyInvoices.get().getNextInvoiceNumber());
-		} catch (IOException | OldParseException | IllegalArgumentException e) {
-			Alerts.parseCSVFileError(e).show();
-		}
-
-		OutputSceneFactory outputSF = new OutputSceneFactory(owner, monthlyInvoices.get());
-		owner.setScene(outputSF.createScene());
-	}
-
 	private void parseReport() {
 		Path path = Path.of(csvPathString.get());
 		ReportParser parser = ReportParserFactory.createParser(documentType.get());
 		try {
 			InvoiceCollection result = parser.parse(path);
-			//TODO: add results to monthlyInvoices
+			monthlyInvoices = Optional.of(result);
 			OutputSceneFactory outputSF = new OutputSceneFactory(owner, monthlyInvoices.get());
 			owner.setScene(outputSF.createScene());
 		} catch (IOException | ReportParseException | IllegalArgumentException | IllegalStateException e) {
 			Alerts.parseCSVFileError(e).show();
 		}
-
 	}
 
 	@FXML
@@ -144,7 +119,7 @@ public class ParseController {
 	private void handleDrop(DragEvent event) {
 		List<File> files = event.getDragboard().getFiles();
 		csvPathString.setValue(files.get(0).toString());
-		parseFinancialReport();
+		parseReport();
 	}
 
 	// Getter & Setter
