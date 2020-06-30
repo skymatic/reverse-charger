@@ -7,7 +7,7 @@ public class GoogleSale {
 	private String description;
 	private LocalDateTime transactionDateTime;
 	private String taxType;
-	private String transactionType;
+	private GoogleTransactionType transactionType;
 	private String refundType;
 	private String productTitle;
 	private String productId;
@@ -23,7 +23,7 @@ public class GoogleSale {
 	private String merchantCCurrency;
 	private double amountMerchantCurrency;
 
-	public GoogleSale(String description, LocalDateTime transactionDateTime, String taxType, String transactionType, String refundType, String productTitle, String productId, int productType, String skuId, String hardware, String buyerCountry, String buyerState, String buyerPostalCode, String buyerCurrency, double amountBuyerCurrency, double currencyConversionRate, String merchantCCurrency, double amountMerchantCurrency) {
+	public GoogleSale(String description, LocalDateTime transactionDateTime, String taxType, GoogleTransactionType transactionType, String refundType, String productTitle, String productId, int productType, String skuId, String hardware, String buyerCountry, String buyerState, String buyerPostalCode, String buyerCurrency, double amountBuyerCurrency, double currencyConversionRate, String merchantCCurrency, double amountMerchantCurrency) {
 		this.description = description;
 		this.transactionDateTime = transactionDateTime;
 		this.taxType = taxType;
@@ -56,7 +56,7 @@ public class GoogleSale {
 		return taxType;
 	}
 
-	public String getTransactionType() {
+	public GoogleTransactionType getTransactionType() {
 		return transactionType;
 	}
 

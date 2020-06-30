@@ -2,6 +2,7 @@ package de.skymatic.appstore_invoices.parser;
 
 import de.skymatic.appstore_invoices.model.google.GoogleReport;
 import de.skymatic.appstore_invoices.model.google.GoogleSale;
+import de.skymatic.appstore_invoices.model.google.GoogleTransactionType;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -62,7 +63,7 @@ public class GoogleParser implements ReportParser {
 						String description = splittedLine[0];
 						LocalDateTime transactionDateTime = convertToLocalDateTime(splittedLine[1], splittedLine[2]);
 						String taxType = splittedLine[3];
-						String transactionType = splittedLine[4];
+						GoogleTransactionType transactionType = GoogleTransactionType.valueOf(splittedLine[4].toUpperCase().replace(' ','_'));
 						String refundType = splittedLine[5];
 						String productTitle = splittedLine[6];
 						String productId = splittedLine[7];
