@@ -15,7 +15,10 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -36,6 +39,15 @@ public class ParseController {
 
 	@FXML
 	private CheckBox generateInvoiceNumbersCheckbox;
+
+	@FXML
+	private ToggleGroup workflowTypeGroup;
+	@FXML
+	private RadioButton autoRadioButton;
+	@FXML
+	private RadioButton appleRadioButton;
+	@FXML
+	private RadioButton googleRadioButton;
 
 	private final Stage owner;
 
@@ -65,6 +77,20 @@ public class ParseController {
 		settings.invoiceNumberPrefixProperty().bind(invoicePrefixField.textProperty());
 		settings.invoiceNumberPrefixProperty().addListener(this::updateInvoiceNumberPrefix);
 		//TODO: set the checkbox according to the settings
+
+		autoRadioButton.setSelected(true);
+
+		workflowTypeGroup.selectedToggleProperty().addListener(this::updateDocumentType);
+	}
+
+	private void updateDocumentType(@SuppressWarnings("unused") ObservableValue<? extends Toggle> observable, @SuppressWarnings("unused") Toggle oldValue, Toggle newValue) {
+		if (newValue.equals(autoRadioButton)) {
+			documentType.set(Workflow.AUTO);
+		} else if (newValue.equals(appleRadioButton)) {
+			documentType.set(Workflow.APPLE);
+		} else if (newValue.equals(googleRadioButton)) {
+			documentType.set(Workflow.GOOGLE);
+		}
 	}
 
 	private void updateInvoiceNumberPrefix(ObservableValue<? extends String> invoiceNoProperty, String oldPrefix, String newPrefix) {
@@ -119,6 +145,7 @@ public class ParseController {
 	private void handleDrop(DragEvent event) {
 		List<File> files = event.getDragboard().getFiles();
 		csvPathString.setValue(files.get(0).toString());
+		workflowTypeGroup.selectToggle(autoRadioButton);
 		parseReport();
 	}
 

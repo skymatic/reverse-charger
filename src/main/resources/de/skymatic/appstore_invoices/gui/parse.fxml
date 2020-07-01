@@ -4,17 +4,34 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="de.skymatic.appstore_invoices.gui.ParseController" onDragDropped="#handleDrop" onDragOver="#handleDragOver">
+	<fx:define>
+		<ToggleGroup fx:id="workflowTypeGroup"/>
+	</fx:define>
 	<padding>
 		<Insets topRightBottomLeft="25"/>
 	</padding>
 	<children>
+		<Label alignment="BASELINE_LEFT" text="Drag and drop a single report here. The report is a csv-file provided by your distributor."/>
+
+		<Separator orientation="HORIZONTAL" valignment="BASELINE"/>
+
 		<VBox alignment="BASELINE_LEFT" spacing="10.0">
-			<Label alignment="BASELINE_LEFT" text="Drag and drop single financial report .csv file."/>
-			<Label alignment="BASELINE_LEFT" text="Or choose financial report file:" labelFor="$csvFileChooserButton"/>
+			<Label alignment="BASELINE_LEFT" text="Or choose financial report file..." labelFor="$csvFileChooserButton"/>
 			<HBox alignment="CENTER" spacing="10.0">
 				<TextField fx:id="pathOfCSVFile" text="${controller.csvPathString}" HBox.hgrow="ALWAYS"/>
 				<Button fx:id="csvFileChooserButton" text="Choose..." onAction="#chooseCSVFile"/>
 			</HBox>
+		</VBox>
+		<VBox alignment="BASELINE_LEFT" spacing="10.0">
+			<Label text="... and select the type of report:">
+			</Label>
+			<RadioButton toggleGroup="$workflowTypeGroup" fx:id="autoRadioButton" text="Auto Detection">
+				<!--VBox.margin>
+					<Insets left="10"/>
+				</VBox.margin-->
+			</RadioButton>
+			<RadioButton toggleGroup="$workflowTypeGroup" fx:id="appleRadioButton" text="Apple"/>
+			<RadioButton toggleGroup="$workflowTypeGroup" fx:id="googleRadioButton" text="Google"/>
 		</VBox>
 		<VBox spacing="10.0" disable="true">
 			<HBox alignment="BASELINE_LEFT" spacing="10.0">
@@ -38,6 +55,7 @@
 				</HBox>
 			</VBox>
 		</VBox>
+
 
 		<ButtonBar buttonMinWidth="120" buttonOrder="X_I">
 			<buttons>
