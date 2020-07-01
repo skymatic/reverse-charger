@@ -14,7 +14,7 @@ public class Alerts {
 	private static final String duplicateInvoiceNumberExists = "The entered invoice number exists already. It will be reset to the previous value.";
 	private static final String illegalStateExceptionDuringAutoDetection = "Unable to automatically detect the type of report. Please select a specific one and try again.";
 
-	public static Alert parseCSVFileError(Exception e) {
+	public static Alert createAlertFromExceptionDuringParse(Exception e) {
 		if (e instanceof IOException) {
 			return new Alert(Alert.AlertType.ERROR, ioExceptionDuringParse + "\n\nThrown exception and message:\n" + e.getCause());
 		} else if (e instanceof OldParseException || e instanceof ReportParseException) {

@@ -93,7 +93,7 @@ public class ParseController {
 			OutputSceneFactory outputSF = new OutputSceneFactory(owner, monthlyInvoices.get());
 			owner.setScene(outputSF.createScene());
 		} catch (IOException | ReportParseException | IllegalArgumentException | IllegalStateException e) {
-			Alerts.parseCSVFileError(e).show();
+			Alerts.createAlertFromExceptionDuringParse(e).show();
 		}
 	}
 
