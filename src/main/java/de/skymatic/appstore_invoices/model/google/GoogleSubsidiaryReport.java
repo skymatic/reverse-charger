@@ -49,10 +49,11 @@ public class GoogleSubsidiaryReport implements Invoicable {
 	public void add(GoogleSale sale) throws IllegalArgumentException {
 		final var productTitle = sale.getProductTitle();
 		final var country = sale.getBuyerCountry();
+		final var monthYear = YearMonth.from(sale.getTransactionDateTime());
 		if (subsidiary != GoogleUtility.mapCountryToSubsidiary(country)) {
-			throw new IllegalArgumentException("Sales entry does not belong to this subsidiary report of " + subsidiary + ": Wrong country.");
-		} else if (billingMonth != YearMonth.from(sale.getTransactionDateTime())) {
-			throw new IllegalArgumentException("Sales entry does not belong to this subsidiary report of  (" + subsidiary + "): Wrong Month/Year.");
+			throw new IllegalArgumentException("Sales entry does not belong to sub report of " + subsidiary + ": Wrong country.");
+		} else if (billingMonth.getMonth() != monthYear.getMonth() || billingMonth.getYear() != monthYear.getYear()){
+			throw new IllegalArgumentException("Sales entry does not belong to sub report of " + subsidiary + ": Wrong Month/Year.");
 		} else{
 			if (salesPerProduct.containsKey(productTitle)) {
 				salesPerProduct.get(productTitle).update(sale);
