@@ -1,63 +1,50 @@
 package de.skymatic.appstore_invoices.model;
 
 import java.time.LocalDate;
-import java.util.AbstractCollection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Invoice with the most basic and nearly always necessary information.
- * TODO: should we implement abstract collection? Actually not, since once an invoice is parsed, you should not be able to modify it.
  */
-public class Invoice extends AbstractCollection<InvoiceItem> {
+public class Invoice {
 
 	private final Recipient recipient;
 	private final LocalDate startOfBillingPeriod;
 	private final LocalDate endOfBillingPeriod;
-	private final List<InvoiceItem> items; //TODO: add more products
+	private final List<InvoiceItem> items;
 	private final Map<String, Double> globalItems;
 
 	private String id;
 	private LocalDate issueDate;
 
-	public Invoice(String id, Recipient recipient, LocalDate startOfBillingPeriod, LocalDate endOfBillingPeriod, LocalDate issueDate) {
+	public Invoice(String id, Recipient recipient, LocalDate startOfBillingPeriod, LocalDate endOfBillingPeriod, LocalDate issueDate, Collection<InvoiceItem> items, Map<String, Double> globalItems) {
 		this.id = id;
 		this.recipient = recipient;
 		this.issueDate = issueDate;
 		this.startOfBillingPeriod = startOfBillingPeriod;
 		this.endOfBillingPeriod = endOfBillingPeriod;
-		this.items = new ArrayList<>();
-		this.globalItems = new HashMap<>();
+		this.items = new ArrayList<>(items);
+		this.globalItems = new HashMap<>(globalItems);
 	}
 
 	public double proceeds() {
-		return items.stream().reduce(0.0, (x, i) -> x + i.getAmount(), Double::sum)
-				+ globalItems.values().stream().reduce(0.0, (result,x) -> result+x, Double::sum);
+		return items.stream().mapToDouble(InvoiceItem::getAmount).sum()
+				+ globalItems.values().stream().mapToDouble(x -> x).sum();
 	}
 
-	@Override
-	public Iterator<InvoiceItem> iterator() {
-		return items.iterator();
-	}
-
-	@Override
 	public int size() {
 		return items.size();
 	}
 
-	@Override
-	public boolean add(InvoiceItem i) {
-		return items.add(i);
-	}
-
-	public void setId(String newId){
+	public void setId(String newId) {
 		this.id = newId;
 	}
 
-	public String getId(){
+	public String getId() {
 		return id;
 	}
 
@@ -77,7 +64,7 @@ public class Invoice extends AbstractCollection<InvoiceItem> {
 		return endOfBillingPeriod;
 	}
 
-	public Recipient getRecipient(){
+	public Recipient getRecipient() {
 		return recipient;
 	}
 
