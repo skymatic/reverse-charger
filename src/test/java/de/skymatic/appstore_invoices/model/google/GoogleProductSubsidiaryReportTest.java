@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static de.skymatic.appstore_invoices.model.google.GoogleSaleFactory.*;
+
 /**
  * Unittests for {@link GoogleProductSubsidiaryReport}.
  *
@@ -38,7 +39,7 @@ public class GoogleProductSubsidiaryReportTest {
 		GoogleSale sale = getChargeSale();
 		assert sale.getProductTitle() == productReport.getProductTitle();
 
-		expectedAmount = sale.getAmountBuyerCurrency() + productReport.getAmount();
+		expectedAmount = sale.getAmountMerchantCurrency() + productReport.getAmount();
 		expectedUnits = 1 + productReport.getUnits();
 
 		productReport.update(sale);
@@ -57,7 +58,7 @@ public class GoogleProductSubsidiaryReportTest {
 		GoogleSale sale = getTaxSale();
 		assert sale.getProductTitle() == productReport.getProductTitle();
 
-		expectedTaxes = sale.getAmountBuyerCurrency() + productReport.getAmount();
+		expectedTaxes = sale.getAmountMerchantCurrency() + productReport.getTaxes();
 
 		productReport.update(sale);
 
@@ -75,7 +76,7 @@ public class GoogleProductSubsidiaryReportTest {
 		GoogleSale sale = getFeeSale();
 		assert sale.getProductTitle() == productReport.getProductTitle();
 
-		expectedFees = sale.getAmountBuyerCurrency() + productReport.getFees();
+		expectedFees = sale.getAmountMerchantCurrency() + productReport.getFees();
 
 		productReport.update(sale);
 
@@ -93,7 +94,7 @@ public class GoogleProductSubsidiaryReportTest {
 		GoogleSale sale = getRefundSale();
 		assert sale.getProductTitle() == productReport.getProductTitle();
 
-		expectedRefunds = sale.getAmountBuyerCurrency() + productReport.getRefunds();
+		expectedRefunds = sale.getAmountMerchantCurrency() + productReport.getRefunds();
 
 		productReport.update(sale);
 
@@ -111,7 +112,7 @@ public class GoogleProductSubsidiaryReportTest {
 		GoogleSale sale = getTaxRefundSale();
 		assert sale.getProductTitle() == productReport.getProductTitle();
 
-		expectedTaxRefunds = sale.getAmountBuyerCurrency() + productReport.getTaxRefunds();
+		expectedTaxRefunds = sale.getAmountMerchantCurrency() + productReport.getTaxRefunds();
 
 		productReport.update(sale);
 
@@ -129,7 +130,7 @@ public class GoogleProductSubsidiaryReportTest {
 		GoogleSale sale = getFeeRefundSale();
 		assert sale.getProductTitle() == productReport.getProductTitle();
 
-		expectedFeeRefunds = sale.getAmountBuyerCurrency() + productReport.getFeeRefunds();
+		expectedFeeRefunds = sale.getAmountMerchantCurrency() + productReport.getFeeRefunds();
 
 		productReport.update(sale);
 
