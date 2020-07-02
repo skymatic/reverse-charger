@@ -2,9 +2,13 @@ package de.skymatic.appstore_invoices.model.apple;
 
 import de.skymatic.appstore_invoices.model.Invoicable;
 import de.skymatic.appstore_invoices.model.Invoice;
+import de.skymatic.appstore_invoices.model.InvoiceItem;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -83,7 +87,8 @@ public class AppleSubsidiaryReport implements Invoicable {
 
 	@Override
 	public Invoice toInvoice() {
-		//TODO
-		return null;
+		Map<String, Double> globalItems = new HashMap<>();
+		Collection<InvoiceItem> items = Collections.singleton(new InvoiceItem("Cryptomator Mobile App", getAmount(), sum()));
+		return new Invoice(numberString,appleSubsidiary,startOfPeriod, endOfPeriod, issueDate,items, globalItems);
 	}
 }
