@@ -1,9 +1,11 @@
 package de.skymatic.appstore_invoices.model.google;
 
+import de.skymatic.appstore_invoices.model.Invoice;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.YearMonth;
+import java.util.Arrays;
 
 import static de.skymatic.appstore_invoices.model.google.GoogleSaleFactory.*;
 
@@ -19,6 +21,16 @@ public class GoogleSubsidiaryReportTest {
 	public void addingSalesOfDifferentSubsidiariesThrowsException() {
 		GoogleSale s1 = getSale();
 		GoogleSale s2 = getSaleOfDifferentSubsidiary();
+		Assertions.assertThrows(IllegalArgumentException.class, () -> new GoogleSubsidiaryReport(s1, s2));
+
+		GoogleSubsidiaryReport subReport = new GoogleSubsidiaryReport(s1);
+		Assertions.assertThrows(IllegalArgumentException.class, () -> subReport.add(s2));
+	}
+
+	@Test
+	public void addingSalesOfDifferentYearMonthThrowsException() {
+		GoogleSale s1 = getSale();
+		GoogleSale s2 = getSaleOfDifferentMonth();
 		Assertions.assertThrows(IllegalArgumentException.class, () -> new GoogleSubsidiaryReport(s1, s2));
 
 		GoogleSubsidiaryReport subReport = new GoogleSubsidiaryReport(s1);
@@ -79,7 +91,19 @@ public class GoogleSubsidiaryReportTest {
 
 
 	@Test
-	public void generatedInvoiceContainstheData() {
-		//TODO
+	public void generatedInvoiceContainsTheData() {
+		GoogleSale[] sales = new GoogleSale[]{
+				getChargeSale(),
+				getTaxSale(),
+				getFeeSale(),
+				getRefundSale(),
+				getSaleOfDifferentProduct(),
+		};
+		Invoice invoice = new GoogleSubsidiaryReport(sales).toInvoice();
+
+		double expectedProceeds = Arrays.stream(sales).mapToDouble(GoogleSale::getAmountMerchantCurrency).sum();
+
+		Assertions.assertEquals(2, invoice.size());
+		Assertions.assertEquals(expectedProceeds, invoice.proceeds());
 	}
 }

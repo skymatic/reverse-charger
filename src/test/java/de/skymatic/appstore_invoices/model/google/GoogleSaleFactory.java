@@ -37,7 +37,7 @@ class GoogleSaleFactory {
 	}
 
 	static GoogleSale getSale() {
-		return createSale(DEFAULT_TIME, CHARGE, DEFAULT_PRODUCT, DEFAULT_COUNTRY);
+		return getChargeSale();
 	}
 
 	static GoogleSale getSaleOfDifferentProduct() {
@@ -54,4 +54,26 @@ class GoogleSaleFactory {
 		return createSale(DEFAULT_TIME, CHARGE, DEFAULT_PRODUCT, otherCountry);
 	}
 
+	static GoogleSale getSaleOfDifferentMonth() {
+		LocalDateTime otherMonth = LocalDateTime.of(2014,12,31,12,59);
+		assert otherMonth.getMonth() != DEFAULT_TIME.getMonth() || otherMonth.getYear() != DEFAULT_TIME.getYear();
+
+		return createSale(otherMonth, CHARGE, DEFAULT_PRODUCT, DEFAULT_COUNTRY);
+	}
+
+	static GoogleSale getChargeSale(){
+		return createSale(DEFAULT_TIME, CHARGE, DEFAULT_PRODUCT, DEFAULT_COUNTRY);
+	}
+
+	static GoogleSale getTaxSale(){
+		return createSale(DEFAULT_TIME, TAX, DEFAULT_PRODUCT, DEFAULT_COUNTRY);
+	}
+
+	static GoogleSale getFeeSale(){
+		return createSale(DEFAULT_TIME, GOOGLE_FEE, DEFAULT_PRODUCT, DEFAULT_COUNTRY);
+	}
+
+	static GoogleSale getRefundSale(){
+		return createSale(DEFAULT_TIME, REFUND, DEFAULT_PRODUCT, DEFAULT_COUNTRY);
+	}
 }
