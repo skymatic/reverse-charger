@@ -51,7 +51,6 @@ public class GoogleParser implements ReportParser {
 	@Override
 	public GoogleReport parse(Path p) throws IOException, ReportParseException, IllegalArgumentException {
 		Collection<GoogleSale> rawSales = parseInternal(p);
-		YearMonth yM = YearMonth.from(rawSales.iterator().next().getTransactionDateTime());
 		return new GoogleReport(rawSales.toArray(new GoogleSale[]{}));
 	}
 
