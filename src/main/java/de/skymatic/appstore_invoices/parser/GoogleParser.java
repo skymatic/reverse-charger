@@ -39,14 +39,14 @@ import java.util.stream.Collectors;
  * Currency Conversion Rate
  * Merchant Currency
  * Amount (Merchant Currency)
- *
+ * <p>
  * Date and Time are merged into one field of type {@link LocalDateTime}.
  * The field transaction type is converted into an instance of {@link GoogleTransactionType}.
  * Additionally the parsed object is extended with a field subsidiary of type {@link GoogleSubsidiary}.
  */
 public class GoogleParser implements ReportParser {
 
-	private static final DateTimeFormatter converter = DateTimeFormatter.ofPattern("LLL d yyyy h:mm:ss a zzz", Locale.US);
+	private static final DateTimeFormatter converter = DateTimeFormatter.ofPattern("LLL d, yyyy h:mm:ss a zzz", Locale.US);
 
 	@Override
 	public GoogleReport parse(Path p) throws IOException, ReportParseException, IllegalArgumentException {
@@ -63,27 +63,27 @@ public class GoogleParser implements ReportParser {
 
 			return br.lines()
 					.map(line -> lastReadLine.copyAndReturn(line))
-					.map(line -> line.split(","))
+					.map(this::splitWithCSVEscapes)
 					.map(splittedLine -> {
 						String description = splittedLine[0];
-						LocalDateTime transactionDateTime = convertToLocalDateTime(splittedLine[1], splittedLine[2], splittedLine[3]);
-						String taxType = splittedLine[4];
-						GoogleTransactionType transactionType = GoogleTransactionType.valueOf(splittedLine[5].toUpperCase().replace(' ','_'));
-						String refundType = splittedLine[6];
-						String productTitle = splittedLine[7];
-						String productId = splittedLine[8];
-						int productType = Integer.parseInt(splittedLine[9]);
-						String skuId = splittedLine[10];
-						String hardware = splittedLine[11];
-						GoogleSubsidiary subsidiary = GoogleSubsidiary.fromISO2CountryCode(splittedLine[12]);
-						String buyerCountry = splittedLine[12];
-						String buyerState = splittedLine[13];
-						String buyerPostalCode = splittedLine[14];
-						String buyerCurrency = splittedLine[15];
-						double amountBuyerCurrency = Double.valueOf(splittedLine[16]);
-						double currencyConversionRate = Double.valueOf(splittedLine[17]);
-						String merchantCCurrency = splittedLine[18];
-						double amountMerchantCurrency = Double.valueOf(splittedLine[19]);
+						LocalDateTime transactionDateTime = convertToLocalDateTime(splittedLine[1], splittedLine[2]);
+						String taxType = splittedLine[3];
+						GoogleTransactionType transactionType = GoogleTransactionType.valueOf(splittedLine[4].toUpperCase().replace(' ', '_'));
+						String refundType = splittedLine[5];
+						String productTitle = splittedLine[6];
+						String productId = splittedLine[7];
+						int productType = Integer.parseInt(splittedLine[8]);
+						String skuId = splittedLine[9];
+						String hardware = splittedLine[10];
+						GoogleSubsidiary subsidiary = GoogleSubsidiary.fromISO2CountryCode(splittedLine[11]);
+						String buyerCountry = splittedLine[11];
+						String buyerState = splittedLine[12];
+						String buyerPostalCode = splittedLine[13];
+						String buyerCurrency = splittedLine[14];
+						double amountBuyerCurrency = Double.valueOf(splittedLine[15]);
+						double currencyConversionRate = Double.valueOf(splittedLine[16]);
+						String merchantCCurrency = splittedLine[17];
+						double amountMerchantCurrency = Double.valueOf(splittedLine[18]);
 
 						return new GoogleSale(description,
 								transactionDateTime,
@@ -111,8 +111,49 @@ public class GoogleParser implements ReportParser {
 		}
 	}
 
-	private LocalDateTime convertToLocalDateTime(String monthAndDay, String year, String time) {
-		return LocalDateTime.parse(monthAndDay.substring(1) + year.substring(0,year.length()-1) + " " + time, converter);
+	private LocalDateTime convertToLocalDateTime(String date, String time) {
+		return LocalDateTime.parse(date + " " + time, converter);
+	}
+
+	/**
+	 * A single CSV entry can contain , if it is enclosed by ".
+	 * Therefore a simple line.split(",") does not do the job.
+	 * This function works under three assumptions:
+	 * 1. First element is never escaped
+	 * 2. The last element is never escaped
+	 * 3. There is at least one escaped element
+	 *
+	 * @param line the line to be splitted.
+	 * @return
+	 */
+	private String[] splitWithCSVEscapes(String line) {
+		String[] splitByCSVEscapes = line.split("\"");
+		String[] splittedLine = new String[19];
+
+		splittedLine[0] = splitByCSVEscapes[0].substring(0, splitByCSVEscapes[0].length() - 1);
+		splittedLine[1] = splitByCSVEscapes[1];
+
+		int nextIndex = 2;
+		boolean outsideEscapes = true;
+		//we start at column three
+		for (int i = 2; i < splitByCSVEscapes.length; i++) {
+			if (outsideEscapes) {
+				if (splitByCSVEscapes[i].endsWith(",")) {
+					splitByCSVEscapes[i] = splitByCSVEscapes[i].substring(0, splitByCSVEscapes[i].length() - 1);
+				}
+				String[] subsplit = splitByCSVEscapes[i].substring(1).split(",");
+				for (int j = 0; j < subsplit.length; j++) {
+					splittedLine[nextIndex] = subsplit[j];
+					nextIndex++;
+				}
+				outsideEscapes = false;
+			} else {
+				splittedLine[nextIndex] = splitByCSVEscapes[i];
+				nextIndex++;
+				outsideEscapes = true;
+			}
+		}
+		return splittedLine;
 	}
 
 }
