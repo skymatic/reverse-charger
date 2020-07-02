@@ -77,7 +77,7 @@ public class GoogleProductSubsidiaryReport {
 	}
 
 	public void update(GoogleSale sale) {
-		if (sale.getProductTitle() != this.productTitle) {
+		if (!sale.getProductTitle().equals(this.productTitle)) {
 			throw new IllegalArgumentException("Invalid sale entry for update: Wrong ProductTitle.");
 		} else {
 			final double val = sale.getAmountMerchantCurrency();
@@ -88,7 +88,7 @@ public class GoogleProductSubsidiaryReport {
 				}
 				case TAX -> taxes += val;
 				case GOOGLE_FEE -> fees += val;
-				case REFUND -> refunds += val;
+				case CHARGE_REFUND -> refunds += val;
 				case TAX_REFUND -> taxRefunds += val;
 				case GOOGLE_FEE_REFUND -> feeRefunds += val;
 			}

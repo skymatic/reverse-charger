@@ -75,7 +75,7 @@ class GoogleSaleFactory {
 	}
 
 	static GoogleSale getRefundSale(){
-		return createSale(DEFAULT_TIME, REFUND, DEFAULT_PRODUCT, DEFAULT_SUBSIDIARY);
+		return createSale(DEFAULT_TIME, CHARGE_REFUND, DEFAULT_PRODUCT, DEFAULT_SUBSIDIARY);
 	}
 	static GoogleSale getTaxRefundSale(){
 		return createSale(DEFAULT_TIME, TAX_REFUND, DEFAULT_PRODUCT, DEFAULT_SUBSIDIARY);

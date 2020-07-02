@@ -46,7 +46,7 @@ import java.util.stream.Collectors;
  */
 public class GoogleParser implements ReportParser {
 
-	private static final DateTimeFormatter converter = DateTimeFormatter.ofPattern("LLL dd, yyyy KK:mm:ss a zzz", Locale.US);
+	private static final DateTimeFormatter converter = DateTimeFormatter.ofPattern("LLL d yyyy h:mm:ss a zzz", Locale.US);
 
 	@Override
 	public GoogleReport parse(Path p) throws IOException, ReportParseException, IllegalArgumentException {
@@ -66,24 +66,24 @@ public class GoogleParser implements ReportParser {
 					.map(line -> line.split(","))
 					.map(splittedLine -> {
 						String description = splittedLine[0];
-						LocalDateTime transactionDateTime = convertToLocalDateTime(splittedLine[1], splittedLine[2]);
-						String taxType = splittedLine[3];
-						GoogleTransactionType transactionType = GoogleTransactionType.valueOf(splittedLine[4].toUpperCase().replace(' ','_'));
-						String refundType = splittedLine[5];
-						String productTitle = splittedLine[6];
-						String productId = splittedLine[7];
-						int productType = Integer.parseInt(splittedLine[8]);
-						String skuId = splittedLine[9];
-						String hardware = splittedLine[10];
-						GoogleSubsidiary subsidiary = GoogleSubsidiary.fromISO2CountryCode(splittedLine[11]);
-						String buyerCountry = splittedLine[11];
-						String buyerState = splittedLine[12];
-						String buyerPostalCode = splittedLine[13];
-						String buyerCurrency = splittedLine[14];
-						double amountBuyerCurrency = Double.valueOf(splittedLine[15]);
-						double currencyConversionRate = Double.valueOf(splittedLine[16]);
-						String merchantCCurrency = splittedLine[17];
-						double amountMerchantCurrency = Double.valueOf(splittedLine[18]);
+						LocalDateTime transactionDateTime = convertToLocalDateTime(splittedLine[1], splittedLine[2], splittedLine[3]);
+						String taxType = splittedLine[4];
+						GoogleTransactionType transactionType = GoogleTransactionType.valueOf(splittedLine[5].toUpperCase().replace(' ','_'));
+						String refundType = splittedLine[6];
+						String productTitle = splittedLine[7];
+						String productId = splittedLine[8];
+						int productType = Integer.parseInt(splittedLine[9]);
+						String skuId = splittedLine[10];
+						String hardware = splittedLine[11];
+						GoogleSubsidiary subsidiary = GoogleSubsidiary.fromISO2CountryCode(splittedLine[12]);
+						String buyerCountry = splittedLine[12];
+						String buyerState = splittedLine[13];
+						String buyerPostalCode = splittedLine[14];
+						String buyerCurrency = splittedLine[15];
+						double amountBuyerCurrency = Double.valueOf(splittedLine[16]);
+						double currencyConversionRate = Double.valueOf(splittedLine[17]);
+						String merchantCCurrency = splittedLine[18];
+						double amountMerchantCurrency = Double.valueOf(splittedLine[19]);
 
 						return new GoogleSale(description,
 								transactionDateTime,
@@ -111,8 +111,8 @@ public class GoogleParser implements ReportParser {
 		}
 	}
 
-	private LocalDateTime convertToLocalDateTime(String date, String time) {
-		return LocalDateTime.parse(date.substring(1, date.length() - 1) + " " + time, converter);
+	private LocalDateTime convertToLocalDateTime(String monthAndDay, String year, String time) {
+		return LocalDateTime.parse(monthAndDay.substring(1) + year.substring(0,year.length()-1) + " " + time, converter);
 	}
 
 }
