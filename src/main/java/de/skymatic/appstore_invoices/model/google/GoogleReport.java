@@ -17,7 +17,7 @@ public class GoogleReport implements InvoiceCollection {
 
 	private final YearMonth billingMonth;
 	private final Map<GoogleSubsidiary, GoogleSubsidiaryReport> reportsOfSubsidiaries;
-	private final InvoiceNumberGenerator numberGenerator; //TODO: is this needed here?
+	private final InvoiceNumberGenerator numberGenerator;
 
 	/**
 	 * Creates an empty report with the specified year and month.
@@ -91,6 +91,13 @@ public class GoogleReport implements InvoiceCollection {
 
 	@Override
 	public Collection<Invoice> toInvoices() {
-		return reportsOfSubsidiaries.values().stream().map(r -> r.toInvoice()).collect(Collectors.toUnmodifiableList());
+		return reportsOfSubsidiaries.values()
+				.stream()
+				.map(r -> {
+							Invoice i = r.toInvoice();
+							i.setId(String.valueOf(numberGenerator.getAsInt()));
+							return i;
+						}
+				).collect(Collectors.toUnmodifiableList());
 	}
 }
