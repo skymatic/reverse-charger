@@ -4,15 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-
-import static de.skymatic.appstore_invoices.model.google.GoogleTransactionType.CHARGE;
-import static de.skymatic.appstore_invoices.model.google.GoogleTransactionType.GOOGLE_FEE;
-import static de.skymatic.appstore_invoices.model.google.GoogleTransactionType.GOOGLE_FEE_REFUND;
-import static de.skymatic.appstore_invoices.model.google.GoogleTransactionType.REFUND;
-import static de.skymatic.appstore_invoices.model.google.GoogleTransactionType.TAX;
-import static de.skymatic.appstore_invoices.model.google.GoogleTransactionType.TAX_REFUND;
-
+import static de.skymatic.appstore_invoices.model.google.GoogleSaleFactory.*;
 /**
  * Unittests for {@link GoogleProductSubsidiaryReport}.
  *
@@ -31,7 +23,7 @@ public class GoogleProductSubsidiaryReportTest {
 
 	@BeforeEach
 	public void init() {
-		productReport = new GoogleProductSubsidiaryReport("MyProduct");
+		productReport = new GoogleProductSubsidiaryReport(getSale());
 		expectedUnits = productReport.getUnits();
 		expectedAmount = productReport.getAmount();
 		expectedTaxes = productReport.getTaxes();
@@ -43,7 +35,7 @@ public class GoogleProductSubsidiaryReportTest {
 
 	@Test
 	public void updateWithChargeSaleDoesItsJob() {
-		GoogleSale sale = createSale(productReport.getProductTitle(), CHARGE);
+		GoogleSale sale = getChargeSale();
 		assert sale.getProductTitle() == productReport.getProductTitle();
 
 		expectedAmount = sale.getAmountBuyerCurrency() + productReport.getAmount();
@@ -62,7 +54,7 @@ public class GoogleProductSubsidiaryReportTest {
 
 	@Test
 	public void updateWithTaxSaleDoesItsJob() {
-		GoogleSale sale = createSale(productReport.getProductTitle(), TAX);
+		GoogleSale sale = getTaxSale();
 		assert sale.getProductTitle() == productReport.getProductTitle();
 
 		expectedTaxes = sale.getAmountBuyerCurrency() + productReport.getAmount();
@@ -80,7 +72,7 @@ public class GoogleProductSubsidiaryReportTest {
 
 	@Test
 	public void updateWithFeeSaleDoesItsJob() {
-		GoogleSale sale = createSale(productReport.getProductTitle(), GOOGLE_FEE);
+		GoogleSale sale = getFeeSale();
 		assert sale.getProductTitle() == productReport.getProductTitle();
 
 		expectedFees = sale.getAmountBuyerCurrency() + productReport.getFees();
@@ -98,7 +90,7 @@ public class GoogleProductSubsidiaryReportTest {
 
 	@Test
 	public void updateWithRefundSaleDoesItsJob() {
-		GoogleSale sale = createSale(productReport.getProductTitle(), REFUND);
+		GoogleSale sale = getRefundSale();
 		assert sale.getProductTitle() == productReport.getProductTitle();
 
 		expectedRefunds = sale.getAmountBuyerCurrency() + productReport.getRefunds();
@@ -116,7 +108,7 @@ public class GoogleProductSubsidiaryReportTest {
 
 	@Test
 	public void updateWithRefundTaxSaleDoesItsJob() {
-		GoogleSale sale = createSale(productReport.getProductTitle(), TAX_REFUND);
+		GoogleSale sale = getTaxRefundSale();
 		assert sale.getProductTitle() == productReport.getProductTitle();
 
 		expectedTaxRefunds = sale.getAmountBuyerCurrency() + productReport.getTaxRefunds();
@@ -134,7 +126,7 @@ public class GoogleProductSubsidiaryReportTest {
 
 	@Test
 	public void updateWithRefundFeeSaleDoesItsJob() {
-		GoogleSale sale = createSale(productReport.getProductTitle(), GOOGLE_FEE_REFUND);
+		GoogleSale sale = getFeeRefundSale();
 		assert sale.getProductTitle() == productReport.getProductTitle();
 
 		expectedFeeRefunds = sale.getAmountBuyerCurrency() + productReport.getFeeRefunds();
@@ -152,31 +144,10 @@ public class GoogleProductSubsidiaryReportTest {
 
 	@Test
 	public void updateWithWrongProductTitleThrowsException() {
-		GoogleSale sale = createSale("OtherProduct", CHARGE);
+		GoogleSale sale = getSaleOfDifferentProduct();
 		assert sale.getProductTitle() != productReport.getProductTitle();
 
 		Assertions.assertThrows(IllegalArgumentException.class, () -> productReport.update(sale));
 	}
 
-	private static GoogleSale createSale(String productTitle, GoogleTransactionType type) {
-		return new GoogleSale("1236",
-				LocalDateTime.now(),
-				"tax",
-				type,
-				"",
-				productTitle,
-				"my.company",
-				0,
-				"",
-				"ultraPhone",
-				"DE",
-				"Bavaria",
-				"80333",
-				"EUR",
-				1337.0,
-				1.0,
-				"EUR",
-				1337.0
-		);
-	}
 }

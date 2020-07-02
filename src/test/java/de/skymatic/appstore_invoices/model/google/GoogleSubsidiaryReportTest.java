@@ -79,7 +79,7 @@ public class GoogleSubsidiaryReportTest {
 	public void returnedSubsidiaryMatchesWithFirstAddedSale() {
 		GoogleSale sale = getSale();
 		GoogleSale[] sales = new GoogleSale[]{sale};
-		GoogleSubsidiary expected = GoogleUtility.mapCountryToSubsidiary(sale.getBuyerCountry());
+		GoogleSubsidiary expected = sale.getSubsidiary();
 
 		GoogleSubsidiaryReport subReport1 = new GoogleSubsidiaryReport(sale);
 		GoogleSubsidiaryReport subReport2 = new GoogleSubsidiaryReport(sales);

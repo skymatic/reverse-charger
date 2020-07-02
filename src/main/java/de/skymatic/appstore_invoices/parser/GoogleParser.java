@@ -2,6 +2,7 @@ package de.skymatic.appstore_invoices.parser;
 
 import de.skymatic.appstore_invoices.model.google.GoogleReport;
 import de.skymatic.appstore_invoices.model.google.GoogleSale;
+import de.skymatic.appstore_invoices.model.google.GoogleSubsidiary;
 import de.skymatic.appstore_invoices.model.google.GoogleTransactionType;
 
 import java.io.BufferedReader;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 
 /**
  * Parses CSV files created/exported by the Google Play Store Financial Overview.
- * The CSV file contains the folloing columns (from left to right):
+ * The CSV file contains the following columns (from left to right):
  * Description
  * Transaction
  * Date
@@ -38,6 +39,10 @@ import java.util.stream.Collectors;
  * Currency Conversion Rate
  * Merchant Currency
  * Amount (Merchant Currency)
+ *
+ * Date and Time are merged into one field of type {@link LocalDateTime}.
+ * The field transaction type is converted into an instance of {@link GoogleTransactionType}.
+ * Additionally the parsed object is extended with a field subsidiary of type {@link GoogleSubsidiary}.
  */
 public class GoogleParser implements ReportParser {
 
@@ -70,6 +75,7 @@ public class GoogleParser implements ReportParser {
 						int productType = Integer.parseInt(splittedLine[8]);
 						String skuId = splittedLine[9];
 						String hardware = splittedLine[10];
+						GoogleSubsidiary subsidiary = GoogleSubsidiary.fromISO2CountryCode(splittedLine[11]);
 						String buyerCountry = splittedLine[11];
 						String buyerState = splittedLine[12];
 						String buyerPostalCode = splittedLine[13];
@@ -89,6 +95,7 @@ public class GoogleParser implements ReportParser {
 								productType,
 								skuId,
 								hardware,
+								subsidiary,
 								buyerCountry,
 								buyerState,
 								buyerPostalCode,

@@ -77,7 +77,7 @@ public class GoogleReport implements InvoiceCollection {
 	}
 
 	public void add(GoogleSale sale) {
-		GoogleSubsidiary subsidiary = GoogleUtility.mapCountryToSubsidiary(sale.getBuyerCountry());
+		final GoogleSubsidiary subsidiary = sale.getSubsidiary();
 		if (reportsOfSubsidiaries.containsKey(subsidiary)) {
 			reportsOfSubsidiaries.get(subsidiary).add(sale);
 		} else {

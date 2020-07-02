@@ -11,9 +11,9 @@ class GoogleSaleFactory {
 
 	private static LocalDateTime DEFAULT_TIME = LocalDateTime.now();
 	private static String DEFAULT_PRODUCT = "MyProduct";
-	private static String DEFAULT_COUNTRY = "DE";
+	private static GoogleSubsidiary DEFAULT_SUBSIDIARY = GoogleSubsidiary.ROW;
 
-	private static GoogleSale createSale(LocalDateTime time, GoogleTransactionType type, String product, String country) {
+	private static GoogleSale createSale(LocalDateTime time, GoogleTransactionType type, String product, GoogleSubsidiary subsidiary) {
 		return new GoogleSale(
 				"1234",
 				time,
@@ -25,7 +25,8 @@ class GoogleSaleFactory {
 				0,
 				"",
 				"ultraPhone",
-				country,
+				subsidiary,
+				"CC",
 				"State",
 				"1234",
 				"EUR",
@@ -44,36 +45,42 @@ class GoogleSaleFactory {
 		String otherProduct = "YourProduct";
 		assert otherProduct != DEFAULT_PRODUCT;
 
-		return createSale(DEFAULT_TIME, CHARGE, otherProduct, DEFAULT_COUNTRY);
+		return createSale(DEFAULT_TIME, CHARGE, otherProduct, DEFAULT_SUBSIDIARY);
 	}
 
 	static GoogleSale getSaleOfDifferentSubsidiary() {
-		String otherCountry = "US";
-		assert GoogleUtility.mapCountryToSubsidiary(otherCountry) != GoogleUtility.mapCountryToSubsidiary(DEFAULT_COUNTRY);
+		GoogleSubsidiary otherSubsidiary = GoogleSubsidiary.ASIA;
+		assert otherSubsidiary != DEFAULT_SUBSIDIARY;
 
-		return createSale(DEFAULT_TIME, CHARGE, DEFAULT_PRODUCT, otherCountry);
+		return createSale(DEFAULT_TIME, CHARGE, DEFAULT_PRODUCT, otherSubsidiary);
 	}
 
 	static GoogleSale getSaleOfDifferentMonth() {
 		LocalDateTime otherMonth = LocalDateTime.of(2014,12,31,12,59);
 		assert otherMonth.getMonth() != DEFAULT_TIME.getMonth() || otherMonth.getYear() != DEFAULT_TIME.getYear();
 
-		return createSale(otherMonth, CHARGE, DEFAULT_PRODUCT, DEFAULT_COUNTRY);
+		return createSale(otherMonth, CHARGE, DEFAULT_PRODUCT, DEFAULT_SUBSIDIARY);
 	}
 
 	static GoogleSale getChargeSale(){
-		return createSale(DEFAULT_TIME, CHARGE, DEFAULT_PRODUCT, DEFAULT_COUNTRY);
+		return createSale(DEFAULT_TIME, CHARGE, DEFAULT_PRODUCT, DEFAULT_SUBSIDIARY);
 	}
 
 	static GoogleSale getTaxSale(){
-		return createSale(DEFAULT_TIME, TAX, DEFAULT_PRODUCT, DEFAULT_COUNTRY);
+		return createSale(DEFAULT_TIME, TAX, DEFAULT_PRODUCT, DEFAULT_SUBSIDIARY);
 	}
 
 	static GoogleSale getFeeSale(){
-		return createSale(DEFAULT_TIME, GOOGLE_FEE, DEFAULT_PRODUCT, DEFAULT_COUNTRY);
+		return createSale(DEFAULT_TIME, GOOGLE_FEE, DEFAULT_PRODUCT, DEFAULT_SUBSIDIARY);
 	}
 
 	static GoogleSale getRefundSale(){
-		return createSale(DEFAULT_TIME, REFUND, DEFAULT_PRODUCT, DEFAULT_COUNTRY);
+		return createSale(DEFAULT_TIME, REFUND, DEFAULT_PRODUCT, DEFAULT_SUBSIDIARY);
+	}
+	static GoogleSale getTaxRefundSale(){
+		return createSale(DEFAULT_TIME, TAX_REFUND, DEFAULT_PRODUCT, DEFAULT_SUBSIDIARY);
+	}
+	static GoogleSale getFeeRefundSale(){
+		return createSale(DEFAULT_TIME, GOOGLE_FEE_REFUND, DEFAULT_PRODUCT, DEFAULT_SUBSIDIARY);
 	}
 }

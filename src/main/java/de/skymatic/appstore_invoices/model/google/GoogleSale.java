@@ -4,26 +4,27 @@ import java.time.LocalDateTime;
 
 public class GoogleSale {
 
-	private String description;
-	private LocalDateTime transactionDateTime;
-	private String taxType;
-	private GoogleTransactionType transactionType;
-	private String refundType;
-	private String productTitle;
-	private String productId;
-	private int productType;
-	private String skuId;
-	private String hardware;
-	private String buyerCountry;
-	private String buyerState;
-	private String buyerPostalCode;
-	private String buyerCurrency;
-	private double amountBuyerCurrency;
-	private double currencyConversionRate;
-	private String merchantCCurrency;
-	private double amountMerchantCurrency;
+	private final String description;
+	private final LocalDateTime transactionDateTime;
+	private final String taxType;
+	private final GoogleTransactionType transactionType;
+	private final String refundType;
+	private final String productTitle;
+	private final String productId;
+	private final int productType;
+	private final String skuId;
+	private final String hardware;
+	private final GoogleSubsidiary subsidiary;
+	private final String buyerCountry;
+	private final String buyerState;
+	private final String buyerPostalCode;
+	private final String buyerCurrency;
+	private final double amountBuyerCurrency;
+	private final double currencyConversionRate;
+	private final String merchantCCurrency;
+	private final double amountMerchantCurrency;
 
-	public GoogleSale(String description, LocalDateTime transactionDateTime, String taxType, GoogleTransactionType transactionType, String refundType, String productTitle, String productId, int productType, String skuId, String hardware, String buyerCountry, String buyerState, String buyerPostalCode, String buyerCurrency, double amountBuyerCurrency, double currencyConversionRate, String merchantCCurrency, double amountMerchantCurrency) {
+	public GoogleSale(String description, LocalDateTime transactionDateTime, String taxType, GoogleTransactionType transactionType, String refundType, String productTitle, String productId, int productType, String skuId, String hardware, GoogleSubsidiary subsidiary, String buyerCountry, String buyerState, String buyerPostalCode, String buyerCurrency, double amountBuyerCurrency, double currencyConversionRate, String merchantCCurrency, double amountMerchantCurrency) {
 		this.description = description;
 		this.transactionDateTime = transactionDateTime;
 		this.taxType = taxType;
@@ -34,6 +35,7 @@ public class GoogleSale {
 		this.productType = productType;
 		this.skuId = skuId;
 		this.hardware = hardware;
+		this.subsidiary = subsidiary;
 		this.buyerCountry = buyerCountry;
 		this.buyerState = buyerState;
 		this.buyerPostalCode = buyerPostalCode;
@@ -114,5 +116,9 @@ public class GoogleSale {
 
 	public double getAmountMerchantCurrency() {
 		return amountMerchantCurrency;
+	}
+
+	public GoogleSubsidiary getSubsidiary() {
+		return subsidiary;
 	}
 }
