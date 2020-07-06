@@ -5,6 +5,7 @@ import de.skymatic.appstore_invoices.model.InvoiceCollection;
 import de.skymatic.appstore_invoices.model.apple.AppleReport;
 import de.skymatic.appstore_invoices.output.HTMLGenerator;
 import de.skymatic.appstore_invoices.output.HTMLWriter;
+import de.skymatic.appstore_invoices.output.SingleProductHTMLGenerator;
 import de.skymatic.appstore_invoices.settings.Settings;
 import de.skymatic.appstore_invoices.settings.SettingsProvider;
 import javafx.beans.binding.Bindings;
@@ -51,7 +52,7 @@ public class OutputController {
 	private RadioButton storedTemplateRadioButton;
 	private final ObjectBinding<Path> templatePath;
 	private final ObjectBinding<Path> outputPath;
-	private final HTMLGenerator htmlGenerator;
+	private final SingleProductHTMLGenerator htmlGenerator;
 	private final Path defaultTemplatePath;
 	private final ObservableList<Invoice> invoices;
 	private final Stage owner;
@@ -91,7 +92,7 @@ public class OutputController {
 		this.report = report;
 		invoices.addAll(report.toInvoices());
 		invoices.sort((i1, i2) -> CharSequence.compare(i1.getId(), i2.getId()));
-		htmlGenerator = new HTMLGenerator();
+		htmlGenerator = new SingleProductHTMLGenerator();
 		this.revealCommand = revealCommand;
 	}
 
@@ -178,7 +179,6 @@ public class OutputController {
 
 	@FXML
 	public void generateInvoices() {
-		/*
 		try {
 			settingsProvider.save(settings);
 		} catch (IOException e) {
@@ -194,7 +194,6 @@ public class OutputController {
 			//TODO: better error handling
 			Alerts.genericError(e, "Generating the invoices from template and save them to hard disk.").showAndWait();
 		}
-		 */
 
 	}
 
