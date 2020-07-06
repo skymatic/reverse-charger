@@ -3,6 +3,7 @@ package de.skymatic.appstore_invoices.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,8 +37,16 @@ public class Invoice {
 				+ globalItems.values().stream().mapToDouble(x -> x).sum();
 	}
 
+	public int totalUnits() {
+		return items.stream().mapToInt(InvoiceItem::getUnits).sum();
+	}
+
 	public int size() {
 		return items.size();
+	}
+
+	public Map<String, Double> getGlobalItems(){
+		return Collections.unmodifiableMap(globalItems);
 	}
 
 	public void setId(String newId) {
