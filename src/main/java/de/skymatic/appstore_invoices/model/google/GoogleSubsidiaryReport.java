@@ -2,12 +2,8 @@ package de.skymatic.appstore_invoices.model.google;
 
 import de.skymatic.appstore_invoices.model.Invoicable;
 import de.skymatic.appstore_invoices.model.Invoice;
-import de.skymatic.appstore_invoices.model.InvoiceItem;
 
-import java.time.LocalDate;
 import java.time.YearMonth;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,33 +73,6 @@ public class GoogleSubsidiaryReport implements Invoicable {
 
 	@Override
 	public Invoice toInvoice() {
-		//it's ugly and I know it
-		TempContainer tmp = new TempContainer();
-		salesPerProduct.values().stream().forEach(sale -> {
-			tmp.taxes += sale.getTaxes();
-			tmp.fees += sale.getFees();
-			tmp.refunds += sale.getRefunds();
-			tmp.taxRefunds += sale.getTaxRefunds();
-			tmp.feeRefunds += sale.getFeeRefunds();
-		});
-		Map<String, Double> globalItems = new HashMap<>();
-		globalItems.put("TAXES", tmp.taxes);
-		globalItems.put("FEES", tmp.fees);
-		globalItems.put("REFUNDS", tmp.refunds);
-		globalItems.put("TAX_REFUNDS", tmp.taxRefunds);
-		globalItems.put("FEE_REFUNDS", tmp.feeRefunds);
-
-		Collection<InvoiceItem> items = new ArrayList<>();
-		salesPerProduct.forEach((key, sale) -> items.add(new InvoiceItem(sale.getProductTitle(), sale.getUnits(), sale.getAmount())));
-
-		return new Invoice("TEST", subsidiary, billingMonth.atDay(1), billingMonth.atEndOfMonth(), LocalDate.now(), items, globalItems);
-	}
-
-	private class TempContainer {
-		double taxes;
-		double fees;
-		double refunds;
-		double taxRefunds;
-		double feeRefunds;
+		return GoogleSubsidiaryReportInvoicer.createInvoiceFrom(subsidiary, billingMonth, salesPerProduct);
 	}
 }
