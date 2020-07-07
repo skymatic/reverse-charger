@@ -1,6 +1,5 @@
 package de.skymatic.appstore_invoices.gui;
 
-import de.skymatic.appstore_invoices.parser.OldParseException;
 import de.skymatic.appstore_invoices.parser.ReportParseException;
 import javafx.scene.control.Alert;
 
@@ -17,7 +16,7 @@ public class Alerts {
 	public static Alert createAlertFromExceptionDuringParse(Exception e) {
 		if (e instanceof IOException) {
 			return new Alert(Alert.AlertType.ERROR, ioExceptionDuringParse + "\n\nThrown exception and message:\n" + e.getCause());
-		} else if (e instanceof OldParseException || e instanceof ReportParseException) {
+		} else if (e instanceof ReportParseException) {
 			return new Alert(Alert.AlertType.ERROR, parseExceptionDuringParse
 					+ "\n\n"
 					+ e.getMessage()
