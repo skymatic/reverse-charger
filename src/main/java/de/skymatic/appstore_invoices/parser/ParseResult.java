@@ -1,6 +1,6 @@
 package de.skymatic.appstore_invoices.parser;
 
-import de.skymatic.appstore_invoices.model.SalesEntry;
+import de.skymatic.appstore_invoices.model.apple.AppleSalesEntry;
 
 import java.time.YearMonth;
 import java.util.Collection;
@@ -8,9 +8,9 @@ import java.util.Collection;
 public class ParseResult {
 
 	private final YearMonth yearMonth;
-	private final Collection<SalesEntry> sales;
+	private final Collection<AppleSalesEntry> sales;
 
-	public ParseResult(YearMonth yearMonth, Collection<SalesEntry> sales) {
+	public ParseResult(YearMonth yearMonth, Collection<AppleSalesEntry> sales) {
 		this.yearMonth = yearMonth;
 		this.sales = sales;
 	}
@@ -19,7 +19,7 @@ public class ParseResult {
 		return yearMonth;
 	}
 
-	public Collection<SalesEntry> getSales() {
+	public Collection<AppleSalesEntry> getSales() {
 		return sales;
 	}
 

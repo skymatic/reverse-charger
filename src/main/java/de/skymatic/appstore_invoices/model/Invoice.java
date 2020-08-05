@@ -1,60 +1,60 @@
 package de.skymatic.appstore_invoices.model;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+/**
+ * Invoice with the most basic and nearly always necessary information.
+ */
 public class Invoice {
 
+	private final Recipient recipient;
+	private final LocalDate startOfBillingPeriod;
+	private final LocalDate endOfBillingPeriod;
+	private final List<InvoiceItem> items;
+	private final Map<String, Double> globalItems;
 
-	private final Subsidiary subsidiary;
-	private final LocalDate startOfPeriod;
-	private final LocalDate endOfPeriod;
-	private final Map<RegionPlusCurrency, SalesEntry> salesPerCountryPlusCurrency;
-
+	private String id;
 	private LocalDate issueDate;
-	private String numberString;
 
-	public Invoice(String numberString, YearMonth yearMonth, LocalDate issueDate, SalesEntry s) {
-		this.subsidiary = AppleUtility.mapRegionPlusCurrencyToSubsidiary(s.getRpc());
-		this.numberString = numberString;
+	public Invoice(String id, Recipient recipient, LocalDate startOfBillingPeriod, LocalDate endOfBillingPeriod, LocalDate issueDate, Collection<InvoiceItem> items, Map<String, Double> globalItems) {
+		this.id = id;
+		this.recipient = recipient;
 		this.issueDate = issueDate;
-		this.startOfPeriod = yearMonth.atDay(1);
-		this.endOfPeriod = yearMonth.atEndOfMonth();
-		this.salesPerCountryPlusCurrency = new Hashtable<>();
-		salesPerCountryPlusCurrency.put(s.getRpc(), s);
+		this.startOfBillingPeriod = startOfBillingPeriod;
+		this.endOfBillingPeriod = endOfBillingPeriod;
+		this.items = new ArrayList<>(items);
+		this.globalItems = new HashMap<>(globalItems);
 	}
 
-	public Subsidiary getSubsidiary() {
-		return subsidiary;
+	public double proceeds() {
+		return items.stream().mapToDouble(InvoiceItem::getAmount).sum()
+				+ globalItems.values().stream().mapToDouble(x -> x).sum();
 	}
 
-	public double sum() {
-		return salesPerCountryPlusCurrency.values().stream().mapToDouble(SalesEntry::getProceeds).sum();
+	public int totalUnits() {
+		return items.stream().mapToInt(InvoiceItem::getUnits).sum();
 	}
 
-	public int getAmount() {
-		return salesPerCountryPlusCurrency.values().stream().mapToInt(SalesEntry::getUnitsSold).sum();
+	public int size() {
+		return items.size();
 	}
 
-	void addSales(SalesEntry s) {
-		final var rpc = s.getRpc();
-		if (salesPerCountryPlusCurrency.containsKey(rpc)) {
-			throw new IllegalArgumentException("RegionPlusCurrency " + rpc.name() + " already exists!");
-		} else if (subsidiary != AppleUtility.mapRegionPlusCurrencyToSubsidiary(rpc)) {
-			throw new IllegalArgumentException("RegionPlusCurrency " + rpc.name() + " does not belong to subsidiary " + this.subsidiary.name());
-		} else {
-			salesPerCountryPlusCurrency.put(rpc, s);
-		}
+	public Map<String, Double> getGlobalItems(){
+		return Collections.unmodifiableMap(globalItems);
 	}
 
-	public void setNumberString(String numberString) {
-		this.numberString = numberString;
+	public void setId(String newId) {
+		this.id = newId;
 	}
 
-	public String getNumberString() {
-		return numberString;
+	public String getId() {
+		return id;
 	}
 
 	public void setIssueDate(LocalDate issueDate) {
@@ -66,15 +66,15 @@ public class Invoice {
 	}
 
 	public LocalDate getStartOfPeriod() {
-		return startOfPeriod;
+		return startOfBillingPeriod;
 	}
 
 	public LocalDate getEndOfPeriod() {
-		return endOfPeriod;
+		return endOfBillingPeriod;
 	}
 
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		return sb.append(salesPerCountryPlusCurrency).append("\n").toString();
+	public Recipient getRecipient() {
+		return recipient;
 	}
+
 }

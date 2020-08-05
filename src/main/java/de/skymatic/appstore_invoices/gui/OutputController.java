@@ -1,9 +1,11 @@
 package de.skymatic.appstore_invoices.gui;
 
 import de.skymatic.appstore_invoices.model.Invoice;
-import de.skymatic.appstore_invoices.model.MonthlyInvoices;
+import de.skymatic.appstore_invoices.model.InvoiceCollection;
+import de.skymatic.appstore_invoices.model.apple.AppleReport;
 import de.skymatic.appstore_invoices.output.HTMLGenerator;
 import de.skymatic.appstore_invoices.output.HTMLWriter;
+import de.skymatic.appstore_invoices.output.SingleProductHTMLGenerator;
 import de.skymatic.appstore_invoices.settings.Settings;
 import de.skymatic.appstore_invoices.settings.SettingsProvider;
 import javafx.beans.binding.Bindings;
@@ -28,7 +30,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
@@ -44,8 +45,6 @@ public class OutputController {
 	@FXML
 	private TableColumn<Invoice, String> columnSubsidiary;
 	@FXML
-	private TableColumn<Invoice, String> columnAmount;
-	@FXML
 	private TableColumn<Invoice, String> columnProceeds;
 	@FXML
 	private RadioButton externalTemplateRadioButton;
@@ -53,7 +52,7 @@ public class OutputController {
 	private RadioButton storedTemplateRadioButton;
 	private final ObjectBinding<Path> templatePath;
 	private final ObjectBinding<Path> outputPath;
-	private final HTMLGenerator htmlGenerator;
+	private final SingleProductHTMLGenerator htmlGenerator;
 	private final Path defaultTemplatePath;
 	private final ObservableList<Invoice> invoices;
 	private final Stage owner;
@@ -62,10 +61,10 @@ public class OutputController {
 	private static final int REVEAL_TIMEOUT_MS = 5000;
 
 	private Settings settings;
-	private MonthlyInvoices monthlyInvoices;
+	private InvoiceCollection report;
 	private Optional<ProcessBuilder> revealCommand;
 
-	public OutputController(Stage owner, SettingsProvider settingsProvider, MonthlyInvoices monthlyInvoices, Optional<ProcessBuilder> revealCommand) {
+	public OutputController(Stage owner, SettingsProvider settingsProvider, InvoiceCollection report, Optional<ProcessBuilder> revealCommand) {
 		this.owner = owner;
 		this.settingsProvider = settingsProvider;
 		settings = settingsProvider.get();
@@ -90,46 +89,40 @@ public class OutputController {
 		outputPath = Bindings.createObjectBinding(() -> Path.of(settings.getOutputPath()), settings.outputPathProperty());
 		outputPath.addListener(o -> updateIsReadyToGenerate());
 
-		this.monthlyInvoices = monthlyInvoices;
-		invoices.addAll(monthlyInvoices.getInvoices());
-		invoices.sort((i1, i2) -> CharSequence.compare(i1.getNumberString(), i2.getNumberString()));
-		htmlGenerator = new HTMLGenerator();
+		this.report = report;
+		invoices.addAll(report.toInvoices());
+		invoices.sort((i1, i2) -> CharSequence.compare(i1.getId(), i2.getId()));
+		htmlGenerator = new SingleProductHTMLGenerator();
 		this.revealCommand = revealCommand;
 	}
 
 	@FXML
 	public void initialize() {
 		columnInvoiceNumber.setCellFactory(TextFieldTableCell.<Invoice>forTableColumn());
-		columnInvoiceNumber.setCellValueFactory(invoice -> new SimpleStringProperty(invoice.getValue().getNumberString()));
+		columnInvoiceNumber.setCellValueFactory(invoice -> new SimpleStringProperty(invoice.getValue().getId()));
 		columnInvoiceNumber.setOnEditCommit((TableColumn.CellEditEvent<Invoice, String> event) -> {
 			String newNumberString = event.getNewValue();
 			Invoice invoice = event.getRowValue();
 			if (invoices.stream()
 					.filter(i -> !i.equals(invoice))
-					.anyMatch(i -> i.getNumberString().equals(newNumberString))) {
+					.anyMatch(i -> i.getId().equals(newNumberString))) {
 				Alerts.duplicateInvoiceNumber()
 						.showAndWait();
 				columnInvoiceNumber.getTableView().refresh();
 				columnInvoiceNumber.getTableView().requestFocus();
 			} else {
-				invoice.setNumberString(newNumberString);
+				invoice.setId(newNumberString);
 			}
 		});
 
-		columnSubsidiary.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(invoice.getValue().getSubsidiary().toString()));
-		columnAmount.setCellFactory(column -> {
-			var cell = new TextFieldTableCell<Invoice, String>();
-			cell.setAlignment(Pos.BASELINE_RIGHT);
-			return cell;
-		});
-		columnAmount.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(String.valueOf(invoice.getValue().getAmount())));
+		columnSubsidiary.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(invoice.getValue().getRecipient().getAbbreviation()));
 
 		columnProceeds.setCellFactory(column -> {
 			var cell = new TextFieldTableCell<Invoice, String>();
 			cell.setAlignment(Pos.BASELINE_RIGHT);
 			return cell;
 		});
-		columnProceeds.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>((String.format("%.2f", invoice.getValue().sum()))));
+		columnProceeds.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>((String.format("%.2f", invoice.getValue().proceeds()))));
 
 		if (settings.isUsingExternalTemplate()) {
 			externalTemplateRadioButton.setSelected(true);
@@ -193,6 +186,7 @@ public class OutputController {
 			Alerts.genericError(e, "Saving settings on hard disk.").showAndWait();
 		}
 		try {
+			//TODO: invoices is no of type Invoice
 			Map<String, StringBuilder> htmlInvoices = htmlGenerator.createHTMLInvoices(templatePath.get(), invoices);
 			new HTMLWriter().write(outputPath.get(), htmlInvoices);
 			revealCommand.ifPresent(processBuilder -> reveal(outputPath.get()));

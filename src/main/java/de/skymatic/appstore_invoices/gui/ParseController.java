@@ -1,21 +1,24 @@
 package de.skymatic.appstore_invoices.gui;
 
-import de.skymatic.appstore_invoices.model.MonthlyInvoices;
-import de.skymatic.appstore_invoices.model.SalesEntry;
-import de.skymatic.appstore_invoices.parser.AppleParser;
-import de.skymatic.appstore_invoices.parser.CSVParser;
-import de.skymatic.appstore_invoices.parser.ParseException;
-import de.skymatic.appstore_invoices.parser.ParseResult;
+import de.skymatic.appstore_invoices.model.InvoiceCollection;
+import de.skymatic.appstore_invoices.model.Workflow;
+import de.skymatic.appstore_invoices.parser.ReportParseException;
+import de.skymatic.appstore_invoices.parser.ReportParser;
+import de.skymatic.appstore_invoices.parser.ReportParserFactory;
 import de.skymatic.appstore_invoices.settings.Settings;
 import de.skymatic.appstore_invoices.settings.SettingsProvider;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -25,7 +28,6 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.security.cert.Extension;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,19 +37,28 @@ public class ParseController {
 	@FXML
 	private TextField invoicePrefixField;
 
-
 	@FXML
 	private CheckBox generateInvoiceNumbersCheckbox;
+
+	@FXML
+	private ToggleGroup workflowTypeGroup;
+	@FXML
+	private RadioButton autoRadioButton;
+	@FXML
+	private RadioButton appleRadioButton;
+	@FXML
+	private RadioButton googleRadioButton;
 
 	private final Stage owner;
 
 	private final StringProperty csvPathString;
 	private final BooleanProperty isFileSelected;
 	private final SettingsProvider settingsProvider;
+	private final SimpleObjectProperty<Workflow> documentType;
 	private static final String EXPECTED_PARSE_FILE_ENDING = "csv";
 
 
-	private Optional<MonthlyInvoices> monthlyInvoices;
+	private Optional<InvoiceCollection> monthlyInvoices;
 	private Settings settings;
 
 	public ParseController(Stage owner, SettingsProvider settingsProvider) {
@@ -55,6 +66,7 @@ public class ParseController {
 		csvPathString = new SimpleStringProperty();
 		isFileSelected = new SimpleBooleanProperty();
 		isFileSelected.bind(csvPathString.isEmpty());
+		documentType = new SimpleObjectProperty<>(Workflow.AUTO);
 		this.settingsProvider = settingsProvider;
 		settings = settingsProvider.get();
 	}
@@ -65,6 +77,20 @@ public class ParseController {
 		settings.invoiceNumberPrefixProperty().bind(invoicePrefixField.textProperty());
 		settings.invoiceNumberPrefixProperty().addListener(this::updateInvoiceNumberPrefix);
 		//TODO: set the checkbox according to the settings
+
+		autoRadioButton.setSelected(true);
+
+		workflowTypeGroup.selectedToggleProperty().addListener(this::updateDocumentType);
+	}
+
+	private void updateDocumentType(@SuppressWarnings("unused") ObservableValue<? extends Toggle> observable, @SuppressWarnings("unused") Toggle oldValue, Toggle newValue) {
+		if (newValue.equals(autoRadioButton)) {
+			documentType.set(Workflow.AUTO);
+		} else if (newValue.equals(appleRadioButton)) {
+			documentType.set(Workflow.APPLE);
+		} else if (newValue.equals(googleRadioButton)) {
+			documentType.set(Workflow.GOOGLE);
+		}
 	}
 
 	private void updateInvoiceNumberPrefix(ObservableValue<? extends String> invoiceNoProperty, String oldPrefix, String newPrefix) {
@@ -84,22 +110,17 @@ public class ParseController {
 	}
 
 	@FXML
-	private void parseFinancialReport() {
+	private void parseReport() {
 		Path path = Path.of(csvPathString.get());
-		CSVParser csvParser = new AppleParser();
+		ReportParser parser = ReportParserFactory.createParser(documentType.get());
 		try {
-			ParseResult result = csvParser.parseCSV(path);
-			monthlyInvoices = Optional.of(new MonthlyInvoices(result.getYearMonth(), //
-					settings.getInvoiceNumberPrefix(), //
-					settings.getLastUsedInvoiceNumber(), //
-					result.getSales().toArray(new SalesEntry[]{})));
-			//settings.setLastUsedInvoiceNumber(monthlyInvoices.get().getNextInvoiceNumber());
-		} catch (IOException | ParseException | IllegalArgumentException e) {
-			Alerts.parseCSVFileError(e).show();
+			InvoiceCollection result = parser.parse(path);
+			monthlyInvoices = Optional.of(result);
+			OutputSceneFactory outputSF = new OutputSceneFactory(owner, monthlyInvoices.get());
+			owner.setScene(outputSF.createScene());
+		} catch (IOException | ReportParseException | IllegalArgumentException | IllegalStateException e) {
+			Alerts.createAlertFromExceptionDuringParse(e).show();
 		}
-
-		OutputSceneFactory outputSF = new OutputSceneFactory(owner, monthlyInvoices.get());
-		owner.setScene(outputSF.createScene());
 	}
 
 	@FXML
@@ -124,7 +145,8 @@ public class ParseController {
 	private void handleDrop(DragEvent event) {
 		List<File> files = event.getDragboard().getFiles();
 		csvPathString.setValue(files.get(0).toString());
-		parseFinancialReport();
+		workflowTypeGroup.selectToggle(autoRadioButton);
+		parseReport();
 	}
 
 	// Getter & Setter

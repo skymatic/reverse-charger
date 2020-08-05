@@ -1,7 +1,8 @@
 package de.skymatic.appstore_invoices.parser;
 
-import de.skymatic.appstore_invoices.model.RegionPlusCurrency;
-import de.skymatic.appstore_invoices.model.SalesEntry;
+import de.skymatic.appstore_invoices.model.apple.AppleReport;
+import de.skymatic.appstore_invoices.model.apple.AppleSalesEntry;
+import de.skymatic.appstore_invoices.model.apple.RegionPlusCurrency;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,19 +13,19 @@ import java.time.YearMonth;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public class AppleParser implements CSVParser {
+public class AppleParser implements ReportParser {
 
-	private static final int MIN_COLUMN_COUNT = 10;
 	private boolean endOfReport = false;
 
-	public ParseResult parseCSV(Path p) throws IOException, ParseException {
+	@Override
+	public AppleReport parse(Path p) throws IOException, ReportParseException, IllegalArgumentException {
 		StringReference lastReadLine = new StringReference();
 		try (BufferedReader br = Files.newBufferedReader(p)) {
 			String header = br.readLine();
 			String[] monthYear = header.substring(header.indexOf('(') + 1, header.indexOf(')')).split(",");
 			YearMonth yearMonth = YearMonth.of(Integer.valueOf(monthYear[1].trim()), Month.valueOf(monthYear[0].trim().toUpperCase()));
 
-			Collection<SalesEntry> sales = br.lines().filter(line -> !isLastLine(line) && line.startsWith("\""))
+			Collection<AppleSalesEntry> sales = br.lines().filter(line -> !isLastLine(line) && line.startsWith("\""))
 					.map(line -> lastReadLine.copyAndReturn(line))
 					.map(line -> line.replaceAll("[\"]", "").split(","))
 					.map(splittedLine -> {
@@ -38,12 +39,12 @@ public class AppleParser implements CSVParser {
 						double totalOwned = Double.parseDouble(splittedLine[7]);
 						double exchangeRate = Double.parseDouble(splittedLine[8]);
 						double proceeds = Double.parseDouble(splittedLine[9]);
-						return new SalesEntry(rpc, units, earned, pretaxSubtotal, inputTax, adjustments, withholdingTax, totalOwned, exchangeRate, proceeds);
+						return new AppleSalesEntry(rpc, units, earned, pretaxSubtotal, inputTax, adjustments, withholdingTax, totalOwned, exchangeRate, proceeds);
 					}).collect(Collectors.toList());
 
-			return new ParseResult(yearMonth, sales);
+			return new AppleReport(yearMonth, "", 1, sales.toArray(new AppleSalesEntry[]{}));
 		} catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
-			throw new ParseException("Error parsing line:  " + lastReadLine.get(), e);
+			throw new ReportParseException("Error parsing line:  " + lastReadLine.get(), -1, e);
 		}
 	}
 
@@ -57,20 +58,6 @@ public class AppleParser implements CSVParser {
 				.replace('-', '_')
 				.replaceAll("[\\(\\)]", "")
 				.toUpperCase());
-	}
-
-	private class StringReference {
-
-		private String s = "";
-
-		public String copyAndReturn(String s) {
-			this.s = s;
-			return s;
-		}
-
-		public String get() {
-			return s;
-		}
 	}
 
 }
