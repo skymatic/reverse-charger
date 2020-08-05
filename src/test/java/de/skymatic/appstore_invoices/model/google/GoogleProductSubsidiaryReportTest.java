@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+
 import static de.skymatic.appstore_invoices.model.google.GoogleSaleFactory.*;
 
 /**
@@ -15,12 +17,12 @@ public class GoogleProductSubsidiaryReportTest {
 
 	private GoogleProductSubsidiaryReport productReport;
 	private int expectedUnits;
-	private double expectedAmount;
-	private double expectedTaxes;
-	private double expectedFees;
-	private double expectedRefunds;
-	private double expectedTaxRefunds;
-	private double expectedFeeRefunds;
+	private BigDecimal expectedAmount;
+	private BigDecimal expectedTaxes;
+	private BigDecimal expectedFees;
+	private BigDecimal expectedRefunds;
+	private BigDecimal expectedTaxRefunds;
+	private BigDecimal expectedFeeRefunds;
 
 	@BeforeEach
 	public void init() {
@@ -39,18 +41,18 @@ public class GoogleProductSubsidiaryReportTest {
 		GoogleSale sale = getChargeSale();
 		assert sale.getProductTitle() == productReport.getProductTitle();
 
-		expectedAmount = sale.getAmountMerchantCurrency() + productReport.getAmount();
+		expectedAmount = sale.getAmountMerchantCurrency().add(productReport.getAmount());
 		expectedUnits = 1 + productReport.getUnits();
 
 		productReport.update(sale);
 
 		Assertions.assertEquals(expectedUnits, productReport.getUnits());
-		Assertions.assertEquals(expectedAmount, productReport.getAmount());
-		Assertions.assertEquals(expectedTaxes, productReport.getTaxes());
-		Assertions.assertEquals(expectedFees, productReport.getFees());
-		Assertions.assertEquals(expectedRefunds, productReport.getRefunds());
-		Assertions.assertEquals(expectedTaxRefunds, productReport.getTaxRefunds());
-		Assertions.assertEquals(expectedFeeRefunds, productReport.getFeeRefunds());
+		Assertions.assertEquals(0, expectedAmount.compareTo(productReport.getAmount()));
+		Assertions.assertEquals(0, expectedTaxes.compareTo(productReport.getTaxes()));
+		Assertions.assertEquals(0, expectedFees.compareTo( productReport.getFees()));
+		Assertions.assertEquals(0, expectedRefunds.compareTo( productReport.getRefunds()));
+		Assertions.assertEquals(0, expectedTaxRefunds.compareTo( productReport.getTaxRefunds()));
+		Assertions.assertEquals(0, expectedFeeRefunds.compareTo( productReport.getFeeRefunds()));
 	}
 
 	@Test
@@ -58,17 +60,17 @@ public class GoogleProductSubsidiaryReportTest {
 		GoogleSale sale = getTaxSale();
 		assert sale.getProductTitle() == productReport.getProductTitle();
 
-		expectedTaxes = sale.getAmountMerchantCurrency() + productReport.getTaxes();
+		expectedTaxes = sale.getAmountMerchantCurrency().add(productReport.getTaxes());
 
 		productReport.update(sale);
 
 		Assertions.assertEquals(expectedUnits, productReport.getUnits());
-		Assertions.assertEquals(expectedAmount, productReport.getAmount());
-		Assertions.assertEquals(expectedTaxes, productReport.getTaxes());
-		Assertions.assertEquals(expectedFees, productReport.getFees());
-		Assertions.assertEquals(expectedRefunds, productReport.getRefunds());
-		Assertions.assertEquals(expectedTaxRefunds, productReport.getTaxRefunds());
-		Assertions.assertEquals(expectedFeeRefunds, productReport.getFeeRefunds());
+		Assertions.assertEquals(0, expectedAmount.compareTo( productReport.getAmount()));
+		Assertions.assertEquals(0, expectedTaxes.compareTo( productReport.getTaxes()));
+		Assertions.assertEquals(0, expectedFees.compareTo( productReport.getFees()));
+		Assertions.assertEquals(0, expectedRefunds.compareTo( productReport.getRefunds()));
+		Assertions.assertEquals(0, expectedTaxRefunds.compareTo( productReport.getTaxRefunds()));
+		Assertions.assertEquals(0, expectedFeeRefunds.compareTo( productReport.getFeeRefunds()));
 	}
 
 	@Test
@@ -76,17 +78,17 @@ public class GoogleProductSubsidiaryReportTest {
 		GoogleSale sale = getFeeSale();
 		assert sale.getProductTitle() == productReport.getProductTitle();
 
-		expectedFees = sale.getAmountMerchantCurrency() + productReport.getFees();
+		expectedFees = sale.getAmountMerchantCurrency().add(productReport.getFees());
 
 		productReport.update(sale);
 
 		Assertions.assertEquals(expectedUnits, productReport.getUnits());
-		Assertions.assertEquals(expectedAmount, productReport.getAmount());
-		Assertions.assertEquals(expectedTaxes, productReport.getTaxes());
-		Assertions.assertEquals(expectedFees, productReport.getFees());
-		Assertions.assertEquals(expectedRefunds, productReport.getRefunds());
-		Assertions.assertEquals(expectedTaxRefunds, productReport.getTaxRefunds());
-		Assertions.assertEquals(expectedFeeRefunds, productReport.getFeeRefunds());
+		Assertions.assertEquals(0, expectedAmount.compareTo( productReport.getAmount()));
+		Assertions.assertEquals(0, expectedTaxes.compareTo(productReport.getTaxes()));
+		Assertions.assertEquals(0, expectedFees.compareTo( productReport.getFees()));
+		Assertions.assertEquals(0, expectedRefunds.compareTo( productReport.getRefunds()));
+		Assertions.assertEquals(0, expectedTaxRefunds.compareTo( productReport.getTaxRefunds()));
+		Assertions.assertEquals(0, expectedFeeRefunds.compareTo( productReport.getFeeRefunds()));
 	}
 
 	@Test
@@ -94,17 +96,17 @@ public class GoogleProductSubsidiaryReportTest {
 		GoogleSale sale = getRefundSale();
 		assert sale.getProductTitle() == productReport.getProductTitle();
 
-		expectedRefunds = sale.getAmountMerchantCurrency() + productReport.getRefunds();
+		expectedRefunds = sale.getAmountMerchantCurrency().add( productReport.getRefunds());
 
 		productReport.update(sale);
 
 		Assertions.assertEquals(expectedUnits, productReport.getUnits());
-		Assertions.assertEquals(expectedAmount, productReport.getAmount());
-		Assertions.assertEquals(expectedTaxes, productReport.getTaxes());
-		Assertions.assertEquals(expectedFees, productReport.getFees());
-		Assertions.assertEquals(expectedRefunds, productReport.getRefunds());
-		Assertions.assertEquals(expectedTaxRefunds, productReport.getTaxRefunds());
-		Assertions.assertEquals(expectedFeeRefunds, productReport.getFeeRefunds());
+		Assertions.assertEquals(0, expectedAmount.compareTo( productReport.getAmount()));
+		Assertions.assertEquals(0, expectedTaxes.compareTo( productReport.getTaxes()));
+		Assertions.assertEquals(0, expectedFees.compareTo( productReport.getFees()));
+		Assertions.assertEquals(0, expectedRefunds.compareTo( productReport.getRefunds()));
+		Assertions.assertEquals(0, expectedTaxRefunds.compareTo( productReport.getTaxRefunds()));
+		Assertions.assertEquals(0, expectedFeeRefunds.compareTo( productReport.getFeeRefunds()));
 	}
 
 	@Test
@@ -112,17 +114,17 @@ public class GoogleProductSubsidiaryReportTest {
 		GoogleSale sale = getTaxRefundSale();
 		assert sale.getProductTitle() == productReport.getProductTitle();
 
-		expectedTaxRefunds = sale.getAmountMerchantCurrency() + productReport.getTaxRefunds();
+		expectedTaxRefunds = sale.getAmountMerchantCurrency().add( productReport.getTaxRefunds());
 
 		productReport.update(sale);
 
 		Assertions.assertEquals(expectedUnits, productReport.getUnits());
-		Assertions.assertEquals(expectedAmount, productReport.getAmount());
-		Assertions.assertEquals(expectedTaxes, productReport.getTaxes());
-		Assertions.assertEquals(expectedFees, productReport.getFees());
-		Assertions.assertEquals(expectedRefunds, productReport.getRefunds());
-		Assertions.assertEquals(expectedTaxRefunds, productReport.getTaxRefunds());
-		Assertions.assertEquals(expectedFeeRefunds, productReport.getFeeRefunds());
+		Assertions.assertEquals(0, expectedAmount.compareTo( productReport.getAmount()));
+		Assertions.assertEquals(0, expectedTaxes.compareTo( productReport.getTaxes()));
+		Assertions.assertEquals(0, expectedFees.compareTo( productReport.getFees()));
+		Assertions.assertEquals(0, expectedRefunds.compareTo( productReport.getRefunds()));
+		Assertions.assertEquals(0, expectedTaxRefunds.compareTo( productReport.getTaxRefunds()));
+		Assertions.assertEquals(0, expectedFeeRefunds.compareTo( productReport.getFeeRefunds()));
 	}
 
 	@Test
@@ -130,17 +132,17 @@ public class GoogleProductSubsidiaryReportTest {
 		GoogleSale sale = getFeeRefundSale();
 		assert sale.getProductTitle() == productReport.getProductTitle();
 
-		expectedFeeRefunds = sale.getAmountMerchantCurrency() + productReport.getFeeRefunds();
+		expectedFeeRefunds = sale.getAmountMerchantCurrency().add(productReport.getFeeRefunds());
 
 		productReport.update(sale);
 
 		Assertions.assertEquals(expectedUnits, productReport.getUnits());
-		Assertions.assertEquals(expectedAmount, productReport.getAmount());
-		Assertions.assertEquals(expectedTaxes, productReport.getTaxes());
-		Assertions.assertEquals(expectedFees, productReport.getFees());
-		Assertions.assertEquals(expectedRefunds, productReport.getRefunds());
-		Assertions.assertEquals(expectedTaxRefunds, productReport.getTaxRefunds());
-		Assertions.assertEquals(expectedFeeRefunds, productReport.getFeeRefunds());
+		Assertions.assertEquals(0, expectedAmount.compareTo( productReport.getAmount()));
+		Assertions.assertEquals(0, expectedTaxes.compareTo( productReport.getTaxes()));
+		Assertions.assertEquals(0, expectedFees.compareTo( productReport.getFees()));
+		Assertions.assertEquals(0, expectedRefunds.compareTo( productReport.getRefunds()));
+		Assertions.assertEquals(0, expectedTaxRefunds.compareTo( productReport.getTaxRefunds()));
+		Assertions.assertEquals(0, expectedFeeRefunds.compareTo( productReport.getFeeRefunds()));
 	}
 
 	@Test

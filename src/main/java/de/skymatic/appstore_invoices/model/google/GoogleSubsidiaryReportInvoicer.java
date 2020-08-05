@@ -23,11 +23,11 @@ public class GoogleSubsidiaryReportInvoicer {
 	static Invoice createInvoiceFrom(GoogleSubsidiary subsidiary, YearMonth billingMonth, Map<String, GoogleProductSubsidiaryReport> salesPerProduct) {
 		Aggregator agg = new Aggregator();
 		salesPerProduct.values().stream().forEach(sale -> {
-			agg.taxes = agg.taxes.add(BigDecimal.valueOf(sale.getTaxes()));
-			agg.fees = agg.fees.add(BigDecimal.valueOf(sale.getFees()));
-			agg.refunds = agg.refunds.add(BigDecimal.valueOf(sale.getRefunds()));
-			agg.taxRefunds = agg.taxRefunds.add(BigDecimal.valueOf(sale.getTaxRefunds()));
-			agg.feeRefunds = agg.feeRefunds.add(BigDecimal.valueOf(sale.getFeeRefunds()));
+			agg.taxes = agg.taxes.add(sale.getTaxes());
+			agg.fees = agg.fees.add(sale.getFees());
+			agg.refunds = agg.refunds.add(sale.getRefunds());
+			agg.taxRefunds = agg.taxRefunds.add(sale.getTaxRefunds());
+			agg.feeRefunds = agg.feeRefunds.add(sale.getFeeRefunds());
 		});
 		Map<String, BigDecimal> globalItems = new TreeMap<>(createGlobalItemOrder());
 		globalItems.put(TAX_DESC, agg.taxes);
@@ -36,7 +36,7 @@ public class GoogleSubsidiaryReportInvoicer {
 		globalItems.put(TAXREFUND_DESC, agg.taxRefunds);
 
 		Collection<InvoiceItem> items = new ArrayList<>();
-		salesPerProduct.forEach((key, sale) -> items.add(new InvoiceItem(sale.getProductTitle(), sale.getUnits(), BigDecimal.valueOf(sale.getAmount()))));
+		salesPerProduct.forEach((key, sale) -> items.add(new InvoiceItem(sale.getProductTitle(), sale.getUnits(), sale.getAmount())));
 
 		return new Invoice(subsidiary.getAbbreviation(), subsidiary, billingMonth.atDay(1), billingMonth.atEndOfMonth(), LocalDate.now(), items, globalItems);
 	}

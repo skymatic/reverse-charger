@@ -4,6 +4,7 @@ import de.skymatic.appstore_invoices.model.Invoice;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.time.YearMonth;
 import java.util.Arrays;
 
@@ -101,9 +102,9 @@ public class GoogleSubsidiaryReportTest {
 		};
 		Invoice invoice = new GoogleSubsidiaryReport(sales).toInvoice();
 
-		double expectedProceeds = Arrays.stream(sales).mapToDouble(GoogleSale::getAmountMerchantCurrency).sum();
+		BigDecimal expectedProceeds = Arrays.stream(sales).map(GoogleSale::getAmountMerchantCurrency).reduce(BigDecimal.ZERO,BigDecimal::add);
 
 		Assertions.assertEquals(2, invoice.size());
-		Assertions.assertEquals(expectedProceeds, invoice.proceeds());
+		Assertions.assertEquals(0, expectedProceeds.compareTo(invoice.proceeds()));
 	}
 }

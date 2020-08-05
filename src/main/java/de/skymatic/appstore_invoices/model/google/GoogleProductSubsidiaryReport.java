@@ -1,39 +1,36 @@
 package de.skymatic.appstore_invoices.model.google;
 
+import java.math.BigDecimal;
+
 public class GoogleProductSubsidiaryReport {
 
 	private final String productTitle;
 
 	private int units;
-	private double amount;
-	private double taxes;
-	private double fees;
-	private double refunds;
-	private double feeRefunds;
-	private double taxRefunds;
-
-	public GoogleProductSubsidiaryReport(GoogleSale sale) {
-		this.productTitle = sale.getProductTitle();
-		initialize();
-		update(sale);
-	}
+	private BigDecimal amount;
+	private BigDecimal taxes;
+	private BigDecimal fees;
+	private BigDecimal refunds;
+	private BigDecimal feeRefunds;
+	private BigDecimal taxRefunds;
 
 	public GoogleProductSubsidiaryReport(String productTitle) {
 		this.productTitle = productTitle;
-		initialize();
-	}
-
-	private void initialize() {
 		this.units = 0;
-		this.amount = 0;
-		this.taxes = 0;
-		this.fees = 0;
-		this.refunds = 0;
-		this.feeRefunds = 0;
-		this.taxRefunds = 0;
+		this.amount = BigDecimal.ZERO;
+		this.taxes = BigDecimal.ZERO;
+		this.fees = BigDecimal.ZERO;
+		this.refunds = BigDecimal.ZERO;
+		this.feeRefunds = BigDecimal.ZERO;
+		this.taxRefunds = BigDecimal.ZERO;
 	}
 
-	public GoogleProductSubsidiaryReport(String productTitle, int units, double amount, double taxes, double fees, double refunds, double feeRefunds, double taxRefunds) {
+	public GoogleProductSubsidiaryReport(GoogleSale sale) {
+		this(sale.getProductTitle());
+		update(sale);
+	}
+
+	public GoogleProductSubsidiaryReport(String productTitle, int units, BigDecimal amount, BigDecimal taxes, BigDecimal fees, BigDecimal refunds, BigDecimal feeRefunds, BigDecimal taxRefunds) {
 		this.productTitle = productTitle;
 		this.units = units;
 		this.amount = amount;
@@ -52,27 +49,27 @@ public class GoogleProductSubsidiaryReport {
 		return units;
 	}
 
-	public double getAmount() {
+	public BigDecimal getAmount() {
 		return amount;
 	}
 
-	public double getTaxes() {
+	public BigDecimal getTaxes() {
 		return taxes;
 	}
 
-	public double getFees() {
+	public BigDecimal getFees() {
 		return fees;
 	}
 
-	public double getRefunds() {
+	public BigDecimal getRefunds() {
 		return refunds;
 	}
 
-	public double getFeeRefunds() {
+	public BigDecimal getFeeRefunds() {
 		return feeRefunds;
 	}
 
-	public double getTaxRefunds() {
+	public BigDecimal getTaxRefunds() {
 		return taxRefunds;
 	}
 
@@ -80,17 +77,17 @@ public class GoogleProductSubsidiaryReport {
 		if (!sale.getProductTitle().equals(this.productTitle)) {
 			throw new IllegalArgumentException("Invalid sale entry for update: Wrong ProductTitle.");
 		} else {
-			final double val = sale.getAmountMerchantCurrency();
+			final BigDecimal val = sale.getAmountMerchantCurrency();
 			switch (sale.getTransactionType()) {
 				case CHARGE -> {
 					units++;
-					amount += val;
+					amount = amount.add(val);
 				}
-				case TAX -> taxes += val;
-				case GOOGLE_FEE -> fees += val;
-				case CHARGE_REFUND -> refunds += val;
-				case TAX_REFUND -> taxRefunds += val;
-				case GOOGLE_FEE_REFUND -> feeRefunds += val;
+				case TAX -> taxes = taxes.add(val);
+				case GOOGLE_FEE -> fees = fees.add(val);
+				case CHARGE_REFUND -> refunds = refunds.add(val);
+				case TAX_REFUND -> taxRefunds = taxRefunds.add(val);
+				case GOOGLE_FEE_REFUND -> feeRefunds = feeRefunds.add(val);
 			}
 		}
 	}

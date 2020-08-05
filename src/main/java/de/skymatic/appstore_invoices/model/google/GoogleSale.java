@@ -1,5 +1,6 @@
 package de.skymatic.appstore_invoices.model.google;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class GoogleSale {
@@ -19,12 +20,12 @@ public class GoogleSale {
 	private final String buyerState;
 	private final String buyerPostalCode;
 	private final String buyerCurrency;
-	private final double amountBuyerCurrency;
-	private final double currencyConversionRate;
+	private final BigDecimal amountBuyerCurrency;
+	private final BigDecimal currencyConversionRate;
 	private final String merchantCCurrency;
-	private final double amountMerchantCurrency;
+	private final BigDecimal amountMerchantCurrency;
 
-	public GoogleSale(String description, LocalDateTime transactionDateTime, String taxType, GoogleTransactionType transactionType, String refundType, String productTitle, String productId, int productType, String skuId, String hardware, GoogleSubsidiary subsidiary, String buyerCountry, String buyerState, String buyerPostalCode, String buyerCurrency, double amountBuyerCurrency, double currencyConversionRate, String merchantCCurrency, double amountMerchantCurrency) {
+	public GoogleSale(String description, LocalDateTime transactionDateTime, String taxType, GoogleTransactionType transactionType, String refundType, String productTitle, String productId, int productType, String skuId, String hardware, GoogleSubsidiary subsidiary, String buyerCountry, String buyerState, String buyerPostalCode, String buyerCurrency, BigDecimal amountBuyerCurrency, BigDecimal currencyConversionRate, String merchantCCurrency, BigDecimal amountMerchantCurrency) {
 		this.description = description;
 		this.transactionDateTime = transactionDateTime;
 		this.taxType = taxType;
@@ -102,11 +103,11 @@ public class GoogleSale {
 		return buyerCurrency;
 	}
 
-	public double getAmountBuyerCurrency() {
+	public BigDecimal getAmountBuyerCurrency() {
 		return amountBuyerCurrency;
 	}
 
-	public double getCurrencyConversionRate() {
+	public BigDecimal getCurrencyConversionRate() {
 		return currencyConversionRate;
 	}
 
@@ -114,7 +115,7 @@ public class GoogleSale {
 		return merchantCCurrency;
 	}
 
-	public double getAmountMerchantCurrency() {
+	public BigDecimal getAmountMerchantCurrency() {
 		return amountMerchantCurrency;
 	}
 

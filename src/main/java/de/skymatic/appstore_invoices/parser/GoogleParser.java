@@ -7,10 +7,10 @@ import de.skymatic.appstore_invoices.model.google.GoogleTransactionType;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
-import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Locale;
@@ -79,10 +79,10 @@ public class GoogleParser implements ReportParser {
 						String buyerState = splittedLine[12];
 						String buyerPostalCode = splittedLine[13];
 						String buyerCurrency = splittedLine[14];
-						double amountBuyerCurrency = Double.valueOf(splittedLine[15]);
-						double currencyConversionRate = Double.valueOf(splittedLine[16]);
+						BigDecimal amountBuyerCurrency = new BigDecimal(splittedLine[15]);
+						BigDecimal currencyConversionRate = new BigDecimal(splittedLine[16]);
 						String merchantCCurrency = splittedLine[17];
-						double amountMerchantCurrency = Double.valueOf(splittedLine[18]);
+						BigDecimal amountMerchantCurrency = new BigDecimal(splittedLine[18]);
 
 						return new GoogleSale(description,
 								transactionDateTime,

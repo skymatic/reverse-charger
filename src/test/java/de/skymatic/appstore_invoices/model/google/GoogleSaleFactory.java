@@ -1,5 +1,6 @@
 package de.skymatic.appstore_invoices.model.google;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static de.skymatic.appstore_invoices.model.google.GoogleTransactionType.*;
@@ -30,10 +31,10 @@ class GoogleSaleFactory {
 				"State",
 				"1234",
 				"EUR",
-				12.34,
-				1.0,
+				BigDecimal.valueOf(12.34),
+				BigDecimal.valueOf(1.0),
 				"EUR",
-				12.34
+				BigDecimal.valueOf(12.34)
 		);
 	}
 
