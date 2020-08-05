@@ -79,7 +79,7 @@ public class HTMLGenerator {
 			case INVOICE_NUMBER:
 				return String.valueOf(invoice.getNumberString());
 			case PRODUCT_PROCEEDS:
-				return NUM_FORMATTER.format(invoice.sum());
+				return NUM_FORMATTER.format(invoice.getProceeds());
 			case ISSUE_DATE:
 				return invoice.getIssueDate().format(DATE_FORMATTER);
 			case SALES_PERIOD_START:

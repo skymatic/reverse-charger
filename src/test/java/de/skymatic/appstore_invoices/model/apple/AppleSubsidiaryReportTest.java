@@ -4,21 +4,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.YearMonth;
 
 public class AppleSubsidiaryReportTest {
 
-	private static final YearMonth dummyYearMonth = YearMonth.of(1999,1);
+	private static final YearMonth dummyYearMonth = YearMonth.of(1999, 1);
 	private static final LocalDate dummyIssueDate = LocalDate.now();
-
-	@Test
-	public void testEmptyInvoiceReturnsZero() {
-		AppleSalesEntry s = Mockito.mock(AppleSalesEntry.class);
-		Mockito.when(s.getRpc()).thenReturn(RegionPlusCurrency.AMERICAS_USD);
-		AppleSubsidiaryReport i = new AppleSubsidiaryReport("0",dummyYearMonth, dummyIssueDate, s);
-		Assertions.assertEquals(0, i.sum());
-	}
 
 	@Test
 	public void testAfterCreationSubsidiaryMatchesFirstAddedSalesEntry() {
@@ -32,17 +25,17 @@ public class AppleSubsidiaryReportTest {
 	}
 
 	@Test
-	public void testSumFunctionCalculatesSum() {
-		final double expectedSum = 100.0;
+	public void testGetProceedsCalculatesSum() {
+		final BigDecimal expectedSum = BigDecimal.valueOf(100.0);
 		AppleSalesEntry s1 = Mockito.mock(AppleSalesEntry.class);
 		Mockito.when(s1.getRpc()).thenReturn(RegionPlusCurrency.AUSTRALIA_AUD);
-		Mockito.when(s1.getProceeds()).thenReturn((50.0));
+		Mockito.when(s1.getProceeds()).thenReturn(BigDecimal.valueOf(50.0));
 		AppleSalesEntry s2 = Mockito.mock(AppleSalesEntry.class);
 		Mockito.when(s2.getRpc()).thenReturn(RegionPlusCurrency.NEW_ZEALAND_NZD);
-		Mockito.when(s2.getProceeds()).thenReturn((50.0));
+		Mockito.when(s2.getProceeds()).thenReturn(BigDecimal.valueOf(50.0));
 		AppleSubsidiaryReport i = new AppleSubsidiaryReport("0", dummyYearMonth, dummyIssueDate, s1);
 		i.addSales(s2);
-		Assertions.assertEquals(expectedSum, i.sum());
+		Assertions.assertEquals(0, expectedSum.compareTo(i.getProceeds()));
 	}
 
 	@Test

@@ -1,19 +1,21 @@
 package de.skymatic.appstore_invoices.model.apple;
 
+import java.math.BigDecimal;
+
 public class AppleSalesEntry {
 
 	private final RegionPlusCurrency rpc;
 	private final int unitsSold;
-	private final double earned;
-	private final double pretaxSubtotal;
-	private final double inputTax;
-	private final double adjustments;
-	private final double withholdingTax;
-	private final double totalOwned;
-	private final double exchangeRate;
-	private final double proceeds;
+	private final BigDecimal earned;
+	private final BigDecimal pretaxSubtotal;
+	private final BigDecimal inputTax;
+	private final BigDecimal adjustments;
+	private final BigDecimal withholdingTax;
+	private final BigDecimal totalOwned;
+	private final BigDecimal exchangeRate;
+	private final BigDecimal proceeds;
 
-	public AppleSalesEntry(RegionPlusCurrency rpc, int unitsSold, double earned, double pretaxSubtotal, double inputTax, double adjustments, double withholdingTax, double totalOwned, double exchangeRate, double proceeds) {
+	public AppleSalesEntry(RegionPlusCurrency rpc, int unitsSold, BigDecimal earned, BigDecimal pretaxSubtotal, BigDecimal inputTax, BigDecimal adjustments, BigDecimal withholdingTax, BigDecimal totalOwned, BigDecimal exchangeRate, BigDecimal proceeds) {
 		this.rpc = rpc;
 		this.unitsSold = unitsSold;
 		this.earned = earned;
@@ -30,7 +32,7 @@ public class AppleSalesEntry {
 		return rpc;
 	}
 
-	public double getProceeds() {
+	public BigDecimal getProceeds() {
 		return proceeds;
 	}
 

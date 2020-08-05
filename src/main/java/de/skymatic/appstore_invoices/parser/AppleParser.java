@@ -6,6 +6,7 @@ import de.skymatic.appstore_invoices.model.apple.RegionPlusCurrency;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Month;
@@ -31,14 +32,14 @@ public class AppleParser implements ReportParser {
 					.map(splittedLine -> {
 						RegionPlusCurrency rpc = getRegionPlusCurrency(splittedLine[0]);
 						int units = Integer.parseInt(splittedLine[1]);
-						double earned = Double.parseDouble(splittedLine[2]);
-						double pretaxSubtotal = Double.parseDouble(splittedLine[3]);
-						double inputTax = Double.parseDouble(splittedLine[4]);
-						double adjustments = Double.parseDouble(splittedLine[5]);
-						double withholdingTax = Double.parseDouble(splittedLine[6]);
-						double totalOwned = Double.parseDouble(splittedLine[7]);
-						double exchangeRate = Double.parseDouble(splittedLine[8]);
-						double proceeds = Double.parseDouble(splittedLine[9]);
+						BigDecimal earned = new BigDecimal(splittedLine[2]);
+						BigDecimal pretaxSubtotal = new BigDecimal(splittedLine[3]);
+						BigDecimal inputTax = new BigDecimal(splittedLine[4]);
+						BigDecimal adjustments = new BigDecimal(splittedLine[5]);
+						BigDecimal withholdingTax = new BigDecimal(splittedLine[6]);
+						BigDecimal totalOwned = new BigDecimal(splittedLine[7]);
+						BigDecimal exchangeRate = new BigDecimal(splittedLine[8]);
+						BigDecimal proceeds = new BigDecimal(splittedLine[9]);
 						return new AppleSalesEntry(rpc, units, earned, pretaxSubtotal, inputTax, adjustments, withholdingTax, totalOwned, exchangeRate, proceeds);
 					}).collect(Collectors.toList());
 

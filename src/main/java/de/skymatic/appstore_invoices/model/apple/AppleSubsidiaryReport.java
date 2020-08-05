@@ -38,8 +38,8 @@ public class AppleSubsidiaryReport implements Invoicable {
 		return appleSubsidiary;
 	}
 
-	public double sum() {
-		return salesPerCountryPlusCurrency.values().stream().mapToDouble(AppleSalesEntry::getProceeds).sum();
+	public BigDecimal getProceeds() {
+		return salesPerCountryPlusCurrency.values().stream().map(AppleSalesEntry::getProceeds).reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
 
 	public int getAmount() {
@@ -89,7 +89,7 @@ public class AppleSubsidiaryReport implements Invoicable {
 	@Override
 	public Invoice toInvoice() {
 		Map<String, BigDecimal> globalItems = new HashMap<>();
-		Collection<InvoiceItem> items = Collections.singleton(new InvoiceItem("Cryptomator Mobile App", getAmount(), BigDecimal.valueOf(sum())));
+		Collection<InvoiceItem> items = Collections.singleton(new InvoiceItem("Cryptomator Mobile App", getAmount(), getProceeds()));
 		return new Invoice(numberString, appleSubsidiary, startOfPeriod, endOfPeriod, issueDate, items, globalItems);
 	}
 }
