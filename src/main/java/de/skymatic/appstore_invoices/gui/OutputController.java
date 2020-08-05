@@ -42,15 +42,16 @@ public class OutputController {
 
 
 	private static final int REVEAL_TIMEOUT_MS = 5000;
-	private static final NumberFormat numFormatter;
+	private static final String NUMBER_FORMAT = "#,##0.0#";
+	private static final NumberFormat NUM_FORMATTER;
 
 	static {
 		NumberFormat tmp = NumberFormat.getInstance();
 		if(tmp instanceof DecimalFormat){
-			((DecimalFormat) tmp).applyPattern("#,##0.0#;(#)");
-			numFormatter = tmp;
+			((DecimalFormat) tmp).applyPattern(NUMBER_FORMAT);
+			NUM_FORMATTER = tmp;
 		} else {
-			numFormatter = new DecimalFormat("#,##0.0#;(#)");
+			NUM_FORMATTER = new DecimalFormat(NUMBER_FORMAT);
 		}
 	}
 
@@ -135,7 +136,7 @@ public class OutputController {
 			cell.setAlignment(Pos.BASELINE_RIGHT);
 			return cell;
 		});
-		columnProceeds.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(numFormatter.format(invoice.getValue().proceeds())));
+		columnProceeds.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(NUM_FORMATTER.format(invoice.getValue().proceeds())));
 
 		if (settings.isUsingExternalTemplate()) {
 			externalTemplateRadioButton.setSelected(true);

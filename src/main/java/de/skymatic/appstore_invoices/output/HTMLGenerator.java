@@ -19,17 +19,19 @@ public class HTMLGenerator {
 
 	private static final String PLACEHOLDER_START = "{{";
 	private static final String PLACEHOLDER_END = "}}";
-	private static final DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT);
+	private static final String NUMBER_FORMAT = "#,##0.0#";
 
-	private static final NumberFormat numFormatter;
+	private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT);
+
+	private static final NumberFormat NUM_FORMATTER;
 
 	static {
 		NumberFormat tmp = NumberFormat.getInstance();
 		if(tmp instanceof DecimalFormat){
-			((DecimalFormat) tmp).applyPattern("#,##0.0#;(#)");
-			numFormatter = tmp;
+			((DecimalFormat) tmp).applyPattern(NUMBER_FORMAT);
+			NUM_FORMATTER = tmp;
 		} else {
-			numFormatter = new DecimalFormat("#,##0.0#;(#)");
+			NUM_FORMATTER = new DecimalFormat(NUMBER_FORMAT);
 		}
 	}
 
@@ -77,13 +79,13 @@ public class HTMLGenerator {
 			case INVOICE_NUMBER:
 				return String.valueOf(invoice.getNumberString());
 			case PRODUCT_PROCEEDS:
-				return numFormatter.format(invoice.sum());
+				return NUM_FORMATTER.format(invoice.sum());
 			case ISSUE_DATE:
-				return invoice.getIssueDate().format(formatter);
+				return invoice.getIssueDate().format(DATE_FORMATTER);
 			case SALES_PERIOD_START:
-				return invoice.getStartOfPeriod().format(formatter);
+				return invoice.getStartOfPeriod().format(DATE_FORMATTER);
 			case SALES_PERIOD_END:
-				return invoice.getEndOfPeriod().format(formatter);
+				return invoice.getEndOfPeriod().format(DATE_FORMATTER);
 			default:
 				throw new IllegalArgumentException(); //NO-OP
 		}
