@@ -6,6 +6,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Arrays;
@@ -18,6 +20,18 @@ public class HTMLGenerator {
 	private static final String PLACEHOLDER_START = "{{";
 	private static final String PLACEHOLDER_END = "}}";
 	private static final DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT);
+
+	private static final NumberFormat numFormatter;
+
+	static {
+		NumberFormat tmp = NumberFormat.getInstance();
+		if(tmp instanceof DecimalFormat){
+			((DecimalFormat) tmp).applyPattern("#,##0.0#;(#)");
+			numFormatter = tmp;
+		} else {
+			numFormatter = new DecimalFormat("#,##0.0#;(#)");
+		}
+	}
 
 	public Map<String, StringBuilder> createHTMLInvoices(Path templatePath, Collection<AppleSubsidiaryReport> invoices) throws IOException {
 		Map<String, StringBuilder> sbs = new HashMap<>();
@@ -63,7 +77,7 @@ public class HTMLGenerator {
 			case INVOICE_NUMBER:
 				return String.valueOf(invoice.getNumberString());
 			case PRODUCT_PROCEEDS:
-				return String.valueOf(invoice.sum());
+				return numFormatter.format(invoice.sum());
 			case ISSUE_DATE:
 				return invoice.getIssueDate().format(formatter);
 			case SALES_PERIOD_START:

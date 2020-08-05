@@ -2,8 +2,6 @@ package de.skymatic.appstore_invoices.gui;
 
 import de.skymatic.appstore_invoices.model.Invoice;
 import de.skymatic.appstore_invoices.model.InvoiceCollection;
-import de.skymatic.appstore_invoices.model.apple.AppleReport;
-import de.skymatic.appstore_invoices.output.HTMLGenerator;
 import de.skymatic.appstore_invoices.output.HTMLWriter;
 import de.skymatic.appstore_invoices.output.SingleProductHTMLGenerator;
 import de.skymatic.appstore_invoices.settings.Settings;
@@ -32,6 +30,8 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -39,6 +39,20 @@ import java.util.concurrent.TimeUnit;
 
 
 public class OutputController {
+
+
+	private static final int REVEAL_TIMEOUT_MS = 5000;
+	private static final NumberFormat numFormatter;
+
+	static {
+		NumberFormat tmp = NumberFormat.getInstance();
+		if(tmp instanceof DecimalFormat){
+			((DecimalFormat) tmp).applyPattern("#,##0.0#;(#)");
+			numFormatter = tmp;
+		} else {
+			numFormatter = new DecimalFormat("#,##0.0#;(#)");
+		}
+	}
 
 	@FXML
 	private TableColumn<Invoice, String> columnInvoiceNumber;
@@ -58,7 +72,6 @@ public class OutputController {
 	private final Stage owner;
 	private final SettingsProvider settingsProvider;
 	private final BooleanProperty isReadyToGenerate;
-	private static final int REVEAL_TIMEOUT_MS = 5000;
 
 	private Settings settings;
 	private InvoiceCollection report;
@@ -122,7 +135,7 @@ public class OutputController {
 			cell.setAlignment(Pos.BASELINE_RIGHT);
 			return cell;
 		});
-		columnProceeds.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>((String.format("%.2f", invoice.getValue().proceeds()))));
+		columnProceeds.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(numFormatter.format(invoice.getValue().proceeds())));
 
 		if (settings.isUsingExternalTemplate()) {
 			externalTemplateRadioButton.setSelected(true);
