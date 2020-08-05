@@ -1,12 +1,14 @@
 package de.skymatic.appstore_invoices.model;
 
+import java.math.BigDecimal;
+
 public class InvoiceItem {
 
 	private String description;
 	private int units;
-	private double amount;
+	private BigDecimal amount;
 
-	public InvoiceItem(String description, int units, double amount) {
+	public InvoiceItem(String description, int units, BigDecimal amount) {
 		this.description = description;
 		this.units = units;
 		this.amount = amount;
@@ -20,7 +22,7 @@ public class InvoiceItem {
 		return units;
 	}
 
-	public double getAmount() {
+	public BigDecimal getAmount() {
 		return amount;
 	}
 }

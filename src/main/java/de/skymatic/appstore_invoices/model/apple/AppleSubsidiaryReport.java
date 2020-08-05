@@ -4,6 +4,7 @@ import de.skymatic.appstore_invoices.model.Invoicable;
 import de.skymatic.appstore_invoices.model.Invoice;
 import de.skymatic.appstore_invoices.model.InvoiceItem;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.Collection;
@@ -87,8 +88,8 @@ public class AppleSubsidiaryReport implements Invoicable {
 
 	@Override
 	public Invoice toInvoice() {
-		Map<String, Double> globalItems = new HashMap<>();
-		Collection<InvoiceItem> items = Collections.singleton(new InvoiceItem("Cryptomator Mobile App", getAmount(), sum()));
-		return new Invoice(numberString,appleSubsidiary,startOfPeriod, endOfPeriod, issueDate,items, globalItems);
+		Map<String, BigDecimal> globalItems = new HashMap<>();
+		Collection<InvoiceItem> items = Collections.singleton(new InvoiceItem("Cryptomator Mobile App", getAmount(), BigDecimal.valueOf(sum())));
+		return new Invoice(numberString, appleSubsidiary, startOfPeriod, endOfPeriod, issueDate, items, globalItems);
 	}
 }

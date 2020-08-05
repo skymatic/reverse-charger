@@ -1,5 +1,6 @@
 package de.skymatic.appstore_invoices.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,12 +18,12 @@ public class Invoice {
 	private final LocalDate startOfBillingPeriod;
 	private final LocalDate endOfBillingPeriod;
 	private final List<InvoiceItem> items;
-	private final Map<String, Double> globalItems;
+	private final Map<String, BigDecimal> globalItems;
 
 	private String id;
 	private LocalDate issueDate;
 
-	public Invoice(String id, Recipient recipient, LocalDate startOfBillingPeriod, LocalDate endOfBillingPeriod, LocalDate issueDate, Collection<InvoiceItem> items, Map<String, Double> globalItems) {
+	public Invoice(String id, Recipient recipient, LocalDate startOfBillingPeriod, LocalDate endOfBillingPeriod, LocalDate issueDate, Collection<InvoiceItem> items, Map<String, BigDecimal> globalItems) {
 		this.id = id;
 		this.recipient = recipient;
 		this.issueDate = issueDate;
@@ -32,9 +33,9 @@ public class Invoice {
 		this.globalItems = new HashMap<>(globalItems);
 	}
 
-	public double proceeds() {
-		return items.stream().mapToDouble(InvoiceItem::getAmount).sum()
-				+ globalItems.values().stream().mapToDouble(x -> x).sum();
+	public BigDecimal proceeds() {
+		return items.stream().map(InvoiceItem::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add)
+				.add(globalItems.values().stream().reduce(BigDecimal.ZERO, BigDecimal::add));
 	}
 
 	public int totalUnits() {
@@ -45,7 +46,7 @@ public class Invoice {
 		return items.size();
 	}
 
-	public Map<String, Double> getGlobalItems(){
+	public Map<String, BigDecimal> getGlobalItems() {
 		return Collections.unmodifiableMap(globalItems);
 	}
 
