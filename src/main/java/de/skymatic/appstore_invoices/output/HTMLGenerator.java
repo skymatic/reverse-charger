@@ -10,7 +10,6 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -72,8 +71,7 @@ public class HTMLGenerator {
 	private String getReplacement(AppleSubsidiaryReport invoice, Placeholder placeholder) {
 		switch (placeholder) {
 			case SUBSIDIARY_INFORMATION:
-				return Arrays.stream(invoice.getAppleSubsidiary().getAddress()) //
-						.reduce("", (address, address_entry) -> address + "<br>" + address_entry);
+				return String.join("<br>", invoice.getAppleSubsidiary().getAddress());
 			case PRODUCT_AMOUNT:
 				return String.valueOf(invoice.getAmount());
 			case INVOICE_NUMBER:
