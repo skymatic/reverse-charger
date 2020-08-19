@@ -1,179 +1,58 @@
-<!doctype html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<style>
-		.A4 {
-			width: 21cm;
-			height: 29.7cm;
-			padding: 30px;
-			margin: 0 auto;
-			font-family: 'Open Sans', sans-serif;
-			font-size: 16px;
-			display: block;
-		}
-
-		.top {
-			width: 100%
-		}
-
-		.title {
-			font-size: 29px;
-			font-family: 'Quicksand', sans-serif;
-			text-align: left;
-		}
-
-		.subsidiaryInformation {
-			font-weight: bold;
-		}
-
-		.smallCompanyAddress {
-			font-size: 12px;
-			text-decoration: underline;
-		}
-
-
-		.yourInformation {
-			font-size: 15px;
-		}
-
-		.invoiceNumberAndSaleDates {
-			font-weight: bold;
-		}
-
-		.footer {
-			position: fixed;
-			bottom: 20px;
-			width: 100%;
-			text-align: left;
-			font-size: 15px;
-
-		}
-		.tableOfSoldProducts {
-			border: 1px solid black;
-			border-collapse: collapse;
-		}
-		.table-cell{
-			border: 1px solid black;
-			padding-left: 5px;
-			padding-right: 5px;
-
-		}
-
-		.synopsis {
-			border: 1px solid black;
-			background-color: #4DADD8;
-			color: white;
-		}
-
-
-		@media print {
-			body {
-				margin: 0;
-				padding: 0;
-			}
-
-			.A4 {
-				box-shadow: none;
-				margin: 0;
-				width: auto;
-				height: auto;
-			}
-
-			.noprint {
-				display: none;
-			}
-
-			.enable-print {
-				display: block;
-			}
-		}
-	</style>
-</head>
-
-<body>
-<div class="A4">
-	<table cellpadding="0" cellspacing="0" width="100%">
-		<tr class="top">
-			<td class="title">
-				Invoice
-			</td>
-			<td class="logo">
-				<img src="https://i.imgur.com/suFypDI.png" style="width:100%; width:100px; padding:20px">
-			</td>
-			<td class="yourInformation" ali>
-				<b>Company Name</b><br>
-				CompanyStreet<br>
-				CompanyLocation<br>
-				CompanyCountry
-			</td>
-		</tr>
-
-		<tr>
-			<td colspan="1" class="smallCompanyAddress">
-				YourCompanyName - YourCompanyAddress - YourCompanyLocation
-			</td>
-			<td></td>
-			<td rowspan="2" class="yourInformation">
-				Contact Person: Abc Xyz<br>
-				Phone: +12 345 6789<br>
-				Email: abc@xyz.com
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2" class="subsidiaryInformation">
-				{{ SUBSIDIARY_INFORMATION }}
-			</td>
-		</tr>
-	</table>
-	<br>
-	<p align="right">Location, {{ ISSUE_DATE }}</p>
-	<br>
-	<p class="invoiceNumberAndSaleDates">
-		INVOICE N°: {{ INVOICE_NUMBER }}<br>
-		SALES DATE: {{ SALES_PERIOD_START }} - {{ SALES_PERIOD_END }}<br>
-
-	</p>
-	<table class="tableOfSoldProducts">
-		<tr>
-			<td class="table-cell" style="width: 20%">
-				<b>Product</b>
-			</td>
-			<td class="table-cell" style="width: 100%">
-				YourProductName
-			</td>
-		</tr>
-		<tr>
-			<td class="table-cell">
-				<b>Units Sold</b>
-			</td>
-			<td class="table-cell">
-				{{ PRODUCT_AMOUNT }}
-			</td>
-		</tr>
-		<!-- {{ GLOBAL_ENTRY_TEMPLATE_START }} -->
-		<tr>
-			<td class="table-cell">
-				<b>{{ GLOBAL_ENTRY_DESCRIPTION }}</b>
-			</td>
-			<td class="table-cell">
-				{{ GLOBAL_ENTRY_VALUE }}
-			</td>
-		</tr>
-		<!-- {{ GLOBAL_ENTRY_TEMPLATE_END }} -->
-		<tr class="synopsis">
-			<td class="table-cell">
-				<b>Paid to Supplier</b>
-			</td>
-			<td class="table-cell">
-				{{ PRODUCT_PROCEEDS }} EUR
-			</td>
-		</tr>
-	</table>
-	<div class="footer">
-		<p>Place of Business: Location / VAT ID: AB123456<br>
-			Executive Board: </p>
-	</div>
-</div>
-</body>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paper-css/0.4.1/paper.css">
+    <style>
+      @page {
+        size: A4;
+      }
+      .text-2xs {
+        font-size: 0.5rem;
+      }
+    </style>
+  </head>
+  <body class="A4 text-xs">
+    <section class="sheet" style="padding: 20mm 25mm 20mm 25mm;">
+      <h1 class="text-2xl">Invoice</h1>
+      <img class="absolute h-16" style="top: 20mm; left: 125mm" src="https://i.imgur.com/suFypDI.png"/>
+      <div class="absolute" style="top: 50mm; left: 25mm; width: 85mm; height: 45mm;">
+        <p class="text-2xs underline mb-4">Company Name – Company Address – Company Location</p>
+        <p>{{ SUBSIDIARY_INFORMATION }}</p>
+      </div>
+      <div class="absolute" style="top: 50mm; left: 125mm; width: 64.9mm; height: 45mm;">
+        <p class="mb-4">Contact Person: John Doe</p>
+        <p class="mb-4">Phone: +12 345 6789<br/>Email: john.doe@company.zzz</p>
+        <p>{{ ISSUE_DATE }}</p>
+      </div>
+      <div class="absolute" style="top: 98mm; left: 25mm; width: 160mm;">
+        <p class="font-bold">INVOICE N°: {{ INVOICE_NUMBER }}</p>
+        <p class="font-bold mb-4">SALES DATE: {{ SALES_PERIOD_START }} – {{ SALES_PERIOD_END }}</p>
+        <table class="table-fixed">
+          <tr>
+            <th class="border w-1/4 text-left px-2 py-1">Product</th>
+            <td class="border w-3/4 px-2 py-1">Product Name</td>
+          </tr>
+          <tr>
+            <th class="border w-1/4 text-left px-2 py-1">Units Sold</th>
+            <td class="border w-3/4 px-2 py-1">{{ PRODUCT_AMOUNT }}</td>
+          </tr>
+          <!-- {{ GLOBAL_ENTRY_TEMPLATE_START }} -->
+          <tr>
+            <th class="border w-1/4 text-left px-2 py-1">{{ GLOBAL_ENTRY_DESCRIPTION }}</th>
+            <td class="border w-3/4 px-2 py-1">{{ GLOBAL_ENTRY_VALUE }}</td>
+          </tr>
+          <!-- {{ GLOBAL_ENTRY_TEMPLATE_END }} -->
+          <tr class="bg-blue-500 text-white font-bold">
+            <th class="border w-1/4 text-left px-2 py-1">Paid to Supplier</th>
+            <td class="border w-3/4 px-2 py-1">{{ PRODUCT_PROCEEDS }} EUR</td>
+          </tr>
+        </table>
+      </div>
+      <div class="absolute" style="bottom: 20mm; left: 25mm; width: 160mm;">
+        <p>Footer</p>
+      </div>
+    </section>
+  </body>
 </html>
