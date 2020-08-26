@@ -9,13 +9,15 @@ public class AppleUtility {
 			case AUSTRALIA_AUD:
 			case NEW_ZEALAND_NZD:
 				return AppleSubsidiary.AUSTRALIA;
+			case AMERICAS_USD:
+				return AppleSubsidiary.NORTHAMERICA;
+			case PERU_PEN:
 			case BRAZIL_BRL:
 			case CHILE_CLP:
 			case COLOMBIA_COP:
 			case MEXICO_MXN:
-			case AMERICAS_USD:
-			case PERU_PEN:
-				return AppleSubsidiary.AMERICA;
+			case LATIN_AMERICA_AND_THE_CARIBBEAN:
+				return AppleSubsidiary.LATINAMERICA; //TODO: check it
 			case JAPAN_JPY:
 				return AppleSubsidiary.JAPAN;
 			case SWITZERLAND_CHF:
