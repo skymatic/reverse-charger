@@ -41,7 +41,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{env.APP_NAME}}-${{runner.os}}.zip
-          path: target/reverseCharger-*.[zt]*
+          path: target/reverseCharger-*.zip
 
   release:
     name: Draft a Release on GitHub Releases
@@ -67,30 +67,30 @@ jobs:
             :construction: Work in Progress
           draft: true
           prerelease: false
-      - name: Upload linux package to GitHub Releases
+      - name: Upload linux package to release draft
         uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.APP_NAME }}-SNAPSHOT-Linux/reverseCharger-${{ env.BUILD_VERSION }}-linux.tar.gz
-          asset_name: ${{ env.APP_NAME }}-${{ env.BUILD_VERSION }}-linux.tar.gz
+          asset_path: ${{ env.APP_NAME }}-Linux.zip
+          asset_name: ${{ env.APP_NAME }}-${{ env.BUILD_VERSION }}-linux.zip
           asset_content_type: application/gzip
-      - name: Upload mac kit to GitHub Releases
+      - name: Upload windows artifact to release draft
         uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.APP_NAME }}-SNAPSHOT-macOS/reverseCharger-${{ env.BUILD_VERSION }}-mac.zip
-          asset_name: ${{ env.APP_NAME }}-${{ env.BUILD_VERSION }}-mac.zip
-          asset_content_type: application/zip
-      - name: Upload windows kit to GitHub Releases
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.APP_NAME }}-SNAPSHOT-Windows/reverseCharger-${{ env.BUILD_VERSION }}-win.zip
+          asset_path: ${{ env.APP_NAME }}-Windows.zip
           asset_name: ${{ env.APP_NAME }}-${{ env.BUILD_VERSION }}-win.zip
+          asset_content_type: application/zip
+      - name: Upload mac artifact to release draft
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ env.APP_NAME }}-macOS.zip
+          asset_name: ${{ env.APP_NAME }}-${{ env.BUILD_VERSION }}-mac.zip
           asset_content_type: application/zip
