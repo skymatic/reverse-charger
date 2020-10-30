@@ -27,14 +27,17 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
-      - name: If tag is set, use it as version
+      - name: Extract version from tag
         if: runner.os != 'Windows' && startsWith(github.ref, 'refs/tags/')
         run: echo "BUILD_VERSION=${GITHUB_REF##*/}" >> $GITHUB_ENV
-      - name: If tag is set, use it as version (windows special)
+      - name: Extract version from tag (windows)
         if: runner.os == 'Windows' && startsWith(github.ref, 'refs/tags/')
         run: |
           $v = ${GITHUB_REF} -replace 'refs/tags/',''
           echo "BUILD_VERSION=${v}" >> $GITHUB_ENV
+      - name: Ensure to use tagged version
+        run: mvn versions:set --file main/pom.xml -DnewVersion=${{ env.BUILD_VERSION }}
+        if: startsWith(github.ref, 'refs/tags/')
       - name: Build with Maven
         run: mvn -B package --file pom.xml
       - name: Uploads the build artifact
@@ -73,7 +76,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.APP_NAME }}-Linux.zip
+          asset_path: ${{ env.APP_NAME }}-Linux.zip/reverseCharger-${{ env.BUILD_VERSION }}-linux.zip
           asset_name: ${{ env.APP_NAME }}-${{ env.BUILD_VERSION }}-linux.zip
           asset_content_type: application/gzip
       - name: Upload windows artifact to release draft
@@ -82,7 +85,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.APP_NAME }}-Windows.zip
+          asset_path: ${{ env.APP_NAME }}-Windows.zip/reverseCharger-${{ env.BUILD_VERSION }}-win.zip
           asset_name: ${{ env.APP_NAME }}-${{ env.BUILD_VERSION }}-win.zip
           asset_content_type: application/zip
       - name: Upload mac artifact to release draft
@@ -91,6 +94,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.APP_NAME }}-macOS.zip
+          asset_path: ${{ env.APP_NAME }}-macOS.zip/reverseCharger-${{ env.BUILD_VERSION }}-mac.zip
           asset_name: ${{ env.APP_NAME }}-${{ env.BUILD_VERSION }}-mac.zip
           asset_content_type: application/zip
