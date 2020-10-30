@@ -36,7 +36,7 @@ jobs:
           $v = ${GITHUB_REF} -replace 'refs/tags/',''
           echo "BUILD_VERSION=${v}" >> $GITHUB_ENV
       - name: Ensure to use tagged version
-        run: mvn versions:set --file main/pom.xml -DnewVersion=${{ env.BUILD_VERSION }}
+        run: mvn versions:set --file pom.xml -DnewVersion=${{ env.BUILD_VERSION }}
         if: startsWith(github.ref, 'refs/tags/')
       - name: Build with Maven
         run: mvn -B package --file pom.xml
