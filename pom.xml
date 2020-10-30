@@ -199,9 +199,7 @@
 						<configuration>
 							<executable>${env.JAVA_HOME}/bin/jpackage</executable>
 							<workingDirectory>${project.build.directory}</workingDirectory>
-							<commandlineArgs>--name ${build.finalArtifact.name} --type app-image -m ${java.jpms.modulename}/de.skymatic.appstore_invoices.gui.AppStoreReverseCharger --runtime-image runtimeImage
-								--app-version ${project.version}
-								--vendor "Skymatic GmbH" --java-options ${jpackage.jvmArgs.settings}
+							<commandlineArgs>--name ${build.finalArtifact.name} --type app-image -m ${java.jpms.modulename}/de.skymatic.appstore_invoices.gui.AppStoreReverseCharger --runtime-image runtimeImage --app-version ${project.version} --vendor "Skymatic GmbH" --java-options ${jpackage.jvmArgs.settings}
 							</commandlineArgs>
 						</configuration>
 					</execution>
