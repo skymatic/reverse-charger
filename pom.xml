@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.skymatic.app</groupId>
     <artifactId>appstore-reverse-charger</artifactId>
-    <version>0.4.0</version>
+    <version>0.5.0</version>
 
     <organization>
         <name>Skymatic</name>
@@ -11,7 +11,7 @@
     </organization>
 
     <name>Appstore Reverse Charger</name>
-    <description>TODO</description>
+    <description>A small GUI tool for app sellers to parse financial reports from Apples App Store or Google Play Store and create invoices based on JavaFX</description>
     <url>https://github.com/skymatic/appstore-reverse-charger</url>
 
     <scm>
@@ -25,11 +25,15 @@
             <name>Martin Beyer</name>
             <email>martin.beyer@skymatic.de</email>
             <timezone>+1</timezone>
+            <organization>Skymatic GmbH</organization>
+            <organizationUrl>http://skymatic.de</organizationUrl>
         </developer>
         <developer>
             <name>Armin Schrenk</name>
             <email>armin.Schrenk@skymatic.de</email>
             <timezone>+1</timezone>
+            <organization>Skymatic GmbH</organization>
+            <organizationUrl>http://skymatic.de</organizationUrl>
         </developer>
     </developers>
 
