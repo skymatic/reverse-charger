@@ -22,7 +22,7 @@ public class AppleReportTest {
 	@Test
 	public void testAddingSalesEntryOfExistingSubsidiaryAddsIt() {
 		AppleSalesEntry appleSalesEntry = Mockito.mock(AppleSalesEntry.class);
-		Mockito.when(appleSalesEntry.getRpc()).thenReturn(RegionPlusCurrency.AMERICAS_USD);
+		Mockito.when(appleSalesEntry.getRpc()).thenReturn(RegionPlusCurrency.PERU_PEN);
 		AppleReport appleReport = new AppleReport(YearMonth.of(2020, 3), "CVS", 0, appleSalesEntry);
 		int expected = appleReport.getInvoices().size();
 
