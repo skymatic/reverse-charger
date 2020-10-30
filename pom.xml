@@ -1,227 +1,233 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>de.skymatic.app</groupId>
-    <artifactId>appstore-reverse-charger</artifactId>
-    <version>0.5.0</version>
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>de.skymatic.app</groupId>
+	<artifactId>appstore-reverse-charger</artifactId>
+	<version>0.5.0</version>
 
-    <organization>
-        <name>Skymatic</name>
-        <url>https://skymatic.de</url>
-    </organization>
+	<organization>
+		<name>Skymatic</name>
+		<url>https://skymatic.de</url>
+	</organization>
 
-    <name>Appstore Reverse Charger</name>
-    <description>A small GUI tool for app sellers to parse financial reports from Apples App Store or Google Play Store and create invoices based on JavaFX</description>
-    <url>https://github.com/skymatic/appstore-reverse-charger</url>
+	<name>Appstore Reverse Charger</name>
+	<description>A small GUI tool for app sellers to parse financial reports from Apples App Store or Google Play Store and create invoices based on JavaFX</description>
+	<url>https://github.com/skymatic/appstore-reverse-charger</url>
 
-    <scm>
-        <connection>scm:git:git@github.com:skymatic/appstore-reverse-charger.git</connection>
-        <developerConnection>scm:git:git@github.com:skymatic/appstore-reverse-charger.git</developerConnection>
-        <url>git@github.com:skymatic/appstore-reverse-charger.git</url>
-    </scm>
+	<scm>
+		<connection>scm:git:git@github.com:skymatic/appstore-reverse-charger.git</connection>
+		<developerConnection>scm:git:git@github.com:skymatic/appstore-reverse-charger.git</developerConnection>
+		<url>git@github.com:skymatic/appstore-reverse-charger.git</url>
+	</scm>
 
-    <developers>
-        <developer>
-            <name>Martin Beyer</name>
-            <email>martin.beyer@skymatic.de</email>
-            <timezone>+1</timezone>
-            <organization>Skymatic GmbH</organization>
-            <organizationUrl>http://skymatic.de</organizationUrl>
-        </developer>
-        <developer>
-            <name>Armin Schrenk</name>
-            <email>armin.Schrenk@skymatic.de</email>
-            <timezone>+1</timezone>
-            <organization>Skymatic GmbH</organization>
-            <organizationUrl>http://skymatic.de</organizationUrl>
-        </developer>
-    </developers>
+	<developers>
+		<developer>
+			<name>Martin Beyer</name>
+			<email>martin.beyer@skymatic.de</email>
+			<timezone>+1</timezone>
+			<organization>Skymatic GmbH</organization>
+			<organizationUrl>http://skymatic.de</organizationUrl>
+		</developer>
+		<developer>
+			<name>Armin Schrenk</name>
+			<email>armin.Schrenk@skymatic.de</email>
+			<timezone>+1</timezone>
+			<organization>Skymatic GmbH</organization>
+			<organizationUrl>http://skymatic.de</organizationUrl>
+		</developer>
+	</developers>
 
-    <properties>
+	<properties>
 		<build.finalArtifact.name>reverseCharger</build.finalArtifact.name>
-	    <java.jpms.modulename>de.skymatic.appstore_invoices</java.jpms.modulename>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.jpms.modulename>de.skymatic.appstore_invoices</java.jpms.modulename>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <maven.compiler.release>14</maven.compiler.release>
+		<maven.compiler.release>14</maven.compiler.release>
 
-        <openjfx.version>14</openjfx.version>
-        <junit.jupiter.version>5.6.0</junit.jupiter.version>
-        <mockito.version>3.3.0</mockito.version>
-    </properties>
+		<openjfx.version>14</openjfx.version>
+		<junit.jupiter.version>5.6.0</junit.jupiter.version>
+		<mockito.version>3.3.0</mockito.version>
+	</properties>
 
-    <dependencies>
-        <!-- UI -->
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>${openjfx.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>${openjfx.version}</version>
-        </dependency>
-        <!--json output-->
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.8.6</version>
-        </dependency>
+	<dependencies>
+		<!-- UI -->
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-controls</artifactId>
+			<version>${openjfx.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-fxml</artifactId>
+			<version>${openjfx.version}</version>
+		</dependency>
+		<!--json output-->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.6</version>
+		</dependency>
 
-        <!-- Testing -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.jupiter.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.jupiter.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-            <version>${junit.jupiter.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>${mockito.version}</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+		<!-- Testing -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>${junit.jupiter.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>${junit.jupiter.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
+			<version>${junit.jupiter.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${mockito.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 	<profiles>
-        <profile>
-            <id>windows-build</id>
-            <activation>
-                <os><family>windows</family></os>
-            </activation>
-            <properties>
+		<profile>
+			<id>windows-build</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<properties>
 				<jpackage.jvmArgs.settings>-DsettingsPath="~/AppData/Roaming/AppStoreReverseCharger/settings.json"</jpackage.jvmArgs.settings>
-                <targetPlatform>win</targetPlatform>
-            </properties>
-        </profile>
-        <profile>
-            <id>macOS-build</id>
-            <activation>
-                <os><family>mac</family></os>
-            </activation>
-            <properties>
-                <jpackage.jvmArgs.settings>-DsettingsPath="~/Library/Application' 'Support/AppStoreReverseCharger/settings.json"</jpackage.jvmArgs.settings>
-                <targetPlatform>mac</targetPlatform>
-            </properties>
-        </profile>
-        <profile>
-            <id>linux-build</id>
-            <activation>
-                <os>
-                    <family>unix</family>
-                    <name>Linux</name>
-                </os>
-            </activation>
-            <properties>
-                <jpackage.jvmArgs.settings>-DsettingsPath="~/.local/share/AppStoreReverseCharger/settings.json"</jpackage.jvmArgs.settings>
-                <targetPlatform>linux</targetPlatform>
-            </properties>
-        </profile>
-    </profiles>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
-                <configuration>
-                    <release>14</release>
-                </configuration>
-            </plugin>
+				<targetPlatform>win</targetPlatform>
+			</properties>
+		</profile>
+		<profile>
+			<id>macOS-build</id>
+			<activation>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+			<properties>
+				<jpackage.jvmArgs.settings>-DsettingsPath="~/Library/Application' 'Support/AppStoreReverseCharger/settings.json"</jpackage.jvmArgs.settings>
+				<targetPlatform>mac</targetPlatform>
+			</properties>
+		</profile>
+		<profile>
+			<id>linux-build</id>
+			<activation>
+				<os>
+					<family>unix</family>
+					<name>Linux</name>
+				</os>
+			</activation>
+			<properties>
+				<jpackage.jvmArgs.settings>-DsettingsPath="~/.local/share/AppStoreReverseCharger/settings.json"</jpackage.jvmArgs.settings>
+				<targetPlatform>linux</targetPlatform>
+			</properties>
+		</profile>
+	</profiles>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.0</version>
+				<configuration>
+					<release>14</release>
+				</configuration>
+			</plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
-                <configuration>
-                    <outputDirectory>${project.build.directory}/libs</outputDirectory>
-                </configuration>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<outputDirectory>${project.build.directory}/libs</outputDirectory>
+				</configuration>
+			</plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.1.2</version>
-                <executions>
-                <execution>
-                    <id>copy-dependencies</id>
-                    <phase>package</phase>
-                    <goals>
-                        <goal>copy-dependencies</goal>
-                    </goals>
-                    <configuration>
-                        <outputDirectory>${project.build.directory}/libs</outputDirectory>
-                        <includeScope>runtime</includeScope>
-                    </configuration>
-                </execution>
-                </executions>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.1.2</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/libs</outputDirectory>
+							<includeScope>runtime</includeScope>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
-                <executions>
-                    <execution>
-                        <id>jlink</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>${env.JAVA_HOME}/bin/jlink</executable>
-                            <workingDirectory>${project.build.directory}</workingDirectory>
-                            <commandlineArgs>--output runtimeImage --module-path libs/ --add-modules ${java.jpms.modulename} --no-header-files --no-man-pages --strip-debug --compress=1</commandlineArgs>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>jpackage</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>${env.JAVA_HOME}/bin/jpackage</executable>
-                            <workingDirectory>${project.build.directory}</workingDirectory>
-                            <commandlineArgs>--name ${build.finalArtifact.name} --type app-image -m ${java.jpms.modulename}/de.skymatic.appstore_invoices.gui.AppStoreReverseCharger --runtime-image runtimeImage --app-version ${project.version}
-                                --vendor "Skymatic GmbH" --java-options ${jpackage.jvmArgs.settings}</commandlineArgs>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.6.0</version>
+				<executions>
+					<execution>
+						<id>jlink</id>
+						<phase>package</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>${env.JAVA_HOME}/bin/jlink</executable>
+							<workingDirectory>${project.build.directory}</workingDirectory>
+							<commandlineArgs>--output runtimeImage --module-path libs/ --add-modules ${java.jpms.modulename} --no-header-files --no-man-pages --strip-debug --compress=1</commandlineArgs>
+						</configuration>
+					</execution>
+					<execution>
+						<id>jpackage</id>
+						<phase>package</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>${env.JAVA_HOME}/bin/jpackage</executable>
+							<workingDirectory>${project.build.directory}</workingDirectory>
+							<commandlineArgs>--name ${build.finalArtifact.name} --type app-image -m ${java.jpms.modulename}/de.skymatic.appstore_invoices.gui.AppStoreReverseCharger --runtime-image runtimeImage
+								--app-version ${project.version}
+								--vendor "Skymatic GmbH" --java-options ${jpackage.jvmArgs.settings}
+							</commandlineArgs>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.2.0</version>
-                <configuration>
-                    <descriptors>
-                        <descriptor>${project.basedir}/src/main/resources/assembly.xml</descriptor>
-                    </descriptors>
-                    <appendAssemblyId>true</appendAssemblyId>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<descriptors>
+						<descriptor>${project.basedir}/src/main/resources/assembly.xml</descriptor>
+					</descriptors>
+					<appendAssemblyId>true</appendAssemblyId>
 					<finalName>${build.finalArtifact.name}</finalName>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
