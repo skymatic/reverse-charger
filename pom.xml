@@ -38,10 +38,12 @@
     </developers>
 
     <properties>
+		<build.finalArtifact.name>reverseCharger</build.finalArtifact.name>
 	    <java.jpms.modulename>de.skymatic.appstore_invoices</java.jpms.modulename>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>14</maven.compiler.source>
-        <maven.compiler.target>14</maven.compiler.target>
+
+        <maven.compiler.release>14</maven.compiler.release>
+
         <openjfx.version>14</openjfx.version>
         <junit.jupiter.version>5.6.0</junit.jupiter.version>
         <mockito.version>3.3.0</mockito.version>
@@ -101,6 +103,7 @@
             </activation>
             <properties>
 				<jpackage.jvmArgs.settings>-DsettingsPath="~/AppData/Roaming/AppStoreReverseCharger/settings.json"</jpackage.jvmArgs.settings>
+                <targetPlatform>win</targetPlatform>
             </properties>
         </profile>
         <profile>
@@ -110,6 +113,7 @@
             </activation>
             <properties>
                 <jpackage.jvmArgs.settings>-DsettingsPath="~/Library/Application' 'Support/AppStoreReverseCharger/settings.json"</jpackage.jvmArgs.settings>
+                <targetPlatform>mac</targetPlatform>
             </properties>
         </profile>
         <profile>
@@ -122,6 +126,7 @@
             </activation>
             <properties>
                 <jpackage.jvmArgs.settings>-DsettingsPath="~/.local/share/AppStoreReverseCharger/settings.json"</jpackage.jvmArgs.settings>
+                <targetPlatform>linux</targetPlatform>
             </properties>
         </profile>
     </profiles>
@@ -190,7 +195,7 @@
                         <configuration>
                             <executable>${env.JAVA_HOME}/bin/jpackage</executable>
                             <workingDirectory>${project.build.directory}</workingDirectory>
-                            <commandlineArgs>--name charger --type app-image -m ${java.jpms.modulename}/de.skymatic.appstore_invoices.gui.AppStoreReverseCharger --runtime-image runtimeImage --app-version ${project.version}
+                            <commandlineArgs>--name ${build.finalArtifact.name} --type app-image -m ${java.jpms.modulename}/de.skymatic.appstore_invoices.gui.AppStoreReverseCharger --runtime-image runtimeImage --app-version ${project.version}
                                 --vendor "Skymatic GmbH" --java-options ${jpackage.jvmArgs.settings}</commandlineArgs>
                         </configuration>
                     </execution>
@@ -205,8 +210,8 @@
                     <descriptors>
                         <descriptor>${project.basedir}/src/main/resources/assembly.xml</descriptor>
                     </descriptors>
-                    <appendAssemblyId>false</appendAssemblyId>
-					<finalName>charger</finalName>
+                    <appendAssemblyId>true</appendAssemblyId>
+					<finalName>${build.finalArtifact.name}</finalName>
                 </configuration>
                 <executions>
                     <execution>
