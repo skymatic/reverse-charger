@@ -16,8 +16,8 @@ public class AppleUtility {
 			case CHILE_CLP:
 			case COLOMBIA_COP:
 			case MEXICO_MXN:
-			case LATIN_AMERICA_AND_THE_CARIBBEAN:
-				return AppleSubsidiary.LATINAMERICA; //TODO: check it
+			case LATIN_AMERICA_AND_THE_CARIBBEAN_USD:
+				return AppleSubsidiary.LATINAMERICA;
 			case JAPAN_JPY:
 				return AppleSubsidiary.JAPAN;
 			case SWITZERLAND_CHF:
