@@ -22,7 +22,8 @@ public class SingleProductHTMLGenerator {
 	private static final String PLACEHOLDER_END = "}}";
 	private static final String NUMBER_FORMAT = "#,##0.0#";
 
-	private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT);
+	private static final DateTimeFormatter DATE_FORMATTER_LONG = DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG);
+	private static final DateTimeFormatter DATE_FORMATTER_EUROPEAN = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 	private static final NumberFormat NUM_FORMATTER;
 
 	static {
@@ -205,11 +206,11 @@ public class SingleProductHTMLGenerator {
 			case PRODUCT_PROCEEDS:
 				return NUM_FORMATTER.format(invoice.proceeds());
 			case ISSUE_DATE:
-				return invoice.getIssueDate().format(DATE_FORMATTER);
+				return invoice.getIssueDate().format(DATE_FORMATTER_LONG);
 			case SALES_PERIOD_START:
-				return invoice.getStartOfPeriod().format(DATE_FORMATTER);
+				return invoice.getStartOfPeriod().format(DATE_FORMATTER_EUROPEAN);
 			case SALES_PERIOD_END:
-				return invoice.getEndOfPeriod().format(DATE_FORMATTER);
+				return invoice.getEndOfPeriod().format(DATE_FORMATTER_EUROPEAN);
 			default:
 				throw new IllegalArgumentException(); //NO-OP
 		}

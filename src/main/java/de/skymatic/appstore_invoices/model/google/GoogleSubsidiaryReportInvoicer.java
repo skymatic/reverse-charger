@@ -15,7 +15,7 @@ import java.util.TreeMap;
 
 public class GoogleSubsidiaryReportInvoicer {
 
-	private static final String TAX_DESC = "Taxes Withheld";
+	private static final String TAX_DESC = "Tax Withheld";
 	private static final String TAXREFUND_DESC = "Tax Refunds";
 	private static final String FEE_DESC = "Google Fees";
 	private static final String REFUNDS_DESC = "Refunds";
