@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  */
 public enum GoogleSubsidiary implements Recipient {
 
-	ROW(new String[]{"Google Commerce Limited", "Gordon House, Barrow Street", "Dublin 4", "Ireland"}),
+	ROW(new String[]{"Google Commerce Limited", "Gordon House, Barrow Street", "Dublin 4", "Republic of Ireland", "VAT ID: IE9825613N"}),
 	AMERICA(new String[]{"Google LLC", "1600 Amphitheatre Parkway", "Mountain View, CA 94043", "USA"}),
 	ASIA(new String[]{"Google Asia Pacific Pte. Limited", "70 Pasir Panjang Road, #03-71", "Mapletree Business City", "Singapore 117371"});
 
