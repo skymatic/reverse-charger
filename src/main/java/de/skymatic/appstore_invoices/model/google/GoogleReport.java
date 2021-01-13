@@ -6,6 +6,7 @@ import de.skymatic.appstore_invoices.model.InvoiceNumberGenerator;
 
 import java.time.YearMonth;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -91,13 +92,12 @@ public class GoogleReport implements InvoiceCollection {
 
 	@Override
 	public Collection<Invoice> toInvoices() {
-		return reportsOfSubsidiaries.values()
-				.stream()
+		return reportsOfSubsidiaries.values().stream() //
+				.sorted(Comparator.comparingInt(subreport -> subreport.getSubsidiary().ordinal())) //
 				.map(r -> {
-							Invoice i = r.toInvoice();
-							i.setId(String.valueOf(numberGenerator.getAsInt()));
-							return i;
-						}
-				).collect(Collectors.toUnmodifiableList());
+					Invoice i = r.toInvoice();
+					i.setId(String.valueOf(r.getSubsidiary().ordinal()));
+					return i;
+				}).collect(Collectors.toUnmodifiableList());
 	}
 }

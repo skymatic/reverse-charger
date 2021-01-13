@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -40,7 +41,7 @@ public class AppleReport implements InvoiceCollection {
 		if (invoices.containsKey(appleSubsidiary)) {
 			invoices.get(appleSubsidiary).addSales(appleSalesEntry);
 		} else {
-			var numberString = numberPrefix + String.valueOf(invoiceNumberGenerator.getAsInt());
+			var numberString = numberPrefix + appleSubsidiary.ordinal();
 			invoices.put(appleSubsidiary, new AppleSubsidiaryReport(numberString, yearMonth, CURRENT_TIME, appleSalesEntry));
 		}
 	}
@@ -60,14 +61,15 @@ public class AppleReport implements InvoiceCollection {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(yearMonth)
-				.append("\n")
-				.append(invoices);
+		sb.append(yearMonth).append("\n").append(invoices);
 		return sb.toString();
 	}
 
 	@Override
 	public Collection<Invoice> toInvoices() {
-		return invoices.values().stream().map(subReport -> subReport.toInvoice()).collect(Collectors.toUnmodifiableList());
+		return invoices.values().stream() //
+				.sorted(Comparator.comparingInt(subreport -> subreport.getAppleSubsidiary().ordinal())) //
+				.map(subReport -> subReport.toInvoice()) //
+				.collect(Collectors.toUnmodifiableList());
 	}
 }

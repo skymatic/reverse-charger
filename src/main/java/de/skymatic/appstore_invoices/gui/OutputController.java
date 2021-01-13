@@ -105,7 +105,6 @@ public class OutputController {
 
 		this.report = report;
 		invoices.addAll(report.toInvoices());
-		invoices.sort((i1, i2) -> CharSequence.compare(i1.getId(), i2.getId()));
 		htmlGenerator = new SingleProductHTMLGenerator();
 		this.revealCommand = revealCommand;
 	}
