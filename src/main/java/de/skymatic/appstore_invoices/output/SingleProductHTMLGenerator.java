@@ -54,7 +54,7 @@ public class SingleProductHTMLGenerator {
 						state = ParseState.GLOBAL_ITEM_TEMPLATE;
 					}
 					case GLOBAL_ITEM_TEMPLATE -> {
-						intermediate = devourDigestDischarge(br, invoices);
+						intermediate = devourDigestDump(br, invoices);
 						state = ParseState.REGULAR;
 					}
 					default -> throw new IllegalStateException("Not a valid state"); //TODO: better error description
@@ -67,7 +67,7 @@ public class SingleProductHTMLGenerator {
 		return htmlInvoices;
 	}
 
-	private Map<String, StringBuilder> devourDigestDischarge(BufferedReader br, Collection<Invoice> invoices) throws IOException, MalformedTemplateException {
+	private Map<String, StringBuilder> devourDigestDump(BufferedReader br, Collection<Invoice> invoices) throws IOException, MalformedTemplateException {
 		Map<String, StringBuilder> replacements = new HashMap<>();
 		invoices.forEach(i -> replacements.put(i.getId(), new StringBuilder()));
 
@@ -115,7 +115,7 @@ public class SingleProductHTMLGenerator {
 			);
 		}
 
-		//discharge
+		//dump
 		return replacements;
 	}
 
