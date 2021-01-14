@@ -32,19 +32,4 @@ public class AppleReportTest {
 		Assertions.assertEquals(expected, appleReport.getInvoices().size());
 	}
 
-	@Test
-	public void testDefaultNumberingIncreasesWithNewInvoice() {
-		int numberingSeed = 5;
-		AppleSalesEntry appleSalesEntry = Mockito.mock(AppleSalesEntry.class);
-		Mockito.when(appleSalesEntry.getRpc()).thenReturn(RegionPlusCurrency.AMERICAS_USD);
-		AppleReport appleReport = new AppleReport(YearMonth.of(2020, 3), "CVS", numberingSeed, appleSalesEntry);
-
-		AppleSalesEntry other = Mockito.mock(AppleSalesEntry.class);
-		Mockito.when(other.getRpc()).thenReturn(RegionPlusCurrency.JAPAN_JPY);
-		appleReport.addSalesEntry(other);
-
-		Assertions.assertTrue(appleReport.getInvoices().stream().anyMatch(invoice -> invoice.getNumberString().endsWith(String.valueOf(numberingSeed))));
-		Assertions.assertTrue(appleReport.getInvoices().stream().anyMatch(invoice -> invoice.getNumberString().endsWith(String.valueOf(numberingSeed + 1))));
-	}
-
 }

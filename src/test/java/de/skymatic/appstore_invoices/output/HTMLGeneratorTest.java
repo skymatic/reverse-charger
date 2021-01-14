@@ -2,6 +2,7 @@ package de.skymatic.appstore_invoices.output;
 
 import de.skymatic.appstore_invoices.model.apple.AppleSubsidiaryReport;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mockito;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+@Disabled
 public class HTMLGeneratorTest {
 
 	@Test
