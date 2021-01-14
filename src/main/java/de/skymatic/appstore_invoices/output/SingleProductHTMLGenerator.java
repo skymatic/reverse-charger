@@ -109,7 +109,7 @@ public class SingleProductHTMLGenerator {
 								.append(first == Placeholder.GLOBAL_ENTRY_DESCRIPTION ? desc : NUM_FORMATTER.format(val))
 								.append(template, firstReplaceEnd, secondReplaceStart)
 								.append(second == Placeholder.GLOBAL_ENTRY_VALUE ? NUM_FORMATTER.format(val) : desc)
-								.append(template, secondReplaceEnd + 1, template.length())
+								.append(template, secondReplaceEnd, template.length())
 								.append("\n");
 					}
 			);
