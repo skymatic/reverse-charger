@@ -5,9 +5,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
 
 /**
  * Invoice with the most basic and nearly always necessary information.
@@ -18,24 +18,23 @@ public class Invoice {
 	private final LocalDate startOfBillingPeriod;
 	private final LocalDate endOfBillingPeriod;
 	private final List<InvoiceItem> items;
-	private final Map<String, BigDecimal> globalItems;
+	private final SortedMap<String, BigDecimal> globalItems;
 
 	private String id;
 	private LocalDate issueDate;
 
-	public Invoice(String id, Recipient recipient, LocalDate startOfBillingPeriod, LocalDate endOfBillingPeriod, LocalDate issueDate, Collection<InvoiceItem> items, Map<String, BigDecimal> globalItems) {
+	public Invoice(String id, Recipient recipient, LocalDate startOfBillingPeriod, LocalDate endOfBillingPeriod, LocalDate issueDate, Collection<InvoiceItem> items, SortedMap<String, BigDecimal> globalItems) {
 		this.id = id;
 		this.recipient = recipient;
 		this.issueDate = issueDate;
 		this.startOfBillingPeriod = startOfBillingPeriod;
 		this.endOfBillingPeriod = endOfBillingPeriod;
 		this.items = new ArrayList<>(items);
-		this.globalItems = new HashMap<>(globalItems);
+		this.globalItems = globalItems;
 	}
 
 	public BigDecimal proceeds() {
-		return items.stream().map(InvoiceItem::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add)
-				.add(globalItems.values().stream().reduce(BigDecimal.ZERO, BigDecimal::add));
+		return items.stream().map(InvoiceItem::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add).add(globalItems.values().stream().reduce(BigDecimal.ZERO, BigDecimal::add));
 	}
 
 	public int totalUnits() {
@@ -47,7 +46,7 @@ public class Invoice {
 	}
 
 	public Map<String, BigDecimal> getGlobalItems() {
-		return Collections.unmodifiableMap(globalItems);
+		return Collections.unmodifiableSortedMap(globalItems);
 	}
 
 	public void setId(String newId) {

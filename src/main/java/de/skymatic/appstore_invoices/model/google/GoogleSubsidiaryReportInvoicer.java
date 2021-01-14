@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 public class GoogleSubsidiaryReportInvoicer {
@@ -29,7 +30,7 @@ public class GoogleSubsidiaryReportInvoicer {
 			agg.taxRefunds = agg.taxRefunds.add(sale.getTaxRefunds());
 			agg.feeRefunds = agg.feeRefunds.add(sale.getFeeRefunds());
 		});
-		Map<String, BigDecimal> globalItems = new TreeMap<>(createGlobalItemOrder());
+		SortedMap<String, BigDecimal> globalItems = new TreeMap<>(createGlobalItemOrder());
 		globalItems.put(TAX_DESC, agg.taxes);
 		globalItems.put(FEE_DESC, agg.fees.add(agg.feeRefunds));
 		globalItems.put(REFUNDS_DESC, agg.refunds);

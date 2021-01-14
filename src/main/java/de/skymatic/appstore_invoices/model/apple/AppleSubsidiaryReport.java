@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class AppleSubsidiaryReport implements Invoicable {
 
@@ -88,8 +89,7 @@ public class AppleSubsidiaryReport implements Invoicable {
 
 	@Override
 	public Invoice toInvoice() {
-		Map<String, BigDecimal> globalItems = new HashMap<>();
 		Collection<InvoiceItem> items = Collections.singleton(new InvoiceItem("Cryptomator Mobile App", getAmount(), getProceeds()));
-		return new Invoice(numberString, appleSubsidiary, startOfPeriod, endOfPeriod, issueDate, items, globalItems);
+		return new Invoice(numberString, appleSubsidiary, startOfPeriod, endOfPeriod, issueDate, items, Collections.emptySortedMap());
 	}
 }
