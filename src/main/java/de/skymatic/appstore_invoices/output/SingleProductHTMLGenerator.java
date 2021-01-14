@@ -153,7 +153,11 @@ public class SingleProductHTMLGenerator {
 				while (posOfPlaceholderStart > -1 && posOfPlaceholderEnd > -1) {
 					//check if placeholder is one of ours
 					try {
-						Placeholder p = parsePlaceholder(line.substring(posOfPlaceholderStart + 2, posOfPlaceholderEnd).trim(), ParseState.REGULAR);
+						Placeholder p = Placeholder.valueOf(line.substring(posOfPlaceholderStart + 2, posOfPlaceholderEnd).trim());
+						if(ParseState.GLOBAL_ITEM_TEMPLATE.getPlaceholders().contains(p)){
+							throw new IllegalStateException("Malformed Template: Parsed a placeholder belonging to the global section.");
+						}
+
 						//replace placeholder for each invoice with regarding value
 						for (var invoice : invoices) {
 							replacements.get(invoice.getId())
@@ -184,17 +188,6 @@ public class SingleProductHTMLGenerator {
 		return replacements;
 	}
 
-	private Placeholder parsePlaceholder(String placeholderName, ParseState state) {
-		Placeholder p = Placeholder.valueOf(placeholderName);
-		if (state.getPlaceholders().contains(p)) {
-			//everything cool, proceed
-			return p;
-		} else {
-			//throw shiat
-			throw new IllegalStateException("Shiat, u mad?"); //TODO: better message
-		}
-	}
-
 	private String getReplacementForRegular(Placeholder placeholder, Invoice invoice) {
 		switch (placeholder) {
 			case SUBSIDIARY_INFORMATION:
@@ -220,13 +213,7 @@ public class SingleProductHTMLGenerator {
 
 		GLOBAL_ITEM_TEMPLATE(Placeholder.GLOBAL_ENTRY_DESCRIPTION,
 				Placeholder.GLOBAL_ENTRY_VALUE),
-		REGULAR(Placeholder.INVOICE_NUMBER,
-				Placeholder.ISSUE_DATE,
-				Placeholder.PRODUCT_AMOUNT,
-				Placeholder.PRODUCT_PROCEEDS,
-				Placeholder.SALES_PERIOD_END,
-				Placeholder.SALES_PERIOD_START,
-				Placeholder.SUBSIDIARY_INFORMATION);
+		REGULAR();
 
 		private final EnumSet<Placeholder> validPlaceholders;
 
