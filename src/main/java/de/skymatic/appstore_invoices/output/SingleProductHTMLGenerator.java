@@ -26,6 +26,7 @@ public class SingleProductHTMLGenerator {
 	private static final DateTimeFormatter DATE_FORMATTER_EUROPEAN = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 	private static final NumberFormat NUM_FORMATTER;
 
+
 	static {
 		NumberFormat tmp = NumberFormat.getInstance();
 		if(tmp instanceof DecimalFormat){
@@ -71,7 +72,7 @@ public class SingleProductHTMLGenerator {
 		Map<String, StringBuilder> replacements = new HashMap<>();
 		invoices.forEach(i -> replacements.put(i.getId(), new StringBuilder()));
 
-		//read in template
+		//read in template to get GLOBAL section
 		StringBuilder template = devour(br);
 
 		//digest
@@ -204,6 +205,12 @@ public class SingleProductHTMLGenerator {
 				return invoice.getStartOfPeriod().format(DATE_FORMATTER_EUROPEAN);
 			case SALES_PERIOD_END:
 				return invoice.getEndOfPeriod().format(DATE_FORMATTER_EUROPEAN);
+			case REVERSE_CHARGE_INFO:
+				if(invoice.getRecipient().isReverseChargeEligible()){
+					return "THIS IS A PLACEHOLDER AND NEEDS TO BE REPLACED.";//TODO: replace with proper message.
+				} else {
+					return "";
+				}
 			default:
 				throw new IllegalArgumentException(); //NO-OP
 		}

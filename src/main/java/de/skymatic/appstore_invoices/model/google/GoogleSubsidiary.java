@@ -10,17 +10,19 @@ import java.util.regex.Pattern;
  */
 public enum GoogleSubsidiary implements Recipient {
 
-	ROW(new String[]{"Google Commerce Limited", "Gordon House, Barrow Street", "Dublin 4", "Republic of Ireland", "VAT ID: IE9825613N"}),
-	AMERICA(new String[]{"Google LLC", "1600 Amphitheatre Parkway", "Mountain View, CA 94043", "USA"}),
-	ASIA(new String[]{"Google Asia Pacific Pte. Limited", "70 Pasir Panjang Road, #03-71", "Mapletree Business City", "Singapore 117371"});
+	ROW(new String[]{"Google Commerce Limited", "Gordon House, Barrow Street", "Dublin 4", "Republic of Ireland", "VAT ID: IE9825613N"}, true),
+	AMERICA(new String[]{"Google LLC", "1600 Amphitheatre Parkway", "Mountain View, CA 94043", "USA"}, false),
+	ASIA(new String[]{"Google Asia Pacific Pte. Limited", "70 Pasir Panjang Road, #03-71", "Mapletree Business City", "Singapore 117371"}, false);
 
 	public static final Pattern ISO_COUNTRY_CODE = Pattern.compile("[A-Z][A-Z]");
 	private static final Workflow WORKFLOW = Workflow.GOOGLE;
 
 	private String[] address;
+	private boolean reverseCharge;
 
-	GoogleSubsidiary(String[] address) {
+	GoogleSubsidiary(String[] address, boolean reverseCharge) {
 		this.address = address;
+		this.reverseCharge = reverseCharge;
 	}
 
 	@Override
@@ -31,6 +33,11 @@ public enum GoogleSubsidiary implements Recipient {
 	@Override
 	public String[] getAddress() {
 		return address;
+	}
+
+	@Override
+	public boolean isReverseChargeEligible() {
+		return reverseCharge;
 	}
 
 	/**

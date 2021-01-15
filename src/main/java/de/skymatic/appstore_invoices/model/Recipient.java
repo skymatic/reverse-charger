@@ -6,4 +6,6 @@ public interface Recipient {
 
 	String [] getAddress();
 
+	boolean isReverseChargeEligible();
+
 }

@@ -14,6 +14,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @deprecated Use {@link SingleProductHTMLGenerator} instead.
+ */
 public class HTMLGenerator {
 
 	private static final String PLACEHOLDER_START = "{{";
