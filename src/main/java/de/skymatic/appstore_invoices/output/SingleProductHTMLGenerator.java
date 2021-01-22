@@ -1,6 +1,7 @@
 package de.skymatic.appstore_invoices.output;
 
 import de.skymatic.appstore_invoices.model.Invoice;
+import de.skymatic.appstore_invoices.model.misc.ReverseChargeInfo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -207,7 +208,13 @@ public class SingleProductHTMLGenerator {
 				return invoice.getEndOfPeriod().format(DATE_FORMATTER_EUROPEAN);
 			case REVERSE_CHARGE_INFO:
 				if(invoice.getRecipient().isReverseChargeEligible()){
-					return "THIS IS A PLACEHOLDER AND NEEDS TO BE REPLACED.";//TODO: replace with proper message.
+					return ReverseChargeInfo.RC_INFO_EN.getText();
+				} else {
+					return "";
+				}
+			case REVERSE_CHARGE_INFO_DE:
+				if(invoice.getRecipient().isReverseChargeEligible()){
+					return ReverseChargeInfo.RC_INFO_DE.getText();
 				} else {
 					return "";
 				}

@@ -23,6 +23,7 @@ The following list shows all keywords and their purpose:
 * `issue_date` - The issue date of the invoice
 * `sales_period_start` - The first day of the month of the financial report
 * `sales_period_end` - The last day of the month of the financial report
+* `reverse_charge_info` - A text stating the reverse charge regulation.
 
 Articles applying to all products (like refunds) are listed within the `global_entry_template_start` and `global_entry_template_end` keywords. Each global item has a name (`global_entry_description` ) and a value (`global_entry_value`).
 
