@@ -96,7 +96,7 @@ public class GoogleReport implements InvoiceCollection {
 				.sorted(Comparator.comparingInt(subreport -> subreport.getSubsidiary().ordinal())) //
 				.map(r -> {
 					Invoice i = r.toInvoice();
-					i.setId(String.valueOf(r.getSubsidiary().ordinal()+1));
+					i.setId(String.valueOf(numberGenerator.getAsInt()));
 					return i;
 				}).collect(Collectors.toUnmodifiableList());
 	}

@@ -41,8 +41,7 @@ public class AppleReport implements InvoiceCollection {
 		if (invoices.containsKey(appleSubsidiary)) {
 			invoices.get(appleSubsidiary).addSales(appleSalesEntry);
 		} else {
-			var numberString = numberPrefix + (appleSubsidiary.ordinal()+1);
-			invoices.put(appleSubsidiary, new AppleSubsidiaryReport(numberString, yearMonth, CURRENT_TIME, appleSalesEntry));
+			invoices.put(appleSubsidiary, new AppleSubsidiaryReport(String.valueOf(appleSubsidiary.ordinal()), yearMonth, CURRENT_TIME, appleSalesEntry));
 		}
 	}
 
@@ -69,7 +68,10 @@ public class AppleReport implements InvoiceCollection {
 	public Collection<Invoice> toInvoices() {
 		return invoices.values().stream() //
 				.sorted(Comparator.comparingInt(subreport -> subreport.getAppleSubsidiary().ordinal())) //
-				.map(subReport -> subReport.toInvoice()) //
+				.map(subReport -> {
+					subReport.setNumberString(numberPrefix + invoiceNumberGenerator.getAsInt());
+					return subReport.toInvoice();
+				}) //
 				.collect(Collectors.toUnmodifiableList());
 	}
 }
