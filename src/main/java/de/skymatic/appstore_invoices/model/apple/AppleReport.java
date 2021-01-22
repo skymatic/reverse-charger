@@ -41,7 +41,7 @@ public class AppleReport implements InvoiceCollection {
 		if (invoices.containsKey(appleSubsidiary)) {
 			invoices.get(appleSubsidiary).addSales(appleSalesEntry);
 		} else {
-			var numberString = numberPrefix + appleSubsidiary.ordinal()+1;
+			var numberString = numberPrefix + (appleSubsidiary.ordinal()+1);
 			invoices.put(appleSubsidiary, new AppleSubsidiaryReport(numberString, yearMonth, CURRENT_TIME, appleSalesEntry));
 		}
 	}
