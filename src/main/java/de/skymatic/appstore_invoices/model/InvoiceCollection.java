@@ -4,6 +4,10 @@ import java.util.Collection;
 
 public interface InvoiceCollection {
 
-	Collection<Invoice> toInvoices();
+	Collection<? extends Invoice> toInvoices();
+
+	default Collection<? extends SingleProductInvoice> toInvoicesOfSingleProduct(){
+		throw new UnsupportedOperationException();
+	}
 
 }

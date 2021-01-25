@@ -17,6 +17,7 @@ import java.util.Map;
 /**
  * @deprecated Use {@link SingleProductHTMLGenerator} instead.
  */
+@Deprecated
 public class HTMLGenerator {
 
 	private static final String PLACEHOLDER_START = "{{";

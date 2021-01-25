@@ -2,6 +2,7 @@ package de.skymatic.appstore_invoices.gui;
 
 import de.skymatic.appstore_invoices.model.Invoice;
 import de.skymatic.appstore_invoices.model.InvoiceCollection;
+import de.skymatic.appstore_invoices.model.SingleProductInvoice;
 import de.skymatic.appstore_invoices.output.HTMLWriter;
 import de.skymatic.appstore_invoices.output.SingleProductHTMLGenerator;
 import de.skymatic.appstore_invoices.settings.Settings;
@@ -19,6 +20,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -38,8 +40,8 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 
+//TODO: add field to enter ProductName
 public class OutputController {
-
 
 	private static final int REVEAL_TIMEOUT_MS = 5000;
 	private static final String NUMBER_FORMAT = "#,##0.0#";
@@ -56,6 +58,8 @@ public class OutputController {
 	}
 
 	@FXML
+	private TextField productNameField;
+	@FXML
 	private TableColumn<Invoice, String> columnInvoiceNumber;
 	@FXML
 	private TableColumn<Invoice, String> columnSubsidiary;
@@ -69,7 +73,7 @@ public class OutputController {
 	private final ObjectBinding<Path> outputPath;
 	private final SingleProductHTMLGenerator htmlGenerator;
 	private final Path defaultTemplatePath;
-	private final ObservableList<Invoice> invoices;
+	private final ObservableList<SingleProductInvoice> invoices;
 	private final Stage owner;
 	private final SettingsProvider settingsProvider;
 	private final BooleanProperty isReadyToGenerate;
@@ -104,13 +108,15 @@ public class OutputController {
 		outputPath.addListener(o -> updateIsReadyToGenerate());
 
 		this.report = report;
-		invoices.addAll(report.toInvoices());
+		invoices.addAll(report.toInvoicesOfSingleProduct());
 		htmlGenerator = new SingleProductHTMLGenerator();
 		this.revealCommand = revealCommand;
 	}
 
 	@FXML
 	public void initialize() {
+		invoices.stream().findFirst().ifPresent(i -> productNameField.setText(i.getProductName()));
+
 		columnInvoiceNumber.setCellFactory(TextFieldTableCell.<Invoice>forTableColumn());
 		columnInvoiceNumber.setCellValueFactory(invoice -> new SimpleStringProperty(invoice.getValue().getId()));
 		columnInvoiceNumber.setOnEditCommit((TableColumn.CellEditEvent<Invoice, String> event) -> {
@@ -191,7 +197,7 @@ public class OutputController {
 	}
 
 	@FXML
-	public void generateInvoices() {
+	public void generateOutput() {
 		try {
 			settingsProvider.save(settings);
 		} catch (IOException e) {
@@ -199,7 +205,6 @@ public class OutputController {
 			Alerts.genericError(e, "Saving settings on hard disk.").showAndWait();
 		}
 		try {
-			//TODO: invoices is no of type Invoice
 			Map<String, StringBuilder> htmlInvoices = htmlGenerator.createHTMLInvoices(templatePath.get(), invoices);
 			new HTMLWriter().write(outputPath.get(), htmlInvoices);
 			revealCommand.ifPresent(processBuilder -> reveal(outputPath.get()));
@@ -247,7 +252,7 @@ public class OutputController {
 		return isReadyToGenerate.get();
 	}
 
-	public ObservableList<Invoice> getInvoices() {
+	public ObservableList<SingleProductInvoice> getInvoices() {
 		return invoices;
 	}
 

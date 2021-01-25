@@ -3,6 +3,8 @@ package de.skymatic.appstore_invoices.model.apple;
 import de.skymatic.appstore_invoices.model.Invoicable;
 import de.skymatic.appstore_invoices.model.Invoice;
 import de.skymatic.appstore_invoices.model.InvoiceItem;
+import de.skymatic.appstore_invoices.model.SingleItemInvoicable;
+import de.skymatic.appstore_invoices.model.SingleProductInvoice;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,7 +16,7 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class AppleSubsidiaryReport implements Invoicable {
+public class AppleSubsidiaryReport implements SingleItemInvoicable {
 
 
 	private final AppleSubsidiary appleSubsidiary;
@@ -88,8 +90,7 @@ public class AppleSubsidiaryReport implements Invoicable {
 	}
 
 	@Override
-	public Invoice toInvoice() {
-		Collection<InvoiceItem> items = Collections.singleton(new InvoiceItem("Cryptomator Mobile App", getAmount(), getProceeds()));
-		return new Invoice(numberString, appleSubsidiary, startOfPeriod, endOfPeriod, issueDate, items, Collections.emptySortedMap());
+	public SingleProductInvoice toSingleItemInvoice() {
+		return new SingleProductInvoice(numberString, appleSubsidiary, startOfPeriod, endOfPeriod, issueDate, new InvoiceItem("MyApp",getAmount(), getProceeds()), Collections.emptySortedMap());
 	}
 }

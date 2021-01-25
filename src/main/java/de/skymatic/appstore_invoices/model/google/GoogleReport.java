@@ -1,14 +1,18 @@
 package de.skymatic.appstore_invoices.model.google;
 
+import de.skymatic.appstore_invoices.model.Invoicable;
 import de.skymatic.appstore_invoices.model.Invoice;
 import de.skymatic.appstore_invoices.model.InvoiceCollection;
 import de.skymatic.appstore_invoices.model.InvoiceNumberGenerator;
+import de.skymatic.appstore_invoices.model.SingleItemInvoicable;
+import de.skymatic.appstore_invoices.model.SingleProductInvoice;
 
 import java.time.YearMonth;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -91,13 +95,23 @@ public class GoogleReport implements InvoiceCollection {
 	}
 
 	@Override
-	public Collection<Invoice> toInvoices() {
+	public Collection<SingleProductInvoice> toInvoicesOfSingleProduct() {
 		return reportsOfSubsidiaries.values().stream() //
 				.sorted(Comparator.comparingInt(subreport -> subreport.getSubsidiary().ordinal())) //
 				.map(r -> {
-					Invoice i = r.toInvoice();
-					i.setId(String.valueOf(numberGenerator.getAsInt()));
-					return i;
-				}).collect(Collectors.toUnmodifiableList());
+					try {
+						SingleProductInvoice i = r.toSingleItemInvoice();
+						i.setId(String.valueOf(numberGenerator.getAsInt()));
+						return i;
+					} catch (Invoicable.InvoiceGenerationException e) {
+						return null; //TODO: Error handling/reporting
+					}
+				}).filter(Objects::nonNull)
+				.collect(Collectors.toUnmodifiableList());
+	}
+
+	@Override
+	public Collection<? extends Invoice> toInvoices(){
+		return toInvoicesOfSingleProduct(); //TODO: can be implemented on its own.
 	}
 }

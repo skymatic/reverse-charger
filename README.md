@@ -18,6 +18,7 @@ To do this, the apps replaces known keywords enclosed by double square brackets,
 The following list shows all keywords and their purpose:
 * `invoice_number` - The number of the invoice
 * `subsidiary_information` - This is fill address of the respective subsidiary, including htmnl line breaks
+* `product_name` - The name of the app sold
 * `product_amount` - The number of units sold to the specific subsidiary
 * `product_proceeds` - The proceeds you got by selling the amount to the specific subsidiary
 * `issue_date` - The issue date of the invoice

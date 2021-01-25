@@ -11,6 +11,10 @@
 	<fx:define>
 		<ToggleGroup fx:id="templateFileToggler"/>
 	</fx:define>
+	<HBox spacing="10.0" alignment="CENTER_LEFT">
+		<Label text="Product Name:" labelFor="$productNameField"/>
+		<TextField fx:id="productNameField" />
+	</HBox>
 	<TableView fx:id="tableView" items="${controller.invoices}" maxHeight="200" maxWidth="400" editable="true">
 		<columns>
 			<TableColumn fx:id="columnInvoiceNumber" text="Invoice Number" editable="true"/>
@@ -39,7 +43,7 @@
 	<ButtonBar buttonMinWidth="120" buttonOrder="B_I">
 		<buttons>
 			<Button text="Back" ButtonBar.buttonData="BACK_PREVIOUS" onAction="#back"/>
-			<Button text="Generate invoices" ButtonBar.buttonData="FINISH" onAction="#generateInvoices" disable="${!controller.isReadyToGenerate}"/>
+			<Button text="Generate invoices" ButtonBar.buttonData="FINISH" onAction="#generateOutput" disable="${!controller.isReadyToGenerate}"/>
 		</buttons>
 	</ButtonBar>
 </VBox>

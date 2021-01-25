@@ -3,6 +3,7 @@ package de.skymatic.appstore_invoices.model.apple;
 import de.skymatic.appstore_invoices.model.Invoice;
 import de.skymatic.appstore_invoices.model.InvoiceCollection;
 import de.skymatic.appstore_invoices.model.InvoiceNumberGenerator;
+import de.skymatic.appstore_invoices.model.SingleProductInvoice;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -65,13 +66,19 @@ public class AppleReport implements InvoiceCollection {
 	}
 
 	@Override
-	public Collection<Invoice> toInvoices() {
+	public Collection<SingleProductInvoice> toInvoicesOfSingleProduct() {
 		return invoices.values().stream() //
 				.sorted(Comparator.comparingInt(subreport -> subreport.getAppleSubsidiary().ordinal())) //
 				.map(subReport -> {
 					subReport.setNumberString(numberPrefix + invoiceNumberGenerator.getAsInt());
-					return subReport.toInvoice();
+					return subReport.toSingleItemInvoice();
 				}) //
 				.collect(Collectors.toUnmodifiableList());
 	}
+
+	@Override
+	public Collection<? extends Invoice> toInvoices(){
+		return toInvoicesOfSingleProduct();
+	}
+
 }

@@ -3,6 +3,7 @@ package de.skymatic.appstore_invoices.output;
 public enum Placeholder {
 
 	SUBSIDIARY_INFORMATION,
+	PRODUCT_NAME,
 	PRODUCT_AMOUNT,
 	PRODUCT_PROCEEDS,
 	INVOICE_NUMBER,

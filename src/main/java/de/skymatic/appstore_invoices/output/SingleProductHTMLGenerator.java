@@ -1,6 +1,7 @@
 package de.skymatic.appstore_invoices.output;
 
 import de.skymatic.appstore_invoices.model.Invoice;
+import de.skymatic.appstore_invoices.model.SingleProductInvoice;
 import de.skymatic.appstore_invoices.model.misc.ReverseChargeInfo;
 
 import java.io.BufferedReader;
@@ -38,8 +39,10 @@ public class SingleProductHTMLGenerator {
 		}
 	}
 
-	public Map<String, StringBuilder> createHTMLInvoices(Path templatePath, Collection<Invoice> invoices) throws IOException, MalformedTemplateException {
-		assert invoices.stream().allMatch(i -> i.size() == 1);
+	public Map<String, StringBuilder> createHTMLInvoices(Path templatePath, Collection<? extends SingleProductInvoice> invoices) throws IOException, MalformedTemplateException {
+		if(! invoices.stream().allMatch(i -> i.size() == 1)) {
+			throw new IllegalStateException("Only invoices with a single product can be processed by this writer.");
+		}
 
 		Map<String, StringBuilder> htmlInvoices = new HashMap<>();
 		invoices.forEach(i -> htmlInvoices.put(i.getId(), new StringBuilder()));
@@ -69,7 +72,7 @@ public class SingleProductHTMLGenerator {
 		return htmlInvoices;
 	}
 
-	private Map<String, StringBuilder> devourDigestDump(BufferedReader br, Collection<Invoice> invoices) throws IOException, MalformedTemplateException {
+	private Map<String, StringBuilder> devourDigestDump(BufferedReader br, Collection<? extends Invoice> invoices) throws IOException, MalformedTemplateException {
 		Map<String, StringBuilder> replacements = new HashMap<>();
 		invoices.forEach(i -> replacements.put(i.getId(), new StringBuilder()));
 
@@ -137,7 +140,7 @@ public class SingleProductHTMLGenerator {
 		throw new MalformedTemplateException("HTML template for global items is not closed."); //TODO: meaningful message
 	}
 
-	private Map<String, StringBuilder> seekAndReplace(BufferedReader br, Collection<Invoice> invoices) throws IOException, MalformedTemplateException {
+	private Map<String, StringBuilder> seekAndReplace(BufferedReader br, Collection<? extends SingleProductInvoice> invoices) throws IOException, MalformedTemplateException {
 		Map<String, StringBuilder> replacements = new HashMap<>();
 		invoices.forEach(i -> replacements.put(i.getId(), new StringBuilder()));
 
@@ -190,10 +193,12 @@ public class SingleProductHTMLGenerator {
 		return replacements;
 	}
 
-	private String getReplacementForRegular(Placeholder placeholder, Invoice invoice) {
+	private String getReplacementForRegular(Placeholder placeholder, SingleProductInvoice invoice) {
 		switch (placeholder) {
 			case SUBSIDIARY_INFORMATION:
 				return String.join("<br>", invoice.getRecipient().getAddress());
+			case PRODUCT_NAME:
+				return String.valueOf(invoice.getProductName());
 			case PRODUCT_AMOUNT:
 				return String.valueOf(invoice.totalUnits());
 			case INVOICE_NUMBER:

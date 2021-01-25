@@ -1,7 +1,8 @@
 package de.skymatic.appstore_invoices.model.google;
 
-import de.skymatic.appstore_invoices.model.Invoice;
+import de.skymatic.appstore_invoices.model.Invoicable;
 import de.skymatic.appstore_invoices.model.InvoiceItem;
+import de.skymatic.appstore_invoices.model.SingleProductInvoice;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,14 +15,14 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-public class GoogleSubsidiaryReportInvoicer {
+public class GoogleSingleItemInvoicer {
 
 	private static final String TAX_DESC = "Tax Withheld";
 	private static final String TAXREFUND_DESC = "Tax Refunds";
 	private static final String FEE_DESC = "Google Fees";
 	private static final String REFUNDS_DESC = "Refunds";
 
-	static Invoice createInvoiceFrom(GoogleSubsidiary subsidiary, YearMonth billingMonth, Map<String, GoogleProductSubsidiaryReport> salesPerProduct) {
+	static SingleProductInvoice createInvoiceFrom(GoogleSubsidiary subsidiary, YearMonth billingMonth, Map<String, GoogleProductSubsidiaryReport> salesPerProduct) throws Invoicable.InvoiceGenerationException {
 		Aggregator agg = new Aggregator();
 		salesPerProduct.values().stream().forEach(sale -> {
 			agg.taxes = agg.taxes.add(sale.getTaxes());
@@ -38,8 +39,11 @@ public class GoogleSubsidiaryReportInvoicer {
 
 		Collection<InvoiceItem> items = new ArrayList<>();
 		salesPerProduct.forEach((key, sale) -> items.add(new InvoiceItem(sale.getProductTitle(), sale.getUnits(), sale.getAmount())));
-
-		return new Invoice(subsidiary.getAbbreviation(), subsidiary, billingMonth.atDay(1), billingMonth.atEndOfMonth(), LocalDate.now(), items, globalItems);
+		if(items.size() != 1){
+			throw new Invoicable.InvoiceGenerationException("The report contains more than one product. This appplication currently supports only one.");
+		} else {
+			return new SingleProductInvoice(subsidiary.getAbbreviation(), subsidiary, billingMonth.atDay(1), billingMonth.atEndOfMonth(), LocalDate.now(), items.stream().findFirst().get(), globalItems);
+		}
 	}
 
 	private static Comparator<String> createGlobalItemOrder() {

@@ -1,5 +1,6 @@
 package de.skymatic.appstore_invoices.model.google;
 
+import de.skymatic.appstore_invoices.model.Invoicable;
 import de.skymatic.appstore_invoices.model.Invoice;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -39,7 +40,7 @@ public class GoogleSubsidiaryReportTest {
 	}
 
 	@Test
-	public void countOfProductsDoesNotChangeWhenTwoEntriesOfSameProduct() {
+	public void countOfProductsDoesNotChangeWhenTwoEntriesOfSameProduct() throws Invoicable.InvoiceGenerationException {
 		GoogleSale s1 = getSale();
 		GoogleSale s2 = getSale();
 
@@ -51,7 +52,7 @@ public class GoogleSubsidiaryReportTest {
 	}
 
 	@Test
-	public void addingSaleOfNewProductTypeIncreasesCountOfProducts() {
+	public void addingSaleOfNewProductTypeIncreasesCountOfProducts() throws Invoicable.InvoiceGenerationException {
 		GoogleSale s1 = getSale();
 		GoogleSale s2 = getSaleOfDifferentProduct();
 
@@ -92,7 +93,7 @@ public class GoogleSubsidiaryReportTest {
 
 
 	@Test
-	public void generatedInvoiceContainsTheData() {
+	public void generatedInvoiceContainsTheData() throws Invoicable.InvoiceGenerationException {
 		GoogleSale[] sales = new GoogleSale[]{
 				getChargeSale(),
 				getTaxSale(),
