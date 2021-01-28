@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 public class GoogleProductSubsidiaryReport {
 
 	private final String productTitle;
+	private final String currency;
 
 	private int units;
 	private BigDecimal amount;
@@ -14,8 +15,9 @@ public class GoogleProductSubsidiaryReport {
 	private BigDecimal feeRefunds;
 	private BigDecimal taxRefunds;
 
-	public GoogleProductSubsidiaryReport(String productTitle) {
+	public GoogleProductSubsidiaryReport(String productTitle, String currency) {
 		this.productTitle = productTitle;
+		this.currency = currency;
 		this.units = 0;
 		this.amount = BigDecimal.ZERO;
 		this.taxes = BigDecimal.ZERO;
@@ -26,12 +28,13 @@ public class GoogleProductSubsidiaryReport {
 	}
 
 	public GoogleProductSubsidiaryReport(GoogleSale sale) {
-		this(sale.getProductTitle());
+		this(sale.getProductTitle(), sale.getMerchantCurrency());
 		update(sale);
 	}
 
-	public GoogleProductSubsidiaryReport(String productTitle, int units, BigDecimal amount, BigDecimal taxes, BigDecimal fees, BigDecimal refunds, BigDecimal feeRefunds, BigDecimal taxRefunds) {
+	public GoogleProductSubsidiaryReport(String productTitle, String currency, int units, BigDecimal amount, BigDecimal taxes, BigDecimal fees, BigDecimal refunds, BigDecimal feeRefunds, BigDecimal taxRefunds) {
 		this.productTitle = productTitle;
+		this.currency = currency;
 		this.units = units;
 		this.amount = amount;
 		this.taxes = taxes;
@@ -73,9 +76,13 @@ public class GoogleProductSubsidiaryReport {
 		return taxRefunds;
 	}
 
+	public String getAmountCurrency() {
+		return currency;
+	}
+
 	public void update(GoogleSale sale) {
-		if (!sale.getProductTitle().equals(this.productTitle)) {
-			throw new IllegalArgumentException("Invalid sale entry for update: Wrong ProductTitle.");
+		if (!sale.getProductTitle().equals(this.productTitle) || !sale.getMerchantCurrency().equals(this.currency)) {
+			throw new IllegalArgumentException("Invalid sale entry for update: Wrong ProductTitle or merchant currency.");
 		} else {
 			final BigDecimal val = sale.getAmountMerchantCurrency();
 			switch (sale.getTransactionType()) {

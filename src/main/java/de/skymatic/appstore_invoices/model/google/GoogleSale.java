@@ -111,7 +111,7 @@ public class GoogleSale {
 		return currencyConversionRate;
 	}
 
-	public String getMerchantCCurrency() {
+	public String getMerchantCurrency() {
 		return merchantCCurrency;
 	}
 

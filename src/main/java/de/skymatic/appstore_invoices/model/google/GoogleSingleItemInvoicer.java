@@ -34,7 +34,7 @@ public class GoogleSingleItemInvoicer {
 		globalItems.put(TAXREFUND_DESC, productReport.getTaxRefunds());
 
 		var invoiceItem = new InvoiceItem(productReport.getProductTitle(), productReport.getUnits(), productReport.getAmount());
-		return new SingleProductInvoice(subsidiary.getAbbreviation(), subsidiary, billingMonth.atDay(1), billingMonth.atEndOfMonth(), LocalDate.now(), "TODO", invoiceItem, globalItems);
+		return new SingleProductInvoice(subsidiary.getAbbreviation(), subsidiary, billingMonth.atDay(1), billingMonth.atEndOfMonth(), LocalDate.now(), productReport.getAmountCurrency(), invoiceItem, globalItems);
 	}
 
 	private static Comparator<String> createGlobalItemOrder() {

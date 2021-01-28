@@ -40,7 +40,8 @@ public class AppleParser implements ReportParser {
 						BigDecimal totalOwned = new BigDecimal(splittedLine[7]);
 						BigDecimal exchangeRate = new BigDecimal(splittedLine[8]);
 						BigDecimal proceeds = new BigDecimal(splittedLine[9]);
-						return new AppleSalesEntry(rpc, units, earned, pretaxSubtotal, inputTax, adjustments, withholdingTax, totalOwned, exchangeRate, proceeds);
+						String bankAccountCurrency = splittedLine[10];
+						return new AppleSalesEntry(rpc, units, earned, pretaxSubtotal, inputTax, adjustments, withholdingTax, totalOwned, exchangeRate, proceeds, bankAccountCurrency);
 					}).collect(Collectors.toList());
 
 			return new AppleReport(yearMonth, "", 1, sales.toArray(new AppleSalesEntry[]{}));

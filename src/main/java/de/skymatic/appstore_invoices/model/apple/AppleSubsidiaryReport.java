@@ -1,7 +1,5 @@
 package de.skymatic.appstore_invoices.model.apple;
 
-import de.skymatic.appstore_invoices.model.Invoicable;
-import de.skymatic.appstore_invoices.model.Invoice;
 import de.skymatic.appstore_invoices.model.InvoiceItem;
 import de.skymatic.appstore_invoices.model.SingleItemInvoicable;
 import de.skymatic.appstore_invoices.model.SingleProductInvoice;
@@ -9,12 +7,9 @@ import de.skymatic.appstore_invoices.model.SingleProductInvoice;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class AppleSubsidiaryReport implements SingleItemInvoicable {
 
@@ -22,17 +17,19 @@ public class AppleSubsidiaryReport implements SingleItemInvoicable {
 	private final AppleSubsidiary appleSubsidiary;
 	private final LocalDate startOfPeriod;
 	private final LocalDate endOfPeriod;
+	public final String currency;
 	private final Map<RegionPlusCurrency, AppleSalesEntry> salesPerCountryPlusCurrency;
 
 	private LocalDate issueDate;
 	private String numberString;
 
-	public AppleSubsidiaryReport(String numberString, YearMonth yearMonth, LocalDate issueDate, AppleSalesEntry s) {
+	public AppleSubsidiaryReport(String numberString, YearMonth yearMonth, LocalDate issueDate, String currency, AppleSalesEntry s) {
 		this.appleSubsidiary = AppleUtility.mapRegionPlusCurrencyToSubsidiary(s.getRpc());
 		this.numberString = numberString;
 		this.issueDate = issueDate;
 		this.startOfPeriod = yearMonth.atDay(1);
 		this.endOfPeriod = yearMonth.atEndOfMonth();
+		this.currency = currency;
 		this.salesPerCountryPlusCurrency = new Hashtable<>();
 		salesPerCountryPlusCurrency.put(s.getRpc(), s);
 	}

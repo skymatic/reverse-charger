@@ -14,8 +14,9 @@ public class AppleSalesEntry {
 	private final BigDecimal totalOwned;
 	private final BigDecimal exchangeRate;
 	private final BigDecimal proceeds;
+	private final String bankAccountCurrency;
 
-	public AppleSalesEntry(RegionPlusCurrency rpc, int unitsSold, BigDecimal earned, BigDecimal pretaxSubtotal, BigDecimal inputTax, BigDecimal adjustments, BigDecimal withholdingTax, BigDecimal totalOwned, BigDecimal exchangeRate, BigDecimal proceeds) {
+	public AppleSalesEntry(RegionPlusCurrency rpc, int unitsSold, BigDecimal earned, BigDecimal pretaxSubtotal, BigDecimal inputTax, BigDecimal adjustments, BigDecimal withholdingTax, BigDecimal totalOwned, BigDecimal exchangeRate, BigDecimal proceeds, String bankAccountCurrency) {
 		this.rpc = rpc;
 		this.unitsSold = unitsSold;
 		this.earned = earned;
@@ -26,6 +27,7 @@ public class AppleSalesEntry {
 		this.totalOwned = totalOwned;
 		this.exchangeRate = exchangeRate;
 		this.proceeds = proceeds;
+		this.bankAccountCurrency = bankAccountCurrency;
 	}
 
 	public RegionPlusCurrency getRpc() {
@@ -51,8 +53,40 @@ public class AppleSalesEntry {
 				.append(totalOwned).append(" ")
 				.append(exchangeRate).append(" ")
 				.append(proceeds).append(" ")
+				.append(bankAccountCurrency)
 				.toString();
 
 	}
 
+	public BigDecimal getEarned() {
+		return earned;
+	}
+
+	public BigDecimal getPretaxSubtotal() {
+		return pretaxSubtotal;
+	}
+
+	public BigDecimal getInputTax() {
+		return inputTax;
+	}
+
+	public BigDecimal getAdjustments() {
+		return adjustments;
+	}
+
+	public BigDecimal getWithholdingTax() {
+		return withholdingTax;
+	}
+
+	public BigDecimal getTotalOwned() {
+		return totalOwned;
+	}
+
+	public BigDecimal getExchangeRate() {
+		return exchangeRate;
+	}
+
+	public String getBankAccountCurrency() {
+		return bankAccountCurrency;
+	}
 }

@@ -42,7 +42,7 @@ public class AppleReport implements InvoiceCollection {
 		if (invoices.containsKey(appleSubsidiary)) {
 			invoices.get(appleSubsidiary).addSales(appleSalesEntry);
 		} else {
-			invoices.put(appleSubsidiary, new AppleSubsidiaryReport(String.valueOf(appleSubsidiary.ordinal()), yearMonth, CURRENT_TIME, appleSalesEntry));
+			invoices.put(appleSubsidiary, new AppleSubsidiaryReport(String.valueOf(appleSubsidiary.ordinal()), yearMonth, CURRENT_TIME, appleSalesEntry.getBankAccountCurrency(), appleSalesEntry));
 		}
 	}
 
