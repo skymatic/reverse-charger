@@ -91,6 +91,6 @@ public class AppleSubsidiaryReport implements SingleItemInvoicable {
 
 	@Override
 	public SingleProductInvoice toSingleItemInvoice() {
-		return new SingleProductInvoice(numberString, appleSubsidiary, startOfPeriod, endOfPeriod, issueDate, new InvoiceItem("MyApp",getAmount(), getProceeds()), Collections.emptySortedMap());
+		return new SingleProductInvoice(numberString, appleSubsidiary, startOfPeriod, endOfPeriod, issueDate, "TODO", new InvoiceItem("MyApp",getAmount(), getProceeds()), Collections.emptySortedMap());
 	}
 }

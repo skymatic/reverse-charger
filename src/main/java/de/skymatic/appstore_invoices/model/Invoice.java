@@ -14,6 +14,7 @@ import java.util.SortedMap;
  */
 public class Invoice {
 
+	private final String currency;
 	private final Recipient recipient;
 	private final LocalDate startOfBillingPeriod;
 	private final LocalDate endOfBillingPeriod;
@@ -23,12 +24,13 @@ public class Invoice {
 	private String id;
 	private LocalDate issueDate;
 
-	public Invoice(String id, Recipient recipient, LocalDate startOfBillingPeriod, LocalDate endOfBillingPeriod, LocalDate issueDate, Collection<InvoiceItem> items, SortedMap<String, BigDecimal> globalItems) {
+	public Invoice(String id, Recipient recipient, LocalDate startOfBillingPeriod, LocalDate endOfBillingPeriod, LocalDate issueDate, String currency, Collection<InvoiceItem> items, SortedMap<String, BigDecimal> globalItems) {
 		this.id = id;
 		this.recipient = recipient;
 		this.issueDate = issueDate;
 		this.startOfBillingPeriod = startOfBillingPeriod;
 		this.endOfBillingPeriod = endOfBillingPeriod;
+		this.currency = currency;
 		this.items = new ArrayList<>(items);
 		this.globalItems = globalItems;
 	}
@@ -77,4 +79,7 @@ public class Invoice {
 		return recipient;
 	}
 
+	public String getCurrency() {
+		return currency;
+	}
 }

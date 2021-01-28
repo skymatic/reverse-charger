@@ -9,8 +9,8 @@ public class SingleProductInvoice extends Invoice {
 
 	private String productName;
 
-	public SingleProductInvoice(String id, Recipient recipient, LocalDate startOfBillingPeriod, LocalDate endOfBillingPeriod, LocalDate issueDate, InvoiceItem item, SortedMap<String, BigDecimal> globalItems) {
-		super(id, recipient, startOfBillingPeriod, endOfBillingPeriod, issueDate, Collections.singleton(item), globalItems);
+	public SingleProductInvoice(String id, Recipient recipient, LocalDate startOfBillingPeriod, LocalDate endOfBillingPeriod, LocalDate issueDate, String currency, InvoiceItem item, SortedMap<String, BigDecimal> globalItems) {
+		super(id, recipient, startOfBillingPeriod, endOfBillingPeriod, issueDate, currency, Collections.singleton(item), globalItems);
 		this.productName = item.getDescription();
 	}
 

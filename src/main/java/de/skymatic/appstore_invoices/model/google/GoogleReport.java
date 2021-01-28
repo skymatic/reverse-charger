@@ -4,7 +4,6 @@ import de.skymatic.appstore_invoices.model.Invoicable;
 import de.skymatic.appstore_invoices.model.Invoice;
 import de.skymatic.appstore_invoices.model.InvoiceCollection;
 import de.skymatic.appstore_invoices.model.InvoiceNumberGenerator;
-import de.skymatic.appstore_invoices.model.SingleItemInvoicable;
 import de.skymatic.appstore_invoices.model.SingleProductInvoice;
 
 import java.time.YearMonth;

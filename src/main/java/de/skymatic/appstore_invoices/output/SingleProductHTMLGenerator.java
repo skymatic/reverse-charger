@@ -6,6 +6,7 @@ import de.skymatic.appstore_invoices.model.misc.ReverseChargeInfo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.DecimalFormat;
@@ -111,9 +112,9 @@ public class SingleProductHTMLGenerator {
 			invoice.getGlobalItems().forEach((desc, val) -> {
 						replacements.get(invoice.getId())
 								.append(template, 0, firstReplaceStart)
-								.append(first == Placeholder.GLOBAL_ENTRY_DESCRIPTION ? desc : NUM_FORMATTER.format(val))
+								.append(first == Placeholder.GLOBAL_ENTRY_DESCRIPTION ? desc : formatMoneValue(val, invoice.getCurrency()))
 								.append(template, firstReplaceEnd, secondReplaceStart)
-								.append(second == Placeholder.GLOBAL_ENTRY_VALUE ? NUM_FORMATTER.format(val) : desc)
+								.append(second == Placeholder.GLOBAL_ENTRY_VALUE ? formatMoneValue(val, invoice.getCurrency()) : desc)
 								.append(template, secondReplaceEnd, template.length())
 								.append("\n");
 					}
@@ -204,7 +205,7 @@ public class SingleProductHTMLGenerator {
 			case INVOICE_NUMBER:
 				return String.valueOf(invoice.getId());
 			case PRODUCT_PROCEEDS:
-				return NUM_FORMATTER.format(invoice.proceeds());
+				return formatMoneValue(invoice.proceeds(), invoice.getCurrency());
 			case ISSUE_DATE:
 				return invoice.getIssueDate().format(DATE_FORMATTER_LONG);
 			case SALES_PERIOD_START:
@@ -226,6 +227,10 @@ public class SingleProductHTMLGenerator {
 			default:
 				throw new IllegalArgumentException(); //NO-OP
 		}
+	}
+
+	private String formatMoneValue(BigDecimal amount, String currency){
+		return NUM_FORMATTER.format(amount)+ " " + currency;
 	}
 
 	private enum ParseState {
