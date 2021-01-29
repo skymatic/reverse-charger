@@ -1,12 +1,12 @@
-package de.skymatic.appstore_invoices.model;
+package de.skymatic.appstore_invoices.model2;
 
 public enum AdditionalItem {
 
 	SALES("Sales"),
 	TAX("Tax Withheld"),
-	TAX_REFUNDS("TODO"),
+	TAX_REFUNDS("Tax Refunds"),
 	REFUNDS("Refunds"),
-	FEES("Store Fees");
+	FEES("Distribution Fees");
 
 	private final String defaultDescription;
 

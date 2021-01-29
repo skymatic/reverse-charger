@@ -2,7 +2,6 @@ package de.skymatic.appstore_invoices.output;
 
 import de.skymatic.appstore_invoices.model.Invoice;
 import de.skymatic.appstore_invoices.model.SingleProductInvoice;
-import de.skymatic.appstore_invoices.model.misc.ReverseChargeInfo;
 
 import java.io.BufferedReader;
 import java.io.IOException;

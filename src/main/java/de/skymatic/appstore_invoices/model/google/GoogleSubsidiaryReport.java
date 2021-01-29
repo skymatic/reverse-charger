@@ -1,13 +1,13 @@
 package de.skymatic.appstore_invoices.model.google;
 
-import de.skymatic.appstore_invoices.model.SingleItemInvoicable;
-import de.skymatic.appstore_invoices.model.SingleProductInvoice;
+import de.skymatic.appstore_invoices.model2.Invoicable;
+import de.skymatic.appstore_invoices.model2.Invoice;
 
 import java.time.YearMonth;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GoogleSubsidiaryReport implements SingleItemInvoicable {
+public class GoogleSubsidiaryReport implements Invoicable {
 
 	private final GoogleSubsidiary subsidiary;
 	private final YearMonth billingMonth;
@@ -72,7 +72,11 @@ public class GoogleSubsidiaryReport implements SingleItemInvoicable {
 	}
 
 	@Override
-	public SingleProductInvoice toSingleItemInvoice() throws InvoiceGenerationException {
-		return GoogleSingleItemInvoicer.createInvoiceFrom(subsidiary, billingMonth, salesPerProduct);
+	public Invoice toInvoice() throws InvoiceGenerationException {
+		if (salesPerProduct.size() != 1) {
+			throw new Invoicable.InvoiceGenerationException("Parsed report contains more than one product.");
+		}
+		var productSubReport = salesPerProduct.values().stream().findFirst().orElseThrow(IllegalStateException::new);
+		return GoogleSingleProductInvoicer.createInvoiceFrom(subsidiary, billingMonth, productSubReport);
 	}
 }

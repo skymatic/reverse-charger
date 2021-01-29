@@ -1,8 +1,6 @@
 package de.skymatic.appstore_invoices.model2;
 
-import de.skymatic.appstore_invoices.model.AdditionalItem;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Map;
