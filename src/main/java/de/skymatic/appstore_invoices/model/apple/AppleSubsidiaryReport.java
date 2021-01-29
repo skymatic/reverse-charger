@@ -18,13 +18,13 @@ public class AppleSubsidiaryReport implements SingleItemInvoicable {
 	private final LocalDate startOfPeriod;
 	private final LocalDate endOfPeriod;
 	public final String currency;
-	private final Map<RegionPlusCurrency, AppleSalesEntry> salesPerCountryPlusCurrency;
+	private final Map<RegionNCurrency, AppleSalesEntry> salesPerCountryPlusCurrency;
 
 	private LocalDate issueDate;
 	private String numberString;
 
 	public AppleSubsidiaryReport(String numberString, YearMonth yearMonth, LocalDate issueDate, String currency, AppleSalesEntry s) {
-		this.appleSubsidiary = AppleUtility.mapRegionPlusCurrencyToSubsidiary(s.getRpc());
+		this.appleSubsidiary = AppleSubsidiary.mapFromRegionNCurrency(s.getRpc());
 		this.numberString = numberString;
 		this.issueDate = issueDate;
 		this.startOfPeriod = yearMonth.atDay(1);
@@ -50,7 +50,7 @@ public class AppleSubsidiaryReport implements SingleItemInvoicable {
 		final var rpc = s.getRpc();
 		if (salesPerCountryPlusCurrency.containsKey(rpc)) {
 			throw new IllegalArgumentException("RegionPlusCurrency " + rpc.name() + " already exists!");
-		} else if (appleSubsidiary != AppleUtility.mapRegionPlusCurrencyToSubsidiary(rpc)) {
+		} else if (appleSubsidiary != AppleSubsidiary.mapFromRegionNCurrency(rpc)) {
 			throw new IllegalArgumentException("RegionPlusCurrency " + rpc.name() + " does not belong to subsidiary " + this.appleSubsidiary.name());
 		} else {
 			salesPerCountryPlusCurrency.put(rpc, s);

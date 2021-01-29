@@ -2,7 +2,7 @@ package de.skymatic.appstore_invoices.parser;
 
 import de.skymatic.appstore_invoices.model.apple.AppleReport;
 import de.skymatic.appstore_invoices.model.apple.AppleSalesEntry;
-import de.skymatic.appstore_invoices.model.apple.RegionPlusCurrency;
+import de.skymatic.appstore_invoices.model.apple.RegionNCurrency;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,7 +30,7 @@ public class AppleParser implements ReportParser {
 					.map(line -> lastReadLine.copyAndReturn(line))
 					.map(line -> line.replaceAll("[\"]", "").split(","))
 					.map(splittedLine -> {
-						RegionPlusCurrency rpc = getRegionPlusCurrency(splittedLine[0]);
+						RegionNCurrency rpc = getRegionPlusCurrency(splittedLine[0]);
 						int units = Integer.parseInt(splittedLine[1]);
 						BigDecimal earned = new BigDecimal(splittedLine[2]);
 						BigDecimal pretaxSubtotal = new BigDecimal(splittedLine[3]);
@@ -55,8 +55,8 @@ public class AppleParser implements ReportParser {
 		return endOfReport;
 	}
 
-	private RegionPlusCurrency getRegionPlusCurrency(String rpcString) {
-		return RegionPlusCurrency.valueOf(rpcString.replace(' ', '_')
+	private RegionNCurrency getRegionPlusCurrency(String rpcString) {
+		return RegionNCurrency.valueOf(rpcString.replace(' ', '_')
 				.replace('-', '_')
 				.replaceAll("[\\(\\)]", "")
 				.toUpperCase());

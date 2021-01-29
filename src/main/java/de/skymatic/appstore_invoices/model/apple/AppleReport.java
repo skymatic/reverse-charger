@@ -38,7 +38,7 @@ public class AppleReport implements InvoiceCollection {
 	}
 
 	public void addSalesEntry(AppleSalesEntry appleSalesEntry) {
-		AppleSubsidiary appleSubsidiary = AppleUtility.mapRegionPlusCurrencyToSubsidiary(appleSalesEntry.getRpc());
+		var appleSubsidiary = AppleSubsidiary.mapFromRegionNCurrency(appleSalesEntry.getRpc());
 		if (invoices.containsKey(appleSubsidiary)) {
 			invoices.get(appleSubsidiary).addSales(appleSalesEntry);
 		} else {
