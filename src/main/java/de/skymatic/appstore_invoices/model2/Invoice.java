@@ -17,9 +17,9 @@ public class Invoice {
 
 	private String id;
 	private LocalDate issueDate;
-	private String productName;
+	private String unitDescription;
 
-	public Invoice(String id, Recipient recipient, LocalDate startOfBillingPeriod, LocalDate endOfBillingPeriod, LocalDate issueDate, int units, String currency, BigDecimal proceeds, String productName, Map<AdditionalItem, BigDecimal> additionalItems) {
+	public Invoice(String id, Recipient recipient, LocalDate startOfBillingPeriod, LocalDate endOfBillingPeriod, LocalDate issueDate, int units, String currency, BigDecimal proceeds, String unitDescription, Map<AdditionalItem, BigDecimal> additionalItems) {
 		this.id = id;
 		this.recipient = recipient;
 		this.issueDate = issueDate;
@@ -28,7 +28,7 @@ public class Invoice {
 		this.units = units;
 		this.currency = currency;
 		this.proceeds = proceeds;
-		this.productName = productName;
+		this.unitDescription = unitDescription;
 		this.additionalItems = Collections.unmodifiableMap(additionalItems);
 	}
 
@@ -85,11 +85,11 @@ public class Invoice {
 		return additionalItems;
 	}
 
-	public String getProductName() {
-		return productName;
+	public String getUnitDescription() {
+		return unitDescription;
 	}
 
-	public void setProductName(String productName) {
-		this.productName = productName;
+	public void setUnitDescription(String unitDescription) {
+		this.unitDescription = unitDescription;
 	}
 }

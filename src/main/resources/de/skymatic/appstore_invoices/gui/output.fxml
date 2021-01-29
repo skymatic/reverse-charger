@@ -12,8 +12,8 @@
 		<ToggleGroup fx:id="templateFileToggler"/>
 	</fx:define>
 	<HBox spacing="10.0" alignment="CENTER_LEFT">
-		<Label text="Product Name:" labelFor="$productNameField"/>
-		<TextField fx:id="productNameField" />
+		<Label text="Description for sold units:" labelFor="$soldUnitsDescription"/>
+		<TextField fx:id="soldUnitsDescription" />
 	</HBox>
 	<TableView fx:id="tableView" items="${controller.invoices}" maxHeight="200" maxWidth="400" editable="true">
 		<columns>

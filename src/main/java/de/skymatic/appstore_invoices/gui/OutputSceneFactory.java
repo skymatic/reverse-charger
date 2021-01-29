@@ -1,6 +1,6 @@
 package de.skymatic.appstore_invoices.gui;
 
-import de.skymatic.appstore_invoices.model.InvoiceCollection;
+import de.skymatic.appstore_invoices.model2.SalesReport;
 import javafx.stage.Stage;
 
 import java.util.Locale;
@@ -10,11 +10,11 @@ public class OutputSceneFactory extends SceneFactory {
 
 	private static final String fxmlResourceName = "output";
 
-	private final InvoiceCollection report;
+	private final SalesReport report;
 	private final Stage owner;
 
 
-	public OutputSceneFactory(Stage owner, InvoiceCollection report) {
+	public OutputSceneFactory(Stage owner, SalesReport report) {
 		super(fxmlResourceName);
 		this.report = report;
 		this.owner = owner;

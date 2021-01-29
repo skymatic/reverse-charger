@@ -1,8 +1,8 @@
 package de.skymatic.appstore_invoices.gui;
 
-import de.skymatic.appstore_invoices.model.Invoice;
-import de.skymatic.appstore_invoices.model.InvoiceCollection;
-import de.skymatic.appstore_invoices.model.SingleProductInvoice;
+import de.skymatic.appstore_invoices.model2.Invoicable;
+import de.skymatic.appstore_invoices.model2.Invoice;
+import de.skymatic.appstore_invoices.model2.SalesReport;
 import de.skymatic.appstore_invoices.output.HTMLWriter;
 import de.skymatic.appstore_invoices.output.SingleProductHTMLGenerator;
 import de.skymatic.appstore_invoices.settings.Settings;
@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 
 //TODO: add field to enter ProductName
@@ -58,7 +59,7 @@ public class OutputController {
 	}
 
 	@FXML
-	private TextField productNameField;
+	private TextField soldUnitsDescription;
 	@FXML
 	private TableColumn<Invoice, String> columnInvoiceNumber;
 	@FXML
@@ -73,19 +74,20 @@ public class OutputController {
 	private final ObjectBinding<Path> outputPath;
 	private final SingleProductHTMLGenerator htmlGenerator;
 	private final Path defaultTemplatePath;
-	private final ObservableList<SingleProductInvoice> invoices;
+	private final ObservableList<de.skymatic.appstore_invoices.model2.Invoice> invoices;
 	private final Stage owner;
 	private final SettingsProvider settingsProvider;
 	private final BooleanProperty isReadyToGenerate;
 
 	private Settings settings;
-	private InvoiceCollection report;
+	private SalesReport report;
 	private Optional<ProcessBuilder> revealCommand;
 
-	public OutputController(Stage owner, SettingsProvider settingsProvider, InvoiceCollection report, Optional<ProcessBuilder> revealCommand) {
+	public OutputController(Stage owner, SettingsProvider settingsProvider, SalesReport report, Optional<ProcessBuilder> revealCommand) {
 		this.owner = owner;
 		this.settingsProvider = settingsProvider;
-		settings = settingsProvider.get();
+		this.settings = settingsProvider.get();
+		this.report = report;
 		this.invoices = FXCollections.observableArrayList();
 		isReadyToGenerate = new SimpleBooleanProperty(false);
 		invoices.addListener((ListChangeListener) (e -> updateIsReadyToGenerate()));
@@ -108,14 +110,14 @@ public class OutputController {
 		outputPath.addListener(o -> updateIsReadyToGenerate());
 
 		this.report = report;
-		invoices.addAll(report.toInvoicesOfSingleProduct());
+		invoices.addAll(report.getInvoicables().stream().map(Invoicable::toInvoice).collect(Collectors.toList()));
 		htmlGenerator = new SingleProductHTMLGenerator();
 		this.revealCommand = revealCommand;
 	}
 
 	@FXML
 	public void initialize() {
-		invoices.stream().findFirst().ifPresent(i -> productNameField.setText(i.getProductName()));
+		invoices.stream().findFirst().ifPresent(i -> soldUnitsDescription.setText(i.getUnitDescription()));
 
 		columnInvoiceNumber.setCellFactory(TextFieldTableCell.<Invoice>forTableColumn());
 		columnInvoiceNumber.setCellValueFactory(invoice -> new SimpleStringProperty(invoice.getValue().getId()));
@@ -141,7 +143,7 @@ public class OutputController {
 			cell.setAlignment(Pos.BASELINE_RIGHT);
 			return cell;
 		});
-		columnProceeds.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(NUM_FORMATTER.format(invoice.getValue().proceeds())));
+		columnProceeds.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(NUM_FORMATTER.format(invoice.getValue().getProceeds())));
 
 		if (settings.isUsingExternalTemplate()) {
 			externalTemplateRadioButton.setSelected(true);
@@ -252,7 +254,7 @@ public class OutputController {
 		return isReadyToGenerate.get();
 	}
 
-	public ObservableList<SingleProductInvoice> getInvoices() {
+	public ObservableList<Invoice> getInvoices() {
 		return invoices;
 	}
 

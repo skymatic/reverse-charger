@@ -11,17 +11,13 @@ public class GoogleSubsidiaryReport implements Invoicable {
 
 	private final GoogleSubsidiary subsidiary;
 	private final YearMonth billingMonth;
+	private final String currency;
 	private final Map<String, GoogleProductSubsidiaryReport> salesPerProduct;
-
-	public GoogleSubsidiaryReport(YearMonth billingMonth, GoogleSubsidiary subsidiary) {
-		this.billingMonth = billingMonth;
-		this.subsidiary = subsidiary;
-		this.salesPerProduct = new HashMap<>();
-	}
 
 	public GoogleSubsidiaryReport(GoogleSale sale) {
 		this.billingMonth = YearMonth.from(sale.getTransactionDateTime());
 		this.subsidiary = sale.getSubsidiary();
+		this.currency = sale.getMerchantCurrency();
 		this.salesPerProduct = new HashMap<>();
 		add(sale);
 	}
@@ -32,6 +28,7 @@ public class GoogleSubsidiaryReport implements Invoicable {
 		} else {
 			this.billingMonth = YearMonth.from(sales[0].getTransactionDateTime());
 			this.subsidiary = sales[0].getSubsidiary();
+			this.currency = sales[0].getMerchantCurrency();
 			this.salesPerProduct = new HashMap<>();
 
 			for (var sale : sales) {
@@ -72,11 +69,7 @@ public class GoogleSubsidiaryReport implements Invoicable {
 	}
 
 	@Override
-	public Invoice toInvoice() throws InvoiceGenerationException {
-		if (salesPerProduct.size() != 1) {
-			throw new Invoicable.InvoiceGenerationException("Parsed report contains more than one product.");
-		}
-		var productSubReport = salesPerProduct.values().stream().findFirst().orElseThrow(IllegalStateException::new);
-		return GoogleSingleProductInvoicer.createInvoiceFrom(subsidiary, billingMonth, productSubReport);
+	public Invoice toInvoice() {
+		return GoogleInvoicer.mergeProductsAndCreateInvoiceFrom(subsidiary, billingMonth, currency, salesPerProduct.values());
 	}
 }

@@ -1,7 +1,7 @@
 package de.skymatic.appstore_invoices.gui;
 
-import de.skymatic.appstore_invoices.model.InvoiceCollection;
 import de.skymatic.appstore_invoices.model.Workflow;
+import de.skymatic.appstore_invoices.model2.SalesReport;
 import de.skymatic.appstore_invoices.parser.ReportParseException;
 import de.skymatic.appstore_invoices.parser.ReportParser;
 import de.skymatic.appstore_invoices.parser.ReportParserFactory;
@@ -33,7 +33,6 @@ import java.util.Optional;
 
 public class ParseController {
 
-
 	@FXML
 	private TextField invoicePrefixField;
 
@@ -58,7 +57,7 @@ public class ParseController {
 	private static final String EXPECTED_PARSE_FILE_ENDING = "csv";
 
 
-	private Optional<InvoiceCollection> monthlyInvoices;
+	private Optional<SalesReport> monthlyInvoices;
 	private Settings settings;
 
 	public ParseController(Stage owner, SettingsProvider settingsProvider) {
@@ -114,9 +113,8 @@ public class ParseController {
 		Path path = Path.of(csvPathString.get());
 		ReportParser parser = ReportParserFactory.createParser(documentType.get());
 		try {
-			InvoiceCollection result = parser.parse(path);
-			monthlyInvoices = Optional.of(result);
-			OutputSceneFactory outputSF = new OutputSceneFactory(owner, monthlyInvoices.get());
+			SalesReport result = parser.parse(path);
+			OutputSceneFactory outputSF = new OutputSceneFactory(owner, result);
 			owner.setScene(outputSF.createScene());
 		} catch (IOException | ReportParseException | IllegalArgumentException | IllegalStateException e) {
 			Alerts.createAlertFromExceptionDuringParse(e).show();
