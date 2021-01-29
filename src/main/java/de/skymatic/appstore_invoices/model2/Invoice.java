@@ -14,14 +14,14 @@ public class Invoice {
 	private final LocalDate endOfBillingPeriod;
 	private final String currency;
 	private final BigDecimal proceeds;
-	private final BigInteger units;
+	private final int units;
 	private final Map<AdditionalItem, BigDecimal> additionalItems;
 
 	private String id;
 	private LocalDate issueDate;
 	private String productName;
 
-	public Invoice(String id, Recipient recipient, LocalDate startOfBillingPeriod, LocalDate endOfBillingPeriod, LocalDate issueDate, BigInteger units, String currency, BigDecimal proceeds, String productName, Map<AdditionalItem, BigDecimal> additionalItems) {
+	public Invoice(String id, Recipient recipient, LocalDate startOfBillingPeriod, LocalDate endOfBillingPeriod, LocalDate issueDate, int units, String currency, BigDecimal proceeds, String productName, Map<AdditionalItem, BigDecimal> additionalItems) {
 		this.id = id;
 		this.recipient = recipient;
 		this.issueDate = issueDate;
@@ -79,7 +79,7 @@ public class Invoice {
 		return proceeds;
 	}
 
-	public BigInteger getUnits() {
+	public int getUnits() {
 		return units;
 	}
 

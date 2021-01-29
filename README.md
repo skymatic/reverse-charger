@@ -20,6 +20,7 @@ The following list shows all keywords and their purpose:
 * `subsidiary_information` - This is fill address of the respective subsidiary, including htmnl line breaks
 * `product_name` - The name of the app sold
 * `product_amount` - The number of units sold to the specific subsidiary
+* `product_sales` - The sales done with the specific subsidiary before taxes and refunds
 * `product_proceeds` - The proceeds you got by selling the amount to the specific subsidiary
 * `issue_date` - The issue date of the invoice
 * `sales_period_start` - The first day of the month of the financial report

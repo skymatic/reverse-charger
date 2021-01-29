@@ -44,7 +44,7 @@ public class AppleParser implements ReportParser {
 						return new AppleSalesEntry(rpc, units, earned, pretaxSubtotal, inputTax, adjustments, withholdingTax, totalOwned, exchangeRate, proceeds, bankAccountCurrency);
 					}).collect(Collectors.toList());
 
-			return new AppleReport(yearMonth, "", 1, sales.toArray(new AppleSalesEntry[]{}));
+			return new AppleReport(yearMonth, 1, sales.toArray(new AppleSalesEntry[]{}));
 		} catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
 			throw new ReportParseException("Error parsing line:  " + lastReadLine.get(), -1, e);
 		}

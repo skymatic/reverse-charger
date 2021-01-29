@@ -21,7 +21,7 @@ public class AppleSubsidiaryReportTest {
 		final RegionNCurrency expectedRPC = RegionNCurrency.JAPAN_JPY;
 		AppleSalesEntry s = Mockito.mock(AppleSalesEntry.class);
 		Mockito.when(s.getRpc()).thenReturn(expectedRPC);
-		AppleSubsidiaryReport i = new AppleSubsidiaryReport("0", dummyYearMonth, dummyIssueDate, DUMMY_CURRENCY, s);
+		AppleSubsidiaryReport i = new AppleSubsidiaryReport(dummyYearMonth, dummyIssueDate, DUMMY_CURRENCY, s);
 		Assertions.assertEquals(expectedAppleSubsidiary, i.getAppleSubsidiary());
 	}
 
@@ -34,7 +34,7 @@ public class AppleSubsidiaryReportTest {
 		AppleSalesEntry s2 = Mockito.mock(AppleSalesEntry.class);
 		Mockito.when(s2.getRpc()).thenReturn(RegionNCurrency.NEW_ZEALAND_NZD);
 		Mockito.when(s2.getProceeds()).thenReturn(BigDecimal.valueOf(50.0));
-		AppleSubsidiaryReport i = new AppleSubsidiaryReport("0", dummyYearMonth, dummyIssueDate, DUMMY_CURRENCY, s1);
+		AppleSubsidiaryReport i = new AppleSubsidiaryReport(dummyYearMonth, dummyIssueDate, DUMMY_CURRENCY, s1);
 		i.addSales(s2);
 		Assertions.assertEquals(0, expectedSum.compareTo(i.getProceeds()));
 	}
@@ -48,16 +48,16 @@ public class AppleSubsidiaryReportTest {
 		AppleSalesEntry s2 = Mockito.mock(AppleSalesEntry.class);
 		Mockito.when(s2.getRpc()).thenReturn(RegionNCurrency.NEW_ZEALAND_NZD);
 		Mockito.when(s2.getUnitsSold()).thenReturn((50));
-		AppleSubsidiaryReport i = new AppleSubsidiaryReport("0", dummyYearMonth, dummyIssueDate, DUMMY_CURRENCY, s1);
+		AppleSubsidiaryReport i = new AppleSubsidiaryReport(dummyYearMonth, dummyIssueDate, DUMMY_CURRENCY, s1);
 		i.addSales(s2);
-		Assertions.assertEquals(expectedAmount, i.getAmount());
+		Assertions.assertEquals(expectedAmount, i.getUnits());
 	}
 
 	@Test
 	public void testAlreadyExistingRPCThrowsException() {
 		AppleSalesEntry s1 = Mockito.mock(AppleSalesEntry.class);
 		Mockito.when(s1.getRpc()).thenReturn(RegionNCurrency.AUSTRALIA_AUD);
-		AppleSubsidiaryReport i = new AppleSubsidiaryReport("0", dummyYearMonth, dummyIssueDate, DUMMY_CURRENCY, s1);
+		AppleSubsidiaryReport i = new AppleSubsidiaryReport(dummyYearMonth, dummyIssueDate, DUMMY_CURRENCY, s1);
 		Assertions.assertThrows(IllegalArgumentException.class, () -> i.addSales(s1));
 	}
 
@@ -67,7 +67,7 @@ public class AppleSubsidiaryReportTest {
 		Mockito.when(s1.getRpc()).thenReturn(RegionNCurrency.AUSTRALIA_AUD);
 		AppleSalesEntry s2 = Mockito.mock(AppleSalesEntry.class);
 		Mockito.when(s2.getRpc()).thenReturn(RegionNCurrency.JAPAN_JPY);
-		AppleSubsidiaryReport i = new AppleSubsidiaryReport("0", dummyYearMonth, dummyIssueDate, DUMMY_CURRENCY, s1);
+		AppleSubsidiaryReport i = new AppleSubsidiaryReport(dummyYearMonth, dummyIssueDate, DUMMY_CURRENCY, s1);
 		Assertions.assertThrows(IllegalArgumentException.class, () -> i.addSales(s2));
 	}
 }

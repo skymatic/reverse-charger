@@ -1,6 +1,6 @@
 package de.skymatic.appstore_invoices.model.apple;
 
-import de.skymatic.appstore_invoices.model.Recipient;
+import de.skymatic.appstore_invoices.model2.Recipient;
 import de.skymatic.appstore_invoices.model.Workflow;
 
 public enum AppleSubsidiary implements Recipient {

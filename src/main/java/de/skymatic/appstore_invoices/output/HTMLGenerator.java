@@ -77,7 +77,7 @@ public class HTMLGenerator {
 			case SUBSIDIARY_INFORMATION:
 				return String.join("<br>", invoice.getAppleSubsidiary().getAddress());
 			case PRODUCT_AMOUNT:
-				return String.valueOf(invoice.getAmount());
+				return String.valueOf(invoice.getUnits());
 			case INVOICE_NUMBER:
 				return String.valueOf(invoice.getNumberString());
 			case PRODUCT_PROCEEDS:
