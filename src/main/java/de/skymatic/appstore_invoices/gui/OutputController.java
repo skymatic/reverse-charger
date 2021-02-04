@@ -3,8 +3,8 @@ package de.skymatic.appstore_invoices.gui;
 import de.skymatic.appstore_invoices.model2.Invoicable;
 import de.skymatic.appstore_invoices.model2.Invoice;
 import de.skymatic.appstore_invoices.model2.SalesReport;
-import de.skymatic.appstore_invoices.output.HTMLWriter;
-import de.skymatic.appstore_invoices.output.SingleProductHTMLGenerator;
+import de.skymatic.appstore_invoices.output.InvoiceWriter;
+import de.skymatic.appstore_invoices.output.template.TemplateParser;
 import de.skymatic.appstore_invoices.settings.Settings;
 import de.skymatic.appstore_invoices.settings.SettingsProvider;
 import javafx.beans.binding.Bindings;
@@ -35,13 +35,11 @@ import java.nio.file.StandardCopyOption;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 
-//TODO: add field to enter ProductName
 public class OutputController {
 
 	private static final int REVEAL_TIMEOUT_MS = 5000;
@@ -50,7 +48,7 @@ public class OutputController {
 
 	static {
 		NumberFormat tmp = NumberFormat.getInstance();
-		if(tmp instanceof DecimalFormat){
+		if (tmp instanceof DecimalFormat) {
 			((DecimalFormat) tmp).applyPattern(NUMBER_FORMAT);
 			NUM_FORMATTER = tmp;
 		} else {
@@ -72,7 +70,6 @@ public class OutputController {
 	private RadioButton storedTemplateRadioButton;
 	private final ObjectBinding<Path> templatePath;
 	private final ObjectBinding<Path> outputPath;
-	private final SingleProductHTMLGenerator htmlGenerator;
 	private final Path defaultTemplatePath;
 	private final ObservableList<de.skymatic.appstore_invoices.model2.Invoice> invoices;
 	private final Stage owner;
@@ -111,7 +108,6 @@ public class OutputController {
 
 		this.report = report;
 		invoices.addAll(report.getInvoicables().stream().map(Invoicable::toInvoice).collect(Collectors.toList()));
-		htmlGenerator = new SingleProductHTMLGenerator();
 		this.revealCommand = revealCommand;
 	}
 
@@ -124,11 +120,8 @@ public class OutputController {
 		columnInvoiceNumber.setOnEditCommit((TableColumn.CellEditEvent<Invoice, String> event) -> {
 			String newNumberString = event.getNewValue();
 			Invoice invoice = event.getRowValue();
-			if (invoices.stream()
-					.filter(i -> !i.equals(invoice))
-					.anyMatch(i -> i.getId().equals(newNumberString))) {
-				Alerts.duplicateInvoiceNumber()
-						.showAndWait();
+			if (invoices.stream().filter(i -> !i.equals(invoice)).anyMatch(i -> i.getId().equals(newNumberString))) {
+				Alerts.duplicateInvoiceNumber().showAndWait();
 				columnInvoiceNumber.getTableView().refresh();
 				columnInvoiceNumber.getTableView().requestFocus();
 			} else {
@@ -207,8 +200,8 @@ public class OutputController {
 			Alerts.genericError(e, "Saving settings on hard disk.").showAndWait();
 		}
 		try {
-			Map<String, StringBuilder> htmlInvoices = htmlGenerator.createHTMLInvoices(templatePath.get(), invoices);
-			new HTMLWriter().write(outputPath.get(), htmlInvoices);
+			var template = TemplateParser.parseTemplate(templatePath.get());
+			InvoiceWriter.createInvoiceGenerator(InvoiceWriter.OutputFormat.HTML).write(outputPath.get(),template,invoices);
 			revealCommand.ifPresent(processBuilder -> reveal(outputPath.get()));
 		} catch (IOException e) {
 			//TODO: better error handling
