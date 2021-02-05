@@ -28,7 +28,7 @@ The following list shows all keywords and their purpose:
 
 Since Apple and Google do not have a common format, there can be additional infos parsed from the report which is not present in the generated invoices.
 To support such info, the optional sections can be placed in your template, which will be only used if the regarding info is present.
-To indicate an optional section surround the regarding lines with `<!-- {{ OPTIONAL_SECTION_START }} -->` and `<!-- {{ OPTIONAL_SECTION_END }} -->`.
+To indicate an optional section surround the regarding lines with `<!-- {{ OPTIONAL_START }} -->` and `<!-- {{ OPTIONAL_END }} -->`.
 Inside those the following keywords can be used:
 * `sales` - The gross amount of money
 * `tax_withheld` - The sum of withholding taxes
