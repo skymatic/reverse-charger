@@ -1,4 +1,4 @@
-package de.skymatic.appstore_invoices.output.template;
+package de.skymatic.appstore_invoices.template;
 
 import de.skymatic.appstore_invoices.model2.AdditionalItem;
 

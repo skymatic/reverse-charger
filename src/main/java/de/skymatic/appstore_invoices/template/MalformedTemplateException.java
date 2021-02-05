@@ -1,4 +1,4 @@
-package de.skymatic.appstore_invoices.output.template;
+package de.skymatic.appstore_invoices.template;
 
 public class MalformedTemplateException extends RuntimeException {
 

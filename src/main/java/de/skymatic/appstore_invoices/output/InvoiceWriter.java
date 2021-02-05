@@ -1,16 +1,13 @@
 package de.skymatic.appstore_invoices.output;
 
 import de.skymatic.appstore_invoices.model2.Invoice;
-import de.skymatic.appstore_invoices.output.template.Template;
+import de.skymatic.appstore_invoices.template.Template;
 
 import java.io.IOException;
-import java.io.Reader;
-import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Collection;
-import java.util.Map;
 
 public interface InvoiceWriter {
 

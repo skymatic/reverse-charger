@@ -4,7 +4,7 @@ import de.skymatic.appstore_invoices.model2.Invoicable;
 import de.skymatic.appstore_invoices.model2.Invoice;
 import de.skymatic.appstore_invoices.model2.SalesReport;
 import de.skymatic.appstore_invoices.output.InvoiceWriter;
-import de.skymatic.appstore_invoices.output.template.TemplateParser;
+import de.skymatic.appstore_invoices.template.TemplateParser;
 import de.skymatic.appstore_invoices.settings.Settings;
 import de.skymatic.appstore_invoices.settings.SettingsProvider;
 import javafx.beans.binding.Bindings;
