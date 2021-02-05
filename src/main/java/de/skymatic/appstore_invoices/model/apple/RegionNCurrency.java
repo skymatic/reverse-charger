@@ -1,6 +1,6 @@
 package de.skymatic.appstore_invoices.model.apple;
 
-public enum RegionPlusCurrency {
+public enum RegionNCurrency {
 	AMERICAS_USD,
 	AUSTRALIA_AUD,
 	BRAZIL_BRL,

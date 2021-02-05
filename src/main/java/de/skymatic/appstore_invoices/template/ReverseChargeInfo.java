@@ -1,4 +1,4 @@
-package de.skymatic.appstore_invoices.model.misc;
+package de.skymatic.appstore_invoices.template;
 
 public enum ReverseChargeInfo {
 

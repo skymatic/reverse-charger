@@ -1,8 +1,7 @@
 package de.skymatic.appstore_invoices.model.apple;
 
-import de.skymatic.appstore_invoices.model.InvoiceItem;
-import de.skymatic.appstore_invoices.model.SingleItemInvoicable;
-import de.skymatic.appstore_invoices.model.SingleProductInvoice;
+import de.skymatic.appstore_invoices.model.Invoicable;
+import de.skymatic.appstore_invoices.model.Invoice;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -11,27 +10,24 @@ import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Map;
 
-public class AppleSubsidiaryReport implements SingleItemInvoicable {
-
+public class AppleSubsidiaryReport implements Invoicable {
 
 	private final AppleSubsidiary appleSubsidiary;
 	private final LocalDate startOfPeriod;
 	private final LocalDate endOfPeriod;
 	public final String currency;
-	private final Map<RegionPlusCurrency, AppleSalesEntry> salesPerCountryPlusCurrency;
+	private final Map<RegionNCurrency, AppleSalesEntry> salesPerCountryNCurrency;
 
 	private LocalDate issueDate;
-	private String numberString;
 
-	public AppleSubsidiaryReport(String numberString, YearMonth yearMonth, LocalDate issueDate, String currency, AppleSalesEntry s) {
-		this.appleSubsidiary = AppleUtility.mapRegionPlusCurrencyToSubsidiary(s.getRpc());
-		this.numberString = numberString;
+	public AppleSubsidiaryReport(YearMonth yearMonth, LocalDate issueDate, String currency, AppleSalesEntry s) {
+		this.appleSubsidiary = AppleSubsidiary.mapFromRegionNCurrency(s.getRpc());
 		this.issueDate = issueDate;
 		this.startOfPeriod = yearMonth.atDay(1);
 		this.endOfPeriod = yearMonth.atEndOfMonth();
 		this.currency = currency;
-		this.salesPerCountryPlusCurrency = new Hashtable<>();
-		salesPerCountryPlusCurrency.put(s.getRpc(), s);
+		this.salesPerCountryNCurrency = new Hashtable<>();
+		salesPerCountryNCurrency.put(s.getRpc(), s);
 	}
 
 	public AppleSubsidiary getAppleSubsidiary() {
@@ -39,30 +35,22 @@ public class AppleSubsidiaryReport implements SingleItemInvoicable {
 	}
 
 	public BigDecimal getProceeds() {
-		return salesPerCountryPlusCurrency.values().stream().map(AppleSalesEntry::getProceeds).reduce(BigDecimal.ZERO, BigDecimal::add);
+		return salesPerCountryNCurrency.values().stream().map(AppleSalesEntry::getProceeds).reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
 
-	public int getAmount() {
-		return salesPerCountryPlusCurrency.values().stream().mapToInt(AppleSalesEntry::getUnitsSold).sum();
+	public int getUnits() {
+		return salesPerCountryNCurrency.values().stream().mapToInt(AppleSalesEntry::getUnitsSold).sum();
 	}
 
 	void addSales(AppleSalesEntry s) {
 		final var rpc = s.getRpc();
-		if (salesPerCountryPlusCurrency.containsKey(rpc)) {
+		if (salesPerCountryNCurrency.containsKey(rpc)) {
 			throw new IllegalArgumentException("RegionPlusCurrency " + rpc.name() + " already exists!");
-		} else if (appleSubsidiary != AppleUtility.mapRegionPlusCurrencyToSubsidiary(rpc)) {
+		} else if (appleSubsidiary != AppleSubsidiary.mapFromRegionNCurrency(rpc)) {
 			throw new IllegalArgumentException("RegionPlusCurrency " + rpc.name() + " does not belong to subsidiary " + this.appleSubsidiary.name());
 		} else {
-			salesPerCountryPlusCurrency.put(rpc, s);
+			salesPerCountryNCurrency.put(rpc, s);
 		}
-	}
-
-	public void setNumberString(String numberString) {
-		this.numberString = numberString;
-	}
-
-	public String getNumberString() {
-		return numberString;
 	}
 
 	public void setIssueDate(LocalDate issueDate) {
@@ -83,11 +71,21 @@ public class AppleSubsidiaryReport implements SingleItemInvoicable {
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		return sb.append(salesPerCountryPlusCurrency).append("\n").toString();
+		return sb.append(salesPerCountryNCurrency).append("\n").toString();
 	}
 
 	@Override
-	public SingleProductInvoice toSingleItemInvoice() {
-		return new SingleProductInvoice(numberString, appleSubsidiary, startOfPeriod, endOfPeriod, issueDate, currency, new InvoiceItem("MyApp",getAmount(), getProceeds()), Collections.emptySortedMap());
+	public Invoice toInvoice() {
+		return new Invoice(String.valueOf(appleSubsidiary.ordinal()),
+				appleSubsidiary,
+				startOfPeriod,
+				endOfPeriod,
+				issueDate,
+				getUnits(),
+				currency,
+				getProceeds(),
+				"MyApp",
+				Collections.emptyMap());
 	}
+
 }

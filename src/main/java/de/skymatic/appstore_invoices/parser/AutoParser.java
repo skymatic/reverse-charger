@@ -1,6 +1,6 @@
 package de.skymatic.appstore_invoices.parser;
 
-import de.skymatic.appstore_invoices.model.InvoiceCollection;
+import de.skymatic.appstore_invoices.model.SalesReport;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,7 +16,7 @@ public class AutoParser implements ReportParser {
 	private static final String GOOGLE_CSV_CONTENT_PREFIX = "Description,Transaction Date,Transaction Time,Tax Type,Transaction Type";
 
 	@Override
-	public InvoiceCollection parse(Path p) throws IOException, ReportParseException, IllegalArgumentException {
+	public SalesReport parse(Path p) throws IOException, ReportParseException, IllegalArgumentException {
 		//First attempt: Use the file name
 		final String fileName = p.getFileName().toString();
 		if (fileName == APPLE_CSV_NAME) {

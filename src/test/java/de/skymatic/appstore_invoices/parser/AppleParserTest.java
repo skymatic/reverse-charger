@@ -38,7 +38,7 @@ public class AppleParserTest {
 		Files.writeString(reportFilePath, report);
 		AppleParser parser = new AppleParser();
 		AppleReport result = parser.parse(reportFilePath);
-		Assertions.assertEquals(expectedAmountOfSales, result.getInvoices().size());
+		Assertions.assertEquals(expectedAmountOfSales, result.getSubReports().size());
 	}
 
 	@Test
@@ -52,7 +52,7 @@ public class AppleParserTest {
 		Files.writeString(reportFilePath, report);
 		AppleParser parser = new AppleParser();
 		AppleReport result = parser.parse(reportFilePath);
-		Assertions.assertEquals(ausProceeds.add(newzeaProceeds), result.getInvoices().stream().map(AppleSubsidiaryReport::getProceeds).reduce(BigDecimal.ZERO,BigDecimal::add, BigDecimal::add));
+		Assertions.assertEquals(ausProceeds.add(newzeaProceeds), result.getSubReports().stream().map(AppleSubsidiaryReport::getProceeds).reduce(BigDecimal.ZERO,BigDecimal::add, BigDecimal::add));
 	}
 
 	@Test
@@ -64,8 +64,8 @@ public class AppleParserTest {
 		Files.writeString(reportFilePath, report);
 		AppleParser parser = new AppleParser();
 		AppleReport result = parser.parse(reportFilePath);
-		Assertions.assertEquals(expectedYear, result.getYearMonth().getYear());
-		Assertions.assertEquals(expectedMonth, result.getYearMonth().getMonth());
+		Assertions.assertEquals(expectedYear, result.getBillingMonth().getYear());
+		Assertions.assertEquals(expectedMonth, result.getBillingMonth().getMonth());
 
 	}
 

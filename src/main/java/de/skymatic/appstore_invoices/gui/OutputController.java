@@ -1,10 +1,11 @@
 package de.skymatic.appstore_invoices.gui;
 
+import de.skymatic.appstore_invoices.model.Invoicable;
 import de.skymatic.appstore_invoices.model.Invoice;
-import de.skymatic.appstore_invoices.model.InvoiceCollection;
-import de.skymatic.appstore_invoices.model.SingleProductInvoice;
-import de.skymatic.appstore_invoices.output.HTMLWriter;
-import de.skymatic.appstore_invoices.output.SingleProductHTMLGenerator;
+import de.skymatic.appstore_invoices.model.SalesReport;
+import de.skymatic.appstore_invoices.output.InvoiceWriter;
+import de.skymatic.appstore_invoices.template.MalformedTemplateException;
+import de.skymatic.appstore_invoices.template.TemplateParser;
 import de.skymatic.appstore_invoices.settings.Settings;
 import de.skymatic.appstore_invoices.settings.SettingsProvider;
 import javafx.beans.binding.Bindings;
@@ -35,12 +36,11 @@ import java.nio.file.StandardCopyOption;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 
-//TODO: add field to enter ProductName
 public class OutputController {
 
 	private static final int REVEAL_TIMEOUT_MS = 5000;
@@ -49,7 +49,7 @@ public class OutputController {
 
 	static {
 		NumberFormat tmp = NumberFormat.getInstance();
-		if(tmp instanceof DecimalFormat){
+		if (tmp instanceof DecimalFormat) {
 			((DecimalFormat) tmp).applyPattern(NUMBER_FORMAT);
 			NUM_FORMATTER = tmp;
 		} else {
@@ -58,7 +58,7 @@ public class OutputController {
 	}
 
 	@FXML
-	private TextField productNameField;
+	private TextField soldUnitsDescription;
 	@FXML
 	private TableColumn<Invoice, String> columnInvoiceNumber;
 	@FXML
@@ -71,21 +71,21 @@ public class OutputController {
 	private RadioButton storedTemplateRadioButton;
 	private final ObjectBinding<Path> templatePath;
 	private final ObjectBinding<Path> outputPath;
-	private final SingleProductHTMLGenerator htmlGenerator;
 	private final Path defaultTemplatePath;
-	private final ObservableList<SingleProductInvoice> invoices;
+	private final ObservableList<de.skymatic.appstore_invoices.model.Invoice> invoices;
 	private final Stage owner;
 	private final SettingsProvider settingsProvider;
 	private final BooleanProperty isReadyToGenerate;
 
 	private Settings settings;
-	private InvoiceCollection report;
+	private SalesReport report;
 	private Optional<ProcessBuilder> revealCommand;
 
-	public OutputController(Stage owner, SettingsProvider settingsProvider, InvoiceCollection report, Optional<ProcessBuilder> revealCommand) {
+	public OutputController(Stage owner, SettingsProvider settingsProvider, SalesReport report, Optional<ProcessBuilder> revealCommand) {
 		this.owner = owner;
 		this.settingsProvider = settingsProvider;
-		settings = settingsProvider.get();
+		this.settings = settingsProvider.get();
+		this.report = report;
 		this.invoices = FXCollections.observableArrayList();
 		isReadyToGenerate = new SimpleBooleanProperty(false);
 		invoices.addListener((ListChangeListener) (e -> updateIsReadyToGenerate()));
@@ -108,25 +108,25 @@ public class OutputController {
 		outputPath.addListener(o -> updateIsReadyToGenerate());
 
 		this.report = report;
-		invoices.addAll(report.toInvoicesOfSingleProduct());
-		htmlGenerator = new SingleProductHTMLGenerator();
+		invoices.addAll(report.getInvoicables().stream().map(Invoicable::toInvoice).collect(Collectors.toList()));
+		//we start numbering at 1 and fill possible gaps, when a subsidiary is missing
+		for(int i=0; i<invoices.size();i++){
+			invoices.get(i).setId(String.valueOf(i+1));
+		}
 		this.revealCommand = revealCommand;
 	}
 
 	@FXML
 	public void initialize() {
-		invoices.stream().findFirst().ifPresent(i -> productNameField.setText(i.getProductName()));
+		invoices.stream().findFirst().ifPresent(i -> soldUnitsDescription.setText(i.getUnitDescription()));
 
 		columnInvoiceNumber.setCellFactory(TextFieldTableCell.<Invoice>forTableColumn());
 		columnInvoiceNumber.setCellValueFactory(invoice -> new SimpleStringProperty(invoice.getValue().getId()));
 		columnInvoiceNumber.setOnEditCommit((TableColumn.CellEditEvent<Invoice, String> event) -> {
 			String newNumberString = event.getNewValue();
 			Invoice invoice = event.getRowValue();
-			if (invoices.stream()
-					.filter(i -> !i.equals(invoice))
-					.anyMatch(i -> i.getId().equals(newNumberString))) {
-				Alerts.duplicateInvoiceNumber()
-						.showAndWait();
+			if (invoices.stream().filter(i -> !i.equals(invoice)).anyMatch(i -> i.getId().equals(newNumberString))) {
+				Alerts.duplicateInvoiceNumber().showAndWait();
 				columnInvoiceNumber.getTableView().refresh();
 				columnInvoiceNumber.getTableView().requestFocus();
 			} else {
@@ -141,7 +141,7 @@ public class OutputController {
 			cell.setAlignment(Pos.BASELINE_RIGHT);
 			return cell;
 		});
-		columnProceeds.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(NUM_FORMATTER.format(invoice.getValue().proceeds())));
+		columnProceeds.setCellValueFactory(invoice -> new ReadOnlyObjectWrapper<>(NUM_FORMATTER.format(invoice.getValue().getProceeds())));
 
 		if (settings.isUsingExternalTemplate()) {
 			externalTemplateRadioButton.setSelected(true);
@@ -205,12 +205,14 @@ public class OutputController {
 			Alerts.genericError(e, "Saving settings on hard disk.").showAndWait();
 		}
 		try {
-			Map<String, StringBuilder> htmlInvoices = htmlGenerator.createHTMLInvoices(templatePath.get(), invoices);
-			new HTMLWriter().write(outputPath.get(), htmlInvoices);
+			var template = TemplateParser.parseTemplate(templatePath.get());
+			InvoiceWriter.createInvoiceGenerator(InvoiceWriter.OutputFormat.HTML).write(outputPath.get(),template,invoices);
 			revealCommand.ifPresent(processBuilder -> reveal(outputPath.get()));
 		} catch (IOException e) {
 			//TODO: better error handling
 			Alerts.genericError(e, "Generating the invoices from template and save them to hard disk.").showAndWait();
+		} catch (MalformedTemplateException e) {
+			Alerts.genericError(e, "Reading the template.").showAndWait();
 		}
 
 	}
@@ -252,7 +254,7 @@ public class OutputController {
 		return isReadyToGenerate.get();
 	}
 
-	public ObservableList<SingleProductInvoice> getInvoices() {
+	public ObservableList<Invoice> getInvoices() {
 		return invoices;
 	}
 

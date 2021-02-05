@@ -78,6 +78,7 @@ public class GoogleParser implements ReportParser {
 						String buyerCountry = splittedLine[11];
 						String buyerState = splittedLine[12];
 						String buyerPostalCode = splittedLine[13];
+						//TODO: currency NEEDS to be always the same.
 						String buyerCurrency = splittedLine[14];
 						BigDecimal amountBuyerCurrency = new BigDecimal(splittedLine[15]);
 						BigDecimal currencyConversionRate = new BigDecimal(splittedLine[16]);

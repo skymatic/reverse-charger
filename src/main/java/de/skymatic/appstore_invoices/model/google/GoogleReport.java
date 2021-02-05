@@ -1,27 +1,22 @@
 package de.skymatic.appstore_invoices.model.google;
 
 import de.skymatic.appstore_invoices.model.Invoicable;
-import de.skymatic.appstore_invoices.model.Invoice;
-import de.skymatic.appstore_invoices.model.InvoiceCollection;
-import de.skymatic.appstore_invoices.model.InvoiceNumberGenerator;
-import de.skymatic.appstore_invoices.model.SingleProductInvoice;
+import de.skymatic.appstore_invoices.model.SalesReport;
 
 import java.time.YearMonth;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.TreeMap;
 
 /**
  * Collection of {@link GoogleSubsidiaryReport}s of a single month. For each subsidiary only one report can exist.
  */
-public class GoogleReport implements InvoiceCollection {
+public class GoogleReport implements SalesReport {
 
 	private final YearMonth billingMonth;
 	private final Map<GoogleSubsidiary, GoogleSubsidiaryReport> reportsOfSubsidiaries;
-	private final InvoiceNumberGenerator numberGenerator;
 
 	/**
 	 * Creates an empty report with the specified year and month.
@@ -31,7 +26,6 @@ public class GoogleReport implements InvoiceCollection {
 	public GoogleReport(YearMonth billingMonth) {
 		this.billingMonth = billingMonth;
 		this.reportsOfSubsidiaries = new HashMap<>();
-		this.numberGenerator = new InvoiceNumberGenerator(1);
 	}
 
 	/**
@@ -45,21 +39,9 @@ public class GoogleReport implements InvoiceCollection {
 	public GoogleReport(GoogleSale s, GoogleSale... furtherSales) {
 		this.billingMonth = YearMonth.from(s.getTransactionDateTime());
 		this.reportsOfSubsidiaries = new HashMap<>();
-		this.numberGenerator = new InvoiceNumberGenerator(1);
 
 		add(s);
 		for (var sale : furtherSales) {
-			add(sale);
-		}
-	}
-
-	public GoogleReport(int numberingSeed, GoogleSale s, GoogleSale... sales) {
-		this.billingMonth = YearMonth.from(s.getTransactionDateTime());
-		this.reportsOfSubsidiaries = new HashMap<>();
-		this.numberGenerator = new InvoiceNumberGenerator(numberingSeed);
-
-		add(s);
-		for (var sale : sales) {
 			add(sale);
 		}
 	}
@@ -70,8 +52,7 @@ public class GoogleReport implements InvoiceCollection {
 		} else {
 			this.billingMonth = YearMonth.from(sales[0].getTransactionDateTime());
 
-			this.reportsOfSubsidiaries = new HashMap<>();
-			this.numberGenerator = new InvoiceNumberGenerator(1);
+			this.reportsOfSubsidiaries = new TreeMap<>(Comparator.comparingInt(GoogleSubsidiary::ordinal));
 
 			for (var sale : sales) {
 				add(sale);
@@ -94,23 +75,7 @@ public class GoogleReport implements InvoiceCollection {
 	}
 
 	@Override
-	public Collection<SingleProductInvoice> toInvoicesOfSingleProduct() {
-		return reportsOfSubsidiaries.values().stream() //
-				.sorted(Comparator.comparingInt(subreport -> subreport.getSubsidiary().ordinal())) //
-				.map(r -> {
-					try {
-						SingleProductInvoice i = r.toSingleItemInvoice();
-						i.setId(String.valueOf(numberGenerator.getAsInt()));
-						return i;
-					} catch (Invoicable.InvoiceGenerationException e) {
-						return null; //TODO: Error handling/reporting
-					}
-				}).filter(Objects::nonNull)
-				.collect(Collectors.toUnmodifiableList());
-	}
-
-	@Override
-	public Collection<? extends Invoice> toInvoices(){
-		return toInvoicesOfSingleProduct(); //TODO: can be implemented on its own.
+	public Collection<? extends Invoicable> getInvoicables() {
+		return reportsOfSubsidiaries.values();
 	}
 }

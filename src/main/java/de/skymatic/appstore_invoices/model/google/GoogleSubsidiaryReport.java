@@ -1,27 +1,23 @@
 package de.skymatic.appstore_invoices.model.google;
 
-import de.skymatic.appstore_invoices.model.SingleItemInvoicable;
-import de.skymatic.appstore_invoices.model.SingleProductInvoice;
+import de.skymatic.appstore_invoices.model.Invoicable;
+import de.skymatic.appstore_invoices.model.Invoice;
 
 import java.time.YearMonth;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GoogleSubsidiaryReport implements SingleItemInvoicable {
+public class GoogleSubsidiaryReport implements Invoicable {
 
 	private final GoogleSubsidiary subsidiary;
 	private final YearMonth billingMonth;
+	private final String currency;
 	private final Map<String, GoogleProductSubsidiaryReport> salesPerProduct;
-
-	public GoogleSubsidiaryReport(YearMonth billingMonth, GoogleSubsidiary subsidiary) {
-		this.billingMonth = billingMonth;
-		this.subsidiary = subsidiary;
-		this.salesPerProduct = new HashMap<>();
-	}
 
 	public GoogleSubsidiaryReport(GoogleSale sale) {
 		this.billingMonth = YearMonth.from(sale.getTransactionDateTime());
 		this.subsidiary = sale.getSubsidiary();
+		this.currency = sale.getMerchantCurrency();
 		this.salesPerProduct = new HashMap<>();
 		add(sale);
 	}
@@ -32,6 +28,7 @@ public class GoogleSubsidiaryReport implements SingleItemInvoicable {
 		} else {
 			this.billingMonth = YearMonth.from(sales[0].getTransactionDateTime());
 			this.subsidiary = sales[0].getSubsidiary();
+			this.currency = sales[0].getMerchantCurrency();
 			this.salesPerProduct = new HashMap<>();
 
 			for (var sale : sales) {
@@ -72,7 +69,7 @@ public class GoogleSubsidiaryReport implements SingleItemInvoicable {
 	}
 
 	@Override
-	public SingleProductInvoice toSingleItemInvoice() throws InvoiceGenerationException {
-		return GoogleSingleItemInvoicer.createInvoiceFrom(subsidiary, billingMonth, salesPerProduct);
+	public Invoice toInvoice() {
+		return GoogleInvoicer.mergeProductsAndCreateInvoiceFrom(subsidiary, billingMonth, currency, salesPerProduct.values());
 	}
 }

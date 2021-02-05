@@ -36,17 +36,18 @@
           </tr>
           <tr>
             <th class="border w-1/4 text-left px-2 py-1">Units Sold</th>
-            <td class="border w-3/4 px-2 py-1">{{ PRODUCT_AMOUNT }}</td>
+            <td class="border w-3/4 px-2 py-1">{{ SOLD_UNITS_AMOUNT }}</td>
           </tr>
-          <!-- {{ GLOBAL_ENTRY_TEMPLATE_START }} -->
+
+          <!-- {{ OPTIONAL_START }} -->
           <tr>
-            <th class="border w-1/4 text-left px-2 py-1">{{ GLOBAL_ENTRY_DESCRIPTION }}</th>
-            <td class="border w-3/4 px-2 py-1">{{ GLOBAL_ENTRY_VALUE }}</td>
+            <th class="border w-1/4 text-left px-2 py-1">Tax</th>
+            <td class="border w-3/4 px-2 py-1">{{ TAX_WITHHELD }}</td>
           </tr>
-          <!-- {{ GLOBAL_ENTRY_TEMPLATE_END }} -->
+          <!-- {{ OPTIONAL_END }} -->
           <tr class="bg-blue-500 text-white font-bold">
             <th class="border w-1/4 text-left px-2 py-1">Paid to Supplier</th>
-            <td class="border w-3/4 px-2 py-1">{{ PRODUCT_PROCEEDS }} EUR</td>
+            <td class="border w-3/4 px-2 py-1">{{ SOLD_UNITS_PROCEEDS }}</td>
           </tr>
         </table>
       </div>

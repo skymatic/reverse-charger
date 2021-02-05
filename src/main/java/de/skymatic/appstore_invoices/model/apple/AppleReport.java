@@ -1,9 +1,7 @@
 package de.skymatic.appstore_invoices.model.apple;
 
-import de.skymatic.appstore_invoices.model.Invoice;
-import de.skymatic.appstore_invoices.model.InvoiceCollection;
-import de.skymatic.appstore_invoices.model.InvoiceNumberGenerator;
-import de.skymatic.appstore_invoices.model.SingleProductInvoice;
+import de.skymatic.appstore_invoices.model.Invoicable;
+import de.skymatic.appstore_invoices.model.SalesReport;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -12,73 +10,53 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.TreeMap;
 
 /**
  * Collection of {@link AppleSubsidiaryReport}s of a single month.
  */
-public class AppleReport implements InvoiceCollection {
+public class AppleReport implements SalesReport {
 
 	private static final LocalDate CURRENT_TIME = LocalDate.now();
 
-	private final YearMonth yearMonth;
-	private final Map<AppleSubsidiary, AppleSubsidiaryReport> invoices;
-	private final InvoiceNumberGenerator invoiceNumberGenerator;
+	private final YearMonth billingMonth;
+	private final Map<AppleSubsidiary, AppleSubsidiaryReport> subReports;
 
-	private String numberPrefix;
-
-	public AppleReport(YearMonth yearMonth, String numberPrefix, int numberingSeed, AppleSalesEntry... sales) {
-		this.yearMonth = yearMonth;
-		this.numberPrefix = numberPrefix;
-		this.invoiceNumberGenerator = new InvoiceNumberGenerator(numberingSeed);
-		this.invoices = new Hashtable<>();
+	public AppleReport(YearMonth billingMonth, AppleSalesEntry... sales) {
+		this.billingMonth = billingMonth;
+		this.subReports = new TreeMap<>(Comparator.comparingInt(AppleSubsidiary::ordinal));
 		for (var sale : sales) {
 			addSalesEntry(sale);
 		}
 	}
 
 	public void addSalesEntry(AppleSalesEntry appleSalesEntry) {
-		AppleSubsidiary appleSubsidiary = AppleUtility.mapRegionPlusCurrencyToSubsidiary(appleSalesEntry.getRpc());
-		if (invoices.containsKey(appleSubsidiary)) {
-			invoices.get(appleSubsidiary).addSales(appleSalesEntry);
+		var appleSubsidiary = AppleSubsidiary.mapFromRegionNCurrency(appleSalesEntry.getRpc());
+		if (subReports.containsKey(appleSubsidiary)) {
+			subReports.get(appleSubsidiary).addSales(appleSalesEntry);
 		} else {
-			invoices.put(appleSubsidiary, new AppleSubsidiaryReport(String.valueOf(appleSubsidiary.ordinal()), yearMonth, CURRENT_TIME, appleSalesEntry.getBankAccountCurrency(), appleSalesEntry));
+			subReports.put(appleSubsidiary, new AppleSubsidiaryReport(billingMonth, CURRENT_TIME, appleSalesEntry.getBankAccountCurrency(), appleSalesEntry));
 		}
 	}
 
-	public Collection<AppleSubsidiaryReport> getInvoices() {
-		return Collections.unmodifiableCollection(invoices.values());
+	public Collection<AppleSubsidiaryReport> getSubReports() {
+		return Collections.unmodifiableCollection(subReports.values());
 	}
 
-	public YearMonth getYearMonth() {
-		return yearMonth;
-	}
-
-	public int getNextInvoiceNumber() {
-		return invoiceNumberGenerator.peek();
+	public YearMonth getBillingMonth() {
+		return billingMonth;
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(yearMonth).append("\n").append(invoices);
+		sb.append(billingMonth).append("\n").append(subReports);
 		return sb.toString();
 	}
 
 	@Override
-	public Collection<SingleProductInvoice> toInvoicesOfSingleProduct() {
-		return invoices.values().stream() //
-				.sorted(Comparator.comparingInt(subreport -> subreport.getAppleSubsidiary().ordinal())) //
-				.map(subReport -> {
-					subReport.setNumberString(numberPrefix + invoiceNumberGenerator.getAsInt());
-					return subReport.toSingleItemInvoice();
-				}) //
-				.collect(Collectors.toUnmodifiableList());
-	}
-
-	@Override
-	public Collection<? extends Invoice> toInvoices(){
-		return toInvoicesOfSingleProduct();
+	public Collection<? extends Invoicable> getInvoicables() {
+		return subReports.values();
 	}
 
 }

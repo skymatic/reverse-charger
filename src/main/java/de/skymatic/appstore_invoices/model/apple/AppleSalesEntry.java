@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public class AppleSalesEntry {
 
-	private final RegionPlusCurrency rpc;
+	private final RegionNCurrency rpc;
 	private final int unitsSold;
 	private final BigDecimal earned;
 	private final BigDecimal pretaxSubtotal;
@@ -16,7 +16,7 @@ public class AppleSalesEntry {
 	private final BigDecimal proceeds;
 	private final String bankAccountCurrency;
 
-	public AppleSalesEntry(RegionPlusCurrency rpc, int unitsSold, BigDecimal earned, BigDecimal pretaxSubtotal, BigDecimal inputTax, BigDecimal adjustments, BigDecimal withholdingTax, BigDecimal totalOwned, BigDecimal exchangeRate, BigDecimal proceeds, String bankAccountCurrency) {
+	public AppleSalesEntry(RegionNCurrency rpc, int unitsSold, BigDecimal earned, BigDecimal pretaxSubtotal, BigDecimal inputTax, BigDecimal adjustments, BigDecimal withholdingTax, BigDecimal totalOwned, BigDecimal exchangeRate, BigDecimal proceeds, String bankAccountCurrency) {
 		this.rpc = rpc;
 		this.unitsSold = unitsSold;
 		this.earned = earned;
@@ -30,7 +30,7 @@ public class AppleSalesEntry {
 		this.bankAccountCurrency = bankAccountCurrency;
 	}
 
-	public RegionPlusCurrency getRpc() {
+	public RegionNCurrency getRpc() {
 		return rpc;
 	}
 

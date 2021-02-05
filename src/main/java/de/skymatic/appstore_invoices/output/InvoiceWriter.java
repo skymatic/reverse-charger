@@ -1,27 +1,22 @@
 package de.skymatic.appstore_invoices.output;
 
+import de.skymatic.appstore_invoices.model.Invoice;
+import de.skymatic.appstore_invoices.template.Template;
+
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Map;
+import java.nio.file.StandardOpenOption;
+import java.util.Collection;
 
 public interface InvoiceWriter {
 
-	default void write(Path outputDirectory, Map<String, StringBuilder> sbs) throws IOException {
-		try {
-			sbs.forEach((nomber, htmlInvoice) -> {
-				Path p = outputDirectory.resolve("invoice-" + nomber + ".html");
-				try {
-					Files.writeString(p, htmlInvoice); //According to JDK: No open options translate to CREATE, TRUNCATE and WRITE
-				} catch (IOException e) {
-					throw new UncheckedIOException(e);
-				}
-			});
-		} catch (UncheckedIOException e) {
-			throw e.getCause();
+	default void write(Path outputDirectory, Template template, Collection<? extends Invoice> invoices) throws IOException {
+		for(var invoice : invoices) {
+			StringBuilder sb = template.fillWithData(invoice); //TODO
+			Path p = outputDirectory.resolve("invoice-" + invoice.getId() + ".html");
+			Files.writeString(p,template.fillWithData(invoice), StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
 		}
-
 	}
 
 	static InvoiceWriter createInvoiceGenerator(OutputFormat o) {
