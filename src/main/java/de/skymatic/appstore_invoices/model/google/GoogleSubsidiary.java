@@ -1,6 +1,6 @@
 package de.skymatic.appstore_invoices.model.google;
 
-import de.skymatic.appstore_invoices.model2.Recipient;
+import de.skymatic.appstore_invoices.model.Recipient;
 import de.skymatic.appstore_invoices.model.Workflow;
 
 import java.util.regex.Pattern;

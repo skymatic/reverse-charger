@@ -1,6 +1,6 @@
 package de.skymatic.appstore_invoices.gui;
 
-import de.skymatic.appstore_invoices.model2.SalesReport;
+import de.skymatic.appstore_invoices.model.SalesReport;
 import javafx.stage.Stage;
 
 import java.util.Locale;

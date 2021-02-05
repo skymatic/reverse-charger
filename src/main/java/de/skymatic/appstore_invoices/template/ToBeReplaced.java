@@ -1,7 +1,7 @@
 package de.skymatic.appstore_invoices.template;
 
-import de.skymatic.appstore_invoices.model2.AdditionalItem;
-import de.skymatic.appstore_invoices.model2.Invoice;
+import de.skymatic.appstore_invoices.model.AdditionalItem;
+import de.skymatic.appstore_invoices.model.Invoice;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;

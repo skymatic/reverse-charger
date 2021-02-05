@@ -1,7 +1,7 @@
 package de.skymatic.appstore_invoices.model.google;
 
-import de.skymatic.appstore_invoices.model2.Invoicable;
-import de.skymatic.appstore_invoices.model2.Invoice;
+import de.skymatic.appstore_invoices.model.Invoicable;
+import de.skymatic.appstore_invoices.model.Invoice;
 
 import java.time.YearMonth;
 import java.util.HashMap;

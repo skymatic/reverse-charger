@@ -1,4 +1,4 @@
-package de.skymatic.appstore_invoices.model2;
+package de.skymatic.appstore_invoices.model;
 
 public enum AdditionalItem {
 

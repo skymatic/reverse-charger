@@ -1,8 +1,8 @@
 package de.skymatic.appstore_invoices.gui;
 
-import de.skymatic.appstore_invoices.model2.Invoicable;
-import de.skymatic.appstore_invoices.model2.Invoice;
-import de.skymatic.appstore_invoices.model2.SalesReport;
+import de.skymatic.appstore_invoices.model.Invoicable;
+import de.skymatic.appstore_invoices.model.Invoice;
+import de.skymatic.appstore_invoices.model.SalesReport;
 import de.skymatic.appstore_invoices.output.InvoiceWriter;
 import de.skymatic.appstore_invoices.template.TemplateParser;
 import de.skymatic.appstore_invoices.settings.Settings;
@@ -71,7 +71,7 @@ public class OutputController {
 	private final ObjectBinding<Path> templatePath;
 	private final ObjectBinding<Path> outputPath;
 	private final Path defaultTemplatePath;
-	private final ObservableList<de.skymatic.appstore_invoices.model2.Invoice> invoices;
+	private final ObservableList<de.skymatic.appstore_invoices.model.Invoice> invoices;
 	private final Stage owner;
 	private final SettingsProvider settingsProvider;
 	private final BooleanProperty isReadyToGenerate;

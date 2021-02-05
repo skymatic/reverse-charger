@@ -1,6 +1,6 @@
 package de.skymatic.appstore_invoices.template;
 
-import de.skymatic.appstore_invoices.model2.Invoice;
+import de.skymatic.appstore_invoices.model.Invoice;
 
 import java.util.ArrayList;
 import java.util.List;

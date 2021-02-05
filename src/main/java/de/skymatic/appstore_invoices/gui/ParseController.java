@@ -1,7 +1,7 @@
 package de.skymatic.appstore_invoices.gui;
 
 import de.skymatic.appstore_invoices.model.Workflow;
-import de.skymatic.appstore_invoices.model2.SalesReport;
+import de.skymatic.appstore_invoices.model.SalesReport;
 import de.skymatic.appstore_invoices.parser.ReportParseException;
 import de.skymatic.appstore_invoices.parser.ReportParser;
 import de.skymatic.appstore_invoices.parser.ReportParserFactory;

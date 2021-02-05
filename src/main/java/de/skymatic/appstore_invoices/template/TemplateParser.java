@@ -1,6 +1,6 @@
 package de.skymatic.appstore_invoices.template;
 
-import de.skymatic.appstore_invoices.model2.AdditionalItem;
+import de.skymatic.appstore_invoices.model.AdditionalItem;
 
 import java.io.BufferedReader;
 import java.io.IOException;

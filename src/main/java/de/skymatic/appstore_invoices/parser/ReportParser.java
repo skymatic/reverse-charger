@@ -1,6 +1,6 @@
 package de.skymatic.appstore_invoices.parser;
 
-import de.skymatic.appstore_invoices.model2.SalesReport;
+import de.skymatic.appstore_invoices.model.SalesReport;
 
 import java.io.IOException;
 import java.nio.file.Path;

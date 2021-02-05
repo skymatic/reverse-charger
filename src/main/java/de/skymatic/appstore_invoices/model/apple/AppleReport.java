@@ -1,8 +1,7 @@
 package de.skymatic.appstore_invoices.model.apple;
 
-import de.skymatic.appstore_invoices.model.InvoiceNumberGenerator;
-import de.skymatic.appstore_invoices.model2.Invoicable;
-import de.skymatic.appstore_invoices.model2.SalesReport;
+import de.skymatic.appstore_invoices.model.Invoicable;
+import de.skymatic.appstore_invoices.model.SalesReport;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -20,11 +19,9 @@ public class AppleReport implements SalesReport {
 
 	private final YearMonth billingMonth;
 	private final Map<AppleSubsidiary, AppleSubsidiaryReport> subReports;
-	private final InvoiceNumberGenerator invoiceNumberGenerator;
 
-	public AppleReport(YearMonth billingMonth, int numberingSeed, AppleSalesEntry... sales) {
+	public AppleReport(YearMonth billingMonth, AppleSalesEntry... sales) {
 		this.billingMonth = billingMonth;
-		this.invoiceNumberGenerator = new InvoiceNumberGenerator(numberingSeed);
 		this.subReports = new Hashtable<>();
 		for (var sale : sales) {
 			addSalesEntry(sale);

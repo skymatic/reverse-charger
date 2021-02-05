@@ -2,54 +2,36 @@ package de.skymatic.appstore_invoices.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
 
-/**
- * Invoice with the most basic and nearly always necessary information.
- */
 public class Invoice {
 
-	private final String currency;
 	private final Recipient recipient;
 	private final LocalDate startOfBillingPeriod;
 	private final LocalDate endOfBillingPeriod;
-	private final List<InvoiceItem> items;
-	private final SortedMap<String, BigDecimal> globalItems;
+	private final String currency;
+	private final BigDecimal proceeds;
+	private final int units;
+	private final Map<AdditionalItem, BigDecimal> additionalItems;
 
 	private String id;
 	private LocalDate issueDate;
+	private String unitDescription;
 
-	public Invoice(String id, Recipient recipient, LocalDate startOfBillingPeriod, LocalDate endOfBillingPeriod, LocalDate issueDate, String currency, Collection<InvoiceItem> items, SortedMap<String, BigDecimal> globalItems) {
+	public Invoice(String id, Recipient recipient, LocalDate startOfBillingPeriod, LocalDate endOfBillingPeriod, LocalDate issueDate, int units, String currency, BigDecimal proceeds, String unitDescription, Map<AdditionalItem, BigDecimal> additionalItems) {
 		this.id = id;
 		this.recipient = recipient;
 		this.issueDate = issueDate;
 		this.startOfBillingPeriod = startOfBillingPeriod;
 		this.endOfBillingPeriod = endOfBillingPeriod;
+		this.units = units;
 		this.currency = currency;
-		this.items = new ArrayList<>(items);
-		this.globalItems = globalItems;
+		this.proceeds = proceeds;
+		this.unitDescription = unitDescription;
+		this.additionalItems = Collections.unmodifiableMap(additionalItems);
 	}
 
-	public BigDecimal proceeds() {
-		return items.stream().map(InvoiceItem::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add).add(globalItems.values().stream().reduce(BigDecimal.ZERO, BigDecimal::add));
-	}
-
-	public int totalUnits() {
-		return items.stream().mapToInt(InvoiceItem::getUnits).sum();
-	}
-
-	public int size() {
-		return items.size();
-	}
-
-	public Map<String, BigDecimal> getGlobalItems() {
-		return Collections.unmodifiableSortedMap(globalItems);
-	}
 
 	public void setId(String newId) {
 		this.id = newId;
@@ -81,5 +63,33 @@ public class Invoice {
 
 	public String getCurrency() {
 		return currency;
+	}
+
+	public LocalDate getStartOfBillingPeriod() {
+		return startOfBillingPeriod;
+	}
+
+	public LocalDate getEndOfBillingPeriod() {
+		return endOfBillingPeriod;
+	}
+
+	public BigDecimal getProceeds() {
+		return proceeds;
+	}
+
+	public int getUnits() {
+		return units;
+	}
+
+	public Map<AdditionalItem, BigDecimal> getAdditionalItems() {
+		return additionalItems;
+	}
+
+	public String getUnitDescription() {
+		return unitDescription;
+	}
+
+	public void setUnitDescription(String unitDescription) {
+		this.unitDescription = unitDescription;
 	}
 }

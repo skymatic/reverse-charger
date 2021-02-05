@@ -1,7 +1,7 @@
 package de.skymatic.appstore_invoices.model.google;
 
-import de.skymatic.appstore_invoices.model2.AdditionalItem;
-import de.skymatic.appstore_invoices.model2.Invoice;
+import de.skymatic.appstore_invoices.model.AdditionalItem;
+import de.skymatic.appstore_invoices.model.Invoice;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

@@ -10,7 +10,7 @@ public class AppleReportTest {
 
 	@Test
 	public void testAddingSalesEntryOfNoneExistingInvoiceCreatesIt() {
-		AppleReport appleReport = new AppleReport(YearMonth.of(2020, 3), 0);
+		AppleReport appleReport = new AppleReport(YearMonth.of(2020, 3));
 		Assertions.assertEquals(0, appleReport.getSubReports().size());
 
 		AppleSalesEntry appleSalesEntry = Mockito.mock(AppleSalesEntry.class);
@@ -23,7 +23,7 @@ public class AppleReportTest {
 	public void testAddingSalesEntryOfExistingSubsidiaryAddsIt() {
 		AppleSalesEntry appleSalesEntry = Mockito.mock(AppleSalesEntry.class);
 		Mockito.when(appleSalesEntry.getRpc()).thenReturn(RegionNCurrency.PERU_PEN);
-		AppleReport appleReport = new AppleReport(YearMonth.of(2020, 3), 0, appleSalesEntry);
+		AppleReport appleReport = new AppleReport(YearMonth.of(2020, 3), appleSalesEntry);
 		int expected = appleReport.getSubReports().size();
 
 		AppleSalesEntry other = Mockito.mock(AppleSalesEntry.class);
