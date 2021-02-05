@@ -40,7 +40,6 @@ public class TemplateParser {
 				} else {
 					int currentPos = 0;
 					do {
-						//TODO: preWaffle ain't got closed, if we find an optional start or end section
 						String preWaffle = line.substring(currentPos, m.start());
 						target.accept(new ConstantSection(preWaffle));
 
