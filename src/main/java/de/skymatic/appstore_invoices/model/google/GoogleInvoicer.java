@@ -37,7 +37,7 @@ public class GoogleInvoicer {
 		HashMap<AdditionalItem, BigDecimal> additionalItems = new HashMap<>();
 		additionalItems.put(AdditionalItem.SALES, sales);
 		additionalItems.put(AdditionalItem.TAX_WITHHELD, tax);
-		additionalItems.put(AdditionalItem.TAX_REFUNDS, tax);
+		additionalItems.put(AdditionalItem.TAX_REFUNDS, taxRefunds);
 		additionalItems.put(AdditionalItem.FEES, fees.add(feeRefunds));
 		additionalItems.put(AdditionalItem.REFUNDS, refunds);
 
