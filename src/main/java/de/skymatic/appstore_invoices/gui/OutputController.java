@@ -4,6 +4,7 @@ import de.skymatic.appstore_invoices.model.Invoicable;
 import de.skymatic.appstore_invoices.model.Invoice;
 import de.skymatic.appstore_invoices.model.SalesReport;
 import de.skymatic.appstore_invoices.output.InvoiceWriter;
+import de.skymatic.appstore_invoices.template.MalformedTemplateException;
 import de.skymatic.appstore_invoices.template.TemplateParser;
 import de.skymatic.appstore_invoices.settings.Settings;
 import de.skymatic.appstore_invoices.settings.SettingsProvider;
@@ -206,6 +207,8 @@ public class OutputController {
 		} catch (IOException e) {
 			//TODO: better error handling
 			Alerts.genericError(e, "Generating the invoices from template and save them to hard disk.").showAndWait();
+		} catch (MalformedTemplateException e) {
+			Alerts.genericError(e, "Reading the template.").showAndWait();
 		}
 
 	}
