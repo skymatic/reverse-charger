@@ -7,8 +7,10 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Collection of {@link AppleSubsidiaryReport}s of a single month.
@@ -22,7 +24,7 @@ public class AppleReport implements SalesReport {
 
 	public AppleReport(YearMonth billingMonth, AppleSalesEntry... sales) {
 		this.billingMonth = billingMonth;
-		this.subReports = new Hashtable<>();
+		this.subReports = new TreeMap<>(Comparator.comparingInt(AppleSubsidiary::ordinal));
 		for (var sale : sales) {
 			addSalesEntry(sale);
 		}

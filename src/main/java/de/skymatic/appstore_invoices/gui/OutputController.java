@@ -109,6 +109,10 @@ public class OutputController {
 
 		this.report = report;
 		invoices.addAll(report.getInvoicables().stream().map(Invoicable::toInvoice).collect(Collectors.toList()));
+		//we start numbering at 1 and fill possible gaps, when a subsidiary is missing
+		for(int i=0; i<invoices.size();i++){
+			invoices.get(i).setId(String.valueOf(i+1));
+		}
 		this.revealCommand = revealCommand;
 	}
 

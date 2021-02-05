@@ -5,8 +5,10 @@ import de.skymatic.appstore_invoices.model.SalesReport;
 
 import java.time.YearMonth;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Collection of {@link GoogleSubsidiaryReport}s of a single month. For each subsidiary only one report can exist.
@@ -50,7 +52,7 @@ public class GoogleReport implements SalesReport {
 		} else {
 			this.billingMonth = YearMonth.from(sales[0].getTransactionDateTime());
 
-			this.reportsOfSubsidiaries = new HashMap<>();
+			this.reportsOfSubsidiaries = new TreeMap<>(Comparator.comparingInt(GoogleSubsidiary::ordinal));
 
 			for (var sale : sales) {
 				add(sale);
