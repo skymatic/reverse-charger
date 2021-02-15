@@ -187,7 +187,7 @@
 						<configuration>
 							<executable>${env.JAVA_HOME}/bin/jlink</executable>
 							<workingDirectory>${project.build.directory}</workingDirectory>
-							<commandlineArgs>--output runtimeImage --module-path libs/ --add-modules ${java.jpms.modulename} --no-header-files --no-man-pages --strip-debug --compress=1</commandlineArgs>
+							<commandlineArgs>--output runtimeImage --module-path libs/ --add-modules ${java.jpms.modulename} --no-header-files --no-man-pages --strip-native-commands --strip-debug --compress=1</commandlineArgs>
 						</configuration>
 					</execution>
 					<execution>
