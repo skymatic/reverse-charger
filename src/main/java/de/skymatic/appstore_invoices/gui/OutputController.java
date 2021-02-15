@@ -119,6 +119,7 @@ public class OutputController {
 	@FXML
 	public void initialize() {
 		invoices.stream().findFirst().ifPresent(i -> soldUnitsDescription.setText(i.getUnitDescription()));
+		soldUnitsDescription.textProperty().addListener((observedValue, stringOld, stringNew) -> invoices.forEach(invoice -> invoice.setUnitDescription(stringNew)));
 
 		columnInvoiceNumber.setCellFactory(TextFieldTableCell.<Invoice>forTableColumn());
 		columnInvoiceNumber.setCellValueFactory(invoice -> new SimpleStringProperty(invoice.getValue().getId()));
