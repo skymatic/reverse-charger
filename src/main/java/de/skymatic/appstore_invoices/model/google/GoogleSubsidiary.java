@@ -179,6 +179,7 @@ public enum GoogleSubsidiary implements Recipient {
 				case "QA":
 				case "RO":
 				case "RU":
+				case "RS":
 				case "RW":
 				case "SM":
 				case "SA":
