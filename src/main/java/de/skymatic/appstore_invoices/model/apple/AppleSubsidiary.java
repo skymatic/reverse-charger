@@ -71,7 +71,7 @@ public enum AppleSubsidiary implements Recipient {
 			case ISRAEL_ILS:
 			case INDIA_INR:
 			case REPUBLIC_OF_KOREA_KRW:
-			case KAZAKHASTAN_KZT:
+			case KAZAKHSTAN_KZT:
 			case MALAYSIA_MYR:
 			case NIGERIA_NGN:
 			case NORWAY_NOK:
