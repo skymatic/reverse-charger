@@ -14,7 +14,7 @@ import java.util.function.Function;
  */
 class ToBeReplaced implements StringBuilderable {
 
-	private static final String NUMBER_FORMAT = "#,##0.0#";
+	private static final String NUMBER_FORMAT = "#,##0.00";
 
 	private static final DateTimeFormatter DATE_FORMATTER_LONG = DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG);
 	private static final DateTimeFormatter DATE_FORMATTER_EUROPEAN = DateTimeFormatter.ofPattern("dd.MM.yyyy");

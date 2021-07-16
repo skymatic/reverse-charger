@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
 public class OutputController {
 
 	private static final int REVEAL_TIMEOUT_MS = 5000;
-	private static final String NUMBER_FORMAT = "#,##0.0#";
+	private static final String NUMBER_FORMAT = "#,##0.00";
 	private static final NumberFormat NUM_FORMATTER;
 
 	static {
