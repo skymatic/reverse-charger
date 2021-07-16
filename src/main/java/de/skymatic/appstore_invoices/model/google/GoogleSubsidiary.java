@@ -171,7 +171,7 @@ public enum GoogleSubsidiary implements Recipient {
 				case "NE":
 				case "NG":
 				case "NO":
-					//TODO: Former Yugosl. Republic of Macedonia / Macedonia (FYROM)
+				case "MK":
 				case "OM":
 				case "PS":
 				case "PL":
