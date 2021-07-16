@@ -43,7 +43,7 @@ public enum GoogleSubsidiary implements Recipient {
 	/**
 	 * Maps an ISO 3166-1 alpha-2 country code to a {@link GoogleSubsidiary}.
 	 * <p>
-	 * The mapping is taken from the Google info <a href=https://support.google.com/googleplay/android-developer/answer/9306917>Supported locations for developer & merchant registration</a>
+	 * The mapping is taken from the Google info <a href="https://support.google.com/googleplay/android-developer/answer/10532353">Supported locations for distribution to Google Play users</a>
 	 *
 	 * @param country String consisting of two letters, representing an ISO 3166-1 alpha-2 country code.
 	 * @return the {@link GoogleSubsidiary} responsible for sales in the given country
@@ -81,7 +81,7 @@ public enum GoogleSubsidiary implements Recipient {
 				case "HN":
 				case "JM":
 				case "MX":
-					//TODO: Niederländische Antillen??
+				case "AN":
 				case "NI":
 				case "PW":
 				case "PA":
@@ -104,6 +104,7 @@ public enum GoogleSubsidiary implements Recipient {
 				case "AM":
 				case "AT":
 				case "AZ":
+				case "BH":
 				case "BY":
 				case "BE":
 				case "BJ":
@@ -179,11 +180,11 @@ public enum GoogleSubsidiary implements Recipient {
 				case "QA":
 				case "RO":
 				case "RU":
-				case "RS":
 				case "RW":
 				case "SM":
 				case "SA":
 				case "SN":
+				case "RS":
 				case "SC":
 				case "SL":
 				case "SK":
