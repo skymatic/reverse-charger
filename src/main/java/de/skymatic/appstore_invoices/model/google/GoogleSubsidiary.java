@@ -131,6 +131,7 @@ public enum GoogleSubsidiary implements Recipient {
 				case "FI":
 				case "FR":
 				case "MQ":
+				case "RE":
 				case "GA":
 				case "GM":
 				case "GE":
