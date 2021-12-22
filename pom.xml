@@ -42,9 +42,9 @@
 		<java.jpms.modulename>de.skymatic.appstore_invoices</java.jpms.modulename>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<maven.compiler.release>14</maven.compiler.release>
+		<maven.compiler.release>17</maven.compiler.release>
 
-		<openjfx.version>14</openjfx.version>
+		<openjfx.version>17.0.1</openjfx.version>
 		<junit.jupiter.version>5.6.0</junit.jupiter.version>
 		<mockito.version>3.3.0</mockito.version>
 	</properties>
@@ -141,7 +141,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.0</version>
 				<configuration>
-					<release>14</release>
+					<release>17</release>
 				</configuration>
 			</plugin>
 
