@@ -20,8 +20,7 @@ import java.util.stream.Collectors;
  * Parses CSV files created/exported by the Google Play Store Financial Overview.
  * The CSV file contains the following columns (from left to right):
  * Description
- * Transaction
- * Date
+ * Transaction Date
  * Transaction Time
  * Tax Type
  * Transaction Type
@@ -61,7 +60,7 @@ public class GoogleParser implements ReportParser {
 			br.readLine(); //first line only contains the csv column headers
 
 			return br.lines()
-					.map(line -> lastReadLine.copyAndReturn(line))
+					.map(lastReadLine::copyAndReturn)
 					.map(this::splitWithCSVEscapes)
 					.map(splittedLine -> {
 						String description = splittedLine[0];
@@ -116,44 +115,28 @@ public class GoogleParser implements ReportParser {
 	}
 
 	/**
-	 * A single CSV entry can contain , if it is enclosed by ".
-	 * Therefore a simple line.split(",") does not do the job.
-	 * This function works under three assumptions:
-	 * 1. First element is never escaped
-	 * 2. The last element is never escaped
-	 * 3. There is at least one escaped element
+	 * A single CSV entry can contain commas (,) if it is enclosed by quotes (").
+	 * Therefore a simple line.split(",") does not do the job, we need something with a state.
 	 *
 	 * @param line the line to be splitted.
-	 * @return
+	 * @return an array containing the first 19 comma-separeted values of the csv entry
 	 */
 	private String[] splitWithCSVEscapes(String line) {
-		String[] splitByCSVEscapes = line.split("\"");
-		String[] splittedLine = new String[19];
+		String[] entriesOfInterest = new String[19];
 
-		splittedLine[0] = splitByCSVEscapes[0].substring(0, splitByCSVEscapes[0].length() - 1);
-		splittedLine[1] = splitByCSVEscapes[1];
+		int currentPosInLine = 0;
+		int entriesOfInteresIndex = 0;
+		while(entriesOfInteresIndex < entriesOfInterest.length) {
+			boolean entryIsEscaped = line.charAt(currentPosInLine) == '"';
+			currentPosInLine = currentPosInLine + (entryIsEscaped? 1:0);
+			int delimiter = line.indexOf( entryIsEscaped?'"':',', currentPosInLine); //currentPosInLine up to delimiter-1 is the content
 
-		int nextIndex = 2;
-		boolean outsideEscapes = true;
-		//we start at column three
-		for (int i = 2; i < splitByCSVEscapes.length; i++) {
-			if (outsideEscapes) {
-				if (splitByCSVEscapes[i].endsWith(",")) {
-					splitByCSVEscapes[i] = splitByCSVEscapes[i].substring(0, splitByCSVEscapes[i].length() - 1);
-				}
-				String[] subsplit = splitByCSVEscapes[i].substring(1).split(",");
-				for (int j = 0; j < subsplit.length; j++) {
-					splittedLine[nextIndex] = subsplit[j];
-					nextIndex++;
-				}
-				outsideEscapes = false;
-			} else {
-				splittedLine[nextIndex] = splitByCSVEscapes[i];
-				nextIndex++;
-				outsideEscapes = true;
-			}
+			entriesOfInterest[entriesOfInteresIndex] = line.substring(currentPosInLine, delimiter);
+			entriesOfInteresIndex++;
+
+			currentPosInLine = delimiter + (entryIsEscaped? 2:1);
 		}
-		return splittedLine;
+		return entriesOfInterest;
 	}
 
 }
