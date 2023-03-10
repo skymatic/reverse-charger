@@ -86,6 +86,7 @@ public enum AppleSubsidiary implements Recipient {
 			case SINGAPORE_SGD:
 			case THAILAND_THB:
 			case TURKEY_TRY:
+			case TÜRKIYE_TRY:
 			case TAIWAN_TWD:
 			case TANZANIA_TZS:
 			case VIETNAM_VND:
