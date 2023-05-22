@@ -151,6 +151,7 @@ public enum GoogleSubsidiary implements Recipient {
 				case "KZ":
 				case "KE":
 				case "KW":
+				case "KG":
 				case "LV":
 				case "LB":
 				case "LS":
