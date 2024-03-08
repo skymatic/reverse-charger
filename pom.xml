@@ -49,8 +49,8 @@
 		<openjfx.version>21.0.2</openjfx.version>
 		<gson.version>2.10.1</gson.version>
 		<!-- test dependencies -->
-		<junit.jupiter.version>5.8.2</junit.jupiter.version>
-		<mockito.version>4.5.1</mockito.version>
+		<junit.jupiter.version>5.10.2</junit.jupiter.version>
+		<mockito.version>5.11.0</mockito.version>
 		<!-- build dependencies -->
 		<maven-compiler.version>3.10.1</maven-compiler.version>
 		<maven-surefire.version>3.2.5</maven-surefire.version>
