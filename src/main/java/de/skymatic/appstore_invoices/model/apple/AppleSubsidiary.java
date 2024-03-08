@@ -7,7 +7,7 @@ public enum AppleSubsidiary implements Recipient {
 
 	ROW(new String[]{"Apple Distribution International Limited", "Hollyhill Industrial Estate", "Hollyhill, Cork", "Republic of Ireland", "VAT ID: IE9700053D"}, true),
 	NORTHAMERICA(new String[]{"Apple Inc.", "One Apple Park Way", "Cupertino, CA 95014", "USA"}, false),
-	LATINAMERICA(new String[]{"Apple Services LATAM LLC", "One Apple Park Way, MS 169-5CL", "Cupertino, CA 95014", "USA"}, false),
+	LATINAMERICA(new String[]{"Apple Services LATAM LLC", "1 Alhambra Plaza, Suite 700", "Coral Gables, FL 33134", "USA"}, false),
 	CANADA(new String[]{"Apple Canada Inc.", "120 Bremner Boulevard, Suite 1600", "Toronto, ON M5J 0A8", "Canada"}, false),
 	JAPAN(new String[]{"iTunes K.K.", "〒 106-6140", "6-10-1 Roppongi, Minato-ku, Tokyo", "Japan"}, false),
 	AUSTRALIA(new String[]{"Apple Pty Limited", "Level 3", "20 Martin Place", "Sydney NSW 2000", "Australia"}, false);
