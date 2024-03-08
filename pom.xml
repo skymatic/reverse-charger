@@ -44,7 +44,6 @@
 		<jdk.version>21</jdk.version>
 		<project.version.majorMinorPatch>0.0.1</project.version.majorMinorPatch>
 
-
 		<!-- code dependencies -->
 		<openjfx.version>21.0.2</openjfx.version>
 		<gson.version>2.10.1</gson.version>
@@ -52,11 +51,11 @@
 		<junit.jupiter.version>5.10.2</junit.jupiter.version>
 		<mockito.version>5.11.0</mockito.version>
 		<!-- build dependencies -->
-		<maven-compiler.version>3.10.1</maven-compiler.version>
+		<maven-compiler.version>3.12.1</maven-compiler.version>
 		<maven-surefire.version>3.2.5</maven-surefire.version>
-		<maven-jar.version>3.2.2</maven-jar.version>
-		<maven-dep.version>3.3.0</maven-dep.version>
-		<exec-maven.version>3.0.0</exec-maven.version>
+		<maven-jar.version>3.3.0</maven-jar.version>
+		<maven-dep.version>3.6.1</maven-dep.version>
+		<exec-maven.version>3.2.0</exec-maven.version>
 		<maven-assembly.version>3.6.0</maven-assembly.version>
 		<itchy-replace.version>1.3</itchy-replace.version>
 		<junit-tree-reporter.version>1.2.1</junit-tree-reporter.version>
