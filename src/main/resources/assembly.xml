@@ -13,6 +13,7 @@
 				<include>${build.finalArtifact.name}.app/**</include> <!-- mac -->
 				<include>${build.finalArtifact.name}/**</include> <!-- win/linux -->
 			</includes>
+			<outputDirectory>/</outputDirectory>
 		</fileSet>
 	</fileSets>
 </assembly>
