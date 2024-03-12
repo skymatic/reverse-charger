@@ -245,7 +245,7 @@
 				<artifactId>variable-search-replace-plugin</artifactId>
 				<executions>
 					<execution>
-						<phase>package</phase>
+						<phase>prepare-package</phase>
 						<goals>
 							<goal>replace</goal>
 						</goals>
@@ -258,7 +258,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
