@@ -42,7 +42,6 @@
 		<java.jpms.modulename>de.skymatic.appstore_invoices</java.jpms.modulename>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jdk.version>21</jdk.version>
-		<project.version.majorMinorPatch>0.0.1</project.version.majorMinorPatch>
 
 		<!-- code dependencies -->
 		<openjfx.version>21.0.2</openjfx.version>
