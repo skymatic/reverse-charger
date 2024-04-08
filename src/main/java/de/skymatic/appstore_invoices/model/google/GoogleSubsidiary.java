@@ -144,6 +144,7 @@ public enum GoogleSubsidiary implements Recipient {
 				case "GW":
 				case "HU":
 				case "IS":
+				case "IQ":
 				case "IE":
 				case "IL":
 				case "IT":
