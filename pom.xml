@@ -42,6 +42,7 @@
 		<java.jpms.modulename>de.skymatic.appstore_invoices</java.jpms.modulename>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jdk.version>21</jdk.version>
+		<javafx.platform>overwritten-in-profiles</javafx.platform>
 
 		<!-- code dependencies -->
 		<openjfx.version>21.0.3</openjfx.version>
@@ -117,6 +118,7 @@
 			<properties>
 				<jpackage.jvmArgs.settings>-DsettingsPath="~/AppData/Roaming/AppStoreReverseCharger/settings.json"</jpackage.jvmArgs.settings>
 				<targetPlatform>win</targetPlatform>
+				<javafx.platform>win</javafx.platform>
 			</properties>
 		</profile>
 		<profile>
@@ -129,6 +131,7 @@
 			<properties>
 				<jpackage.jvmArgs.settings>-DsettingsPath="~/Library/Application' 'Support/AppStoreReverseCharger/settings.json"</jpackage.jvmArgs.settings>
 				<targetPlatform>mac</targetPlatform>
+				<javafx.platform>mac</javafx.platform>
 			</properties>
 		</profile>
 		<profile>
@@ -142,6 +145,7 @@
 			<properties>
 				<jpackage.jvmArgs.settings>-DsettingsPath="~/.local/share/AppStoreReverseCharger/settings.json"</jpackage.jvmArgs.settings>
 				<targetPlatform>linux</targetPlatform>
+				<javafx.platform>linux</javafx.platform>
 			</properties>
 		</profile>
 	</profiles>
