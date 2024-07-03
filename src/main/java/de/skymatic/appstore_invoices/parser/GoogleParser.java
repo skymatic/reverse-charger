@@ -60,6 +60,7 @@ public class GoogleParser implements ReportParser {
 			br.readLine(); //first line only contains the csv column headers
 
 			return br.lines()
+					.filter(l -> !l.startsWith(",")) //entries without a transaction id are discarded
 					.map(lastReadLine::copyAndReturn)
 					.map(this::splitWithCSVEscapes)
 					.map(splittedLine -> {
