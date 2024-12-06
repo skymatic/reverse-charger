@@ -33,7 +33,7 @@ public enum AppleSubsidiary implements Recipient {
 	}
 
 	@Override
-	public boolean isReverseChargeEligible(){
+	public boolean isReverseChargeEligible() {
 		return reverseCharge;
 	}
 
@@ -89,6 +89,7 @@ public enum AppleSubsidiary implements Recipient {
 			case TÜRKIYE_TRY:
 			case TAIWAN_TWD:
 			case TANZANIA_TZS:
+			case SOUTH_ASIA_AND_PACIFIC_USD:
 			case VIETNAM_VND:
 			case REST_OF_WORLD_USD:
 			case SOUTH_AFRICA_ZAR:
