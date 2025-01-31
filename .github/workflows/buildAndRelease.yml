@@ -55,10 +55,6 @@ jobs:
           generate_release_notes: true
           body: |-
             :construction: Work in Progress
-      - name: Publish build artifacts on release
-        uses: softprops/action-gh-release@v2
-        with:
           fail_on_unmatched_files: true
-          token: ${{ secrets.GITHUB_TOKEN }}
           files: |
             reverseCharger-*.zip
