@@ -5,6 +5,7 @@ import de.skymatic.appstore_invoices.model.Workflow;
 
 public enum AppleSubsidiary implements Recipient {
 
+	APAC(new String[]{"Apple Services Pte. Ltd.", "Ang Mo Kio Street 64", "Singapore 569086", "Singapore"}, false),
 	ROW(new String[]{"Apple Distribution International Limited", "Hollyhill Industrial Estate", "Hollyhill, Cork", "Republic of Ireland", "VAT ID: IE9700053D"}, true),
 	NORTHAMERICA(new String[]{"Apple Inc.", "One Apple Park Way", "Cupertino, CA 95014", "USA"}, false),
 	LATINAMERICA(new String[]{"Apple Services LATAM LLC", "1 Alhambra Plaza, Suite 700", "Coral Gables, FL 33134", "USA"}, false),
@@ -70,7 +71,6 @@ public enum AppleSubsidiary implements Recipient {
 			case INDONESIA_IDR:
 			case ISRAEL_ILS:
 			case INDIA_INR:
-			case REPUBLIC_OF_KOREA_KRW:
 			case KAZAKHSTAN_KZT:
 			case MALAYSIA_MYR:
 			case NIGERIA_NGN:
@@ -89,11 +89,13 @@ public enum AppleSubsidiary implements Recipient {
 			case TÜRKIYE_TRY:
 			case TAIWAN_TWD:
 			case TANZANIA_TZS:
-			case SOUTH_ASIA_AND_PACIFIC_USD:
 			case VIETNAM_VND:
 			case REST_OF_WORLD_USD:
 			case SOUTH_AFRICA_ZAR:
 				return AppleSubsidiary.ROW;
+			case REPUBLIC_OF_KOREA_KRW:
+			case SOUTH_ASIA_AND_PACIFIC_USD:
+				return AppleSubsidiary.APAC;
 			default:
 				throw new IllegalArgumentException("No existing mapping for RegionPlusCurrency: " + rpc.toString());
 		}
