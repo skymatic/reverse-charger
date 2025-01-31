@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 /**
  * Parses CSV files created/exported by the Google Play Store Financial Overview.
@@ -41,7 +40,7 @@ import java.util.stream.Collectors;
  * <p>
  * Date and Time are merged into one field of type {@link LocalDateTime}.
  * The field transaction type is converted into an instance of {@link GoogleTransactionType}.
- * Additionally the parsed object is extended with a field subsidiary of type {@link GoogleSubsidiary}.
+ * Additionally, the parsed object is extended with a field subsidiary of type {@link GoogleSubsidiary}.
  */
 public class GoogleParser implements ReportParser {
 
@@ -104,7 +103,7 @@ public class GoogleParser implements ReportParser {
 								currencyConversionRate,
 								merchantCCurrency,
 								amountMerchantCurrency);
-					}).collect(Collectors.toList());
+					}).toList();
 
 		} catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
 			throw new ReportParseException("Error parsing line: \n\t" + lastReadLine.get(), -1, e);

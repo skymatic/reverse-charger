@@ -12,7 +12,6 @@ import java.nio.file.Path;
 import java.time.Month;
 import java.time.YearMonth;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 public class AppleParser implements ReportParser {
 
@@ -24,22 +23,26 @@ public class AppleParser implements ReportParser {
 		try (BufferedReader br = Files.newBufferedReader(p)) {
 			String header = br.readLine();
 			String[] monthYear = header.substring(header.indexOf('(') + 1, header.indexOf(')')).split(",");
-			YearMonth yearMonth = YearMonth.of(Integer.valueOf(monthYear[1].trim()), Month.valueOf(monthYear[0].trim().toUpperCase()));
+			YearMonth yearMonth = YearMonth.of(Integer.parseInt(monthYear[1].trim()), Month.valueOf(monthYear[0].trim().toUpperCase()));
 
-			Collection<AppleSalesEntry> sales = br.lines().filter(line -> !isLastLine(line) && line.startsWith("\"")).map(line -> lastReadLine.copyAndReturn(line)).map(line -> line.replaceAll("[\"]", "").split(",")).map(splittedLine -> {
-				RegionNCurrency rpc = getRegionPlusCurrency(splittedLine[0]);
-				int units = Integer.parseInt(splittedLine[1]);
-				BigDecimal earned = new BigDecimal(splittedLine[2]);
-				BigDecimal pretaxSubtotal = new BigDecimal(splittedLine[3]);
-				BigDecimal inputTax = new BigDecimal(splittedLine[4]);
-				BigDecimal adjustments = new BigDecimal(splittedLine[5]);
-				BigDecimal withholdingTax = new BigDecimal(splittedLine[6]);
-				BigDecimal totalOwned = new BigDecimal(splittedLine[7]);
-				BigDecimal exchangeRate = new BigDecimal(splittedLine[8]);
-				BigDecimal proceeds = new BigDecimal(splittedLine[9]);
-				String bankAccountCurrency = splittedLine[10];
-				return new AppleSalesEntry(rpc, units, earned, pretaxSubtotal, inputTax, adjustments, withholdingTax, totalOwned, exchangeRate, proceeds, bankAccountCurrency);
-			}).collect(Collectors.toList());
+			Collection<AppleSalesEntry> sales = br.lines() //
+					.filter(line -> !isLastLine(line) && line.startsWith("\"")) //
+					.map(lastReadLine::copyAndReturn) //
+					.map(line -> line.replaceAll("[\"]", "").split(",")) //
+					.map(splittedLine -> {
+						RegionNCurrency rpc = getRegionPlusCurrency(splittedLine[0]);
+						int units = Integer.parseInt(splittedLine[1]);
+						BigDecimal earned = new BigDecimal(splittedLine[2]);
+						BigDecimal pretaxSubtotal = new BigDecimal(splittedLine[3]);
+						BigDecimal inputTax = new BigDecimal(splittedLine[4]);
+						BigDecimal adjustments = new BigDecimal(splittedLine[5]);
+						BigDecimal withholdingTax = new BigDecimal(splittedLine[6]);
+						BigDecimal totalOwned = new BigDecimal(splittedLine[7]);
+						BigDecimal exchangeRate = new BigDecimal(splittedLine[8]);
+						BigDecimal proceeds = new BigDecimal(splittedLine[9]);
+						String bankAccountCurrency = splittedLine[10];
+						return new AppleSalesEntry(rpc, units, earned, pretaxSubtotal, inputTax, adjustments, withholdingTax, totalOwned, exchangeRate, proceeds, bankAccountCurrency);
+					}).toList();
 
 			return new AppleReport(yearMonth, sales.toArray(new AppleSalesEntry[]{}));
 		} catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
