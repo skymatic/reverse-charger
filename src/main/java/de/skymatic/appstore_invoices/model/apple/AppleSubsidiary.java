@@ -5,13 +5,13 @@ import de.skymatic.appstore_invoices.model.Workflow;
 
 public enum AppleSubsidiary implements Recipient {
 
-	APAC(new String[]{"Apple Services Pte. Ltd.", "Ang Mo Kio Street 64", "Singapore 569086", "Singapore"}, false),
 	ROW(new String[]{"Apple Distribution International Limited", "Hollyhill Industrial Estate", "Hollyhill, Cork", "Republic of Ireland", "VAT ID: IE9700053D"}, true),
 	NORTHAMERICA(new String[]{"Apple Inc.", "One Apple Park Way", "Cupertino, CA 95014", "USA"}, false),
 	LATINAMERICA(new String[]{"Apple Services LATAM LLC", "1 Alhambra Plaza, Suite 700", "Coral Gables, FL 33134", "USA"}, false),
 	CANADA(new String[]{"Apple Canada Inc.", "120 Bremner Boulevard, Suite 1600", "Toronto, ON M5J 0A8", "Canada"}, false),
 	JAPAN(new String[]{"iTunes K.K.", "〒 106-6140", "6-10-1 Roppongi, Minato-ku, Tokyo", "Japan"}, false),
-	AUSTRALIA(new String[]{"Apple Pty Limited", "Level 3", "20 Martin Place", "Sydney NSW 2000", "Australia"}, false);
+	AUSTRALIA(new String[]{"Apple Pty Limited", "Level 3", "20 Martin Place", "Sydney NSW 2000", "Australia"}, false),
+	APAC(new String[]{"Apple Services Pte. Ltd.", "Ang Mo Kio Street 64", "Singapore 569086", "Singapore"}, false);
 
 	private static final Workflow WORKFLOW = Workflow.APPLE;
 	private final boolean reverseCharge;
